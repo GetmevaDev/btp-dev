@@ -1,6 +1,10 @@
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0 auto;
+}
+
+marquee {
+    background-color: #8B9DC3;
+    height: 40px;
 }
 
 marquee a{
