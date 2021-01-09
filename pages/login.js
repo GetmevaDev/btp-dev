@@ -4,7 +4,7 @@ import styles from "../styles/Login.module.css";
 
 export default function Login() {
   return (
-    <div class="py-5">
+    <section className="py-5">
       <Head>
         <title>BTP Necrology | Login</title>
       </Head>
@@ -36,6 +36,6 @@ export default function Login() {
             </Col>
           </Row>
         </Container>
-    </div>
+    </section>
   );
 }

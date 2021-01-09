@@ -1,0 +1,19 @@
+.page_h1 {
+    font-weight: bold;
+    font-size: 45px;
+    margin-bottom: 50px;
+}
+.comment_reply_title {
+    margin-bottom: 50px;
+}
+
+.comment_reply_title h1{
+    font-weight: bold;
+    font-size: 45px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.comment_reply_title a{
+    text-decoration: none;
+}

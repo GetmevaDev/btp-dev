@@ -4,7 +4,7 @@ import styles from '../styles/About.module.css'
 
 export default function About() {
   return (
-    <div class="py-1">
+    <section>
       <Head>
         <title>BTP Necrology | About Us</title>
       </Head>
@@ -17,9 +17,6 @@ export default function About() {
                 width="100%"
                 height="100%"
                 src="https://www.youtube.com/embed/NliYy7iqh-U?feature=oembed"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
               ></iframe>
             </Col>
             <Col sm={6}>
@@ -54,6 +51,6 @@ export default function About() {
             </Col>
           </Row>
         </Container>
-    </div>
+    </section>
   );
 }

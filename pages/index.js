@@ -14,17 +14,10 @@ import styles from "../styles/Home.module.css";
 
 export default function Home() {
   return (
-    <>
+    <section className="py-4">
       <Head>
         <title>BTP Necrology | Некролог האבל Nachruf</title>
-        <link
-          rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-          crossorigin="anonymous"
-        />
       </Head>
-      <main className="py-4">
         <Container>
           <Carousel />
         </Container>
@@ -125,8 +118,7 @@ export default function Home() {
             </Col>
           </Row>
         </Container>
-      </main>
-    </>
+    </section>
   );
 }
 

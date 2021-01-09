@@ -5,7 +5,8 @@ import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <> 
+    <>
+    <section> 
       <Head>
         <link
           rel="stylesheet"
@@ -15,7 +16,8 @@ function MyApp({ Component, pageProps }) {
         /></Head>
       <Header />
       <Component {...pageProps} />
-      <Footer />
+    </section>
+    <Footer />
     </>
   );
 }

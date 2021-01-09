@@ -2,15 +2,33 @@ body {
   margin: 0 auto;
 }
 
-marquee {
-    background-color: #8B9DC3;
-    height: 40px;
+footer {
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
-marquee a{
-    color: #fff;
-    font-size: 20px;
-    margin: 10px;
-    padding-left: 60px;
-    text-decoration: none;
+marquee {
+	background-color: #8B9DC3;
+	color: #fff;
+	padding: 10px 0;
+	font-size: 18px;
+	line-height: 20px;
+	display: block
+}
+
+marquee a {
+	color: #fff;
+	padding: 0 20px;
+  display: inline-block;
+  text-decoration: none;
+}
+
+marquee a:hover {
+  color: #fff;
+}
+
+marquee a+a {
+	margin-left: 50px
 }

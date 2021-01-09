@@ -1,5 +1,5 @@
-import React from "react";
-import Link from "next/link";
+import React from "react"
+import Link from "next/link"
 import {
   Navbar,
   Nav,
@@ -52,9 +52,9 @@ const Header = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <marquee behavior="" direction="">
-        <Link href="https://btpnecrology.com/call-sam-davidov-for-mortgages-9175786009/">Call Sam Davidov for mortgages (917) 578-6009</Link>
-        <Link href="https://btpnecrology.com/call-sam-davidov-for-mortgages-9175786009/">In Memory We Live Forever</Link>
+      <marquee>
+        <Link href="/callDavidov">Call Sam Davidov for mortgages (917) 578-6009</Link>
+        <Link href="/inMemory">In Memory We Live Forever</Link>
       </marquee>
     </header>
   );

@@ -4,7 +4,7 @@ import styles from "../styles/Profile.module.css";
 
 export default function Profile() {
   return (
-    <div class="py-5">
+    <section class="py-5">
       <Head>
         <title>BTP Necrology | Sonia Kalendarov Iskhakov</title>
       </Head>
@@ -53,6 +53,6 @@ export default function Profile() {
           </Col>
         </Row>
       </Container>
-    </div>
+    </section>
   );
 }
