@@ -1,12 +1,7 @@
 body {
-  margin: 0 auto;
-}
-
-footer {
-  display: block;
-  margin: 0;
-  padding: 0;
-  width: 100%;
+	margin: 0;
+	padding: 0;
+	height: 100%;
 }
 
 marquee {
@@ -21,14 +16,19 @@ marquee {
 marquee a {
 	color: #fff;
 	padding: 0 20px;
-  display: inline-block;
-  text-decoration: none;
+	display: inline-block;
+	text-decoration: none;
 }
 
 marquee a:hover {
-  color: #fff;
+	color: #fff;
 }
 
 marquee a+a {
 	margin-left: 50px
+}
+
+footer {
+	margin: 0;
+	padding: 0;
 }
