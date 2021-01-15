@@ -30,5 +30,11 @@ marquee a+a {
 
 footer {
 	margin: 0;
-	padding: 0;
+}
+
+
+@media only screen and (min-height : 1025px) and (max-height : 1506px) {
+    footer {
+        margin-top: 375px;
+    }
 }

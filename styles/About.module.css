@@ -2,3 +2,21 @@
     margin-top: 30px;
     margin-bottom: 30px;
 }
+
+.about_container h1 {
+    margin-bottom: 50px;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+@media only screen and (min-height : 1025px) and (max-height : 1500px) {
+    .about_container {
+        margin-bottom: 150px;
+    }
+}
+
+@media only screen and (min-height : 1701px) and (max-height : 2500px) {
+    .about_container {
+        margin-bottom: 950px;
+    }
+}

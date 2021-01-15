@@ -19,7 +19,7 @@ export default function Profiles({ profiles }) {
         <title>BTP Necrology | Profiles</title>
       </Head>
 
-      <Container fluid>
+      <Container>
         <Row className="justify-content-md-center">
           <Col md={{ span: 4, offset: 2 }}>
             <h1>Search profiles</h1>
@@ -43,7 +43,7 @@ export default function Profiles({ profiles }) {
                       <Image
                         src={profile.image ? profile.image.url : "https://via.placeholder.com/150.png"}
                         alt="Image"
-                        
+                        style={{ objectFit: 'cover'}}
                         roundedCircle
                         width="100px"
                         height="100px"

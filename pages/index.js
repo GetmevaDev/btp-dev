@@ -30,6 +30,7 @@ export default function Home({ profiles }) {
                 className={styles.carousel_img}
                 width="500"
                 height="400"
+                style={{ objectFit: 'cover'}}
                 src={profile.image ? profile.image.url : "https://via.placeholder.com/500x400.png"}
                 alt="First slide"
               />
@@ -94,7 +95,7 @@ export default function Home({ profiles }) {
             {profiles.map((profile) => (   
               <Col sm={12} md={6} lg={4} xl={3} key={profile._id} className="py-2 carddeck">  
                 <Card style={{ width: "16rem", height: "100%" }}>
-                  <Card.Img variant="top" src={profile.image ? profile.image.url : "https://via.placeholder.com/150.png"} />
+                  <Card.Img variant="top" height="275px" style={{ objectFit: 'cover'}} src={profile.image ? profile.image.url : "https://via.placeholder.com/150.png"} />
                   <Card.Body>
                     <Card.Title>{profile.fullName}</Card.Title>
                     <Card.Text>{profile.deceaseDate}</Card.Text>

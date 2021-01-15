@@ -1,0 +1,32 @@
+.howitworks_container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.howitworks_container video {
+    margin-bottom: 30px;
+}
+
+.howitworks_container h1 {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+@media only screen and (min-height : 768px) and (max-height : 1204px) {
+    .howitworks_container {
+        margin-bottom: 150px;
+    }
+}
+
+@media only screen and (min-height : 1025px) and (max-height : 1500px) {
+    .howitworks_container {
+        margin-bottom: 20px;
+    }
+}
+
+@media only screen and (min-height : 1701px) and (max-height : 2500px) {
+    .howitworks_container {
+        margin-bottom: 950px;
+    }
+}
