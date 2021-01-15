@@ -1,7 +1,19 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
-	margin: 0;
-	padding: 0;
-	height: 100%;
+    margin: 0 0 100px;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    overflow: hidden;
 }
 
 marquee {
@@ -26,15 +38,4 @@ marquee a:hover {
 
 marquee a+a {
 	margin-left: 50px
-}
-
-footer {
-	margin: 0;
-}
-
-
-@media only screen and (min-height : 1025px) and (max-height : 1506px) {
-    footer {
-        margin-top: 375px;
-    }
 }

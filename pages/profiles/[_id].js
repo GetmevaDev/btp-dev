@@ -18,9 +18,10 @@ export default function Profile({ profiles, params }) {
             <h1 className={styles.profile_h1}>{profile.fullName}</h1>
             <div className={styles.profile_image}>
               <Image
-                width="100%"
-                height="100%"
-                src={profile.image}
+                width="640px"
+                height="640px"
+                style={{ objectFit: 'cover'}}
+                src={profile.image ? profile.image.url : "https://via.placeholder.com/500x400.png"}
                 alt="img"
               />
             </div>
