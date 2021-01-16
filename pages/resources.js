@@ -5,7 +5,7 @@ import styles from "../styles/Resources.module.css";
 
 export default function Resources() {
   return (
-    <section class="py-5">
+    <section className="py-5">
       <Head>
         <title>BTP Necrology | Resources</title>
       </Head>

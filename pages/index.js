@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Link from "next/link";
-import Carousel from "../components/Carousel";
 import {
   Container,
   Row,
@@ -9,17 +8,44 @@ import {
   Button,
   CardDeck,
   Media,
+  Image,
+  Carousel,
+  CardGroup,
 } from "react-bootstrap";
 import styles from "../styles/Home.module.css";
 
-export default function Home() {
+export default function Home({ profiles }) {
   return (
     <section className="py-4">
       <Head>
         <title>BTP Necrology | Некролог האבל Nachruf</title>
       </Head>
       <Container>
-        <Carousel />
+        <Carousel>
+          {profiles.map((profile) => (
+            <Carousel.Item className={styles.carousel_item} key={profile._id}>
+              <Image
+                className={styles.carousel_img}
+                width="500"
+                height="400"
+                style={{ objectFit: "cover" }}
+                src={
+                  profile.image
+                    ? profile.image.url
+                    : "https://via.placeholder.com/500x400.png"
+                }
+                alt="First slide"
+              />
+              <Carousel.Caption className={styles.carousel_info}>
+                <h3>{profile.fullName}</h3>
+                <p>{profile.deceaseDate}</p>
+                <Link href={`/profiles/${profile._id}`}>
+                  <Button variant="primary">View Profile</Button>
+                </Link>
+              </Carousel.Caption>
+            </Carousel.Item>
+          ))}
+        </Carousel>
       </Container>
 
       <Container className={styles.useful}>
@@ -67,57 +93,52 @@ export default function Home() {
       <Container>
         <Row>
           <Col>
-            <CardDeck className={styles.carddeck}>
-              <Card style={{ width: "18rem" }}>
-                <Card.Img
-                  variant="top"
-                  src="https://btpnecrology.com/wp-content/uploads/2021/01/79291590_817241632068751_1616192959374426112_o-1-500x400.jpg"
-                />
-                <Card.Body>
-                  <Card.Title>Sonia Kalendarov Iskhakov</Card.Title>
-                  <Card.Text>Dec 7, 2019</Card.Text>
-                </Card.Body>
-                <Button variant="primary">View Profile</Button>
-              </Card>
-              <Card style={{ width: "18rem" }}>
-                <Card.Img
-                  variant="top"
-                  src="https://btpnecrology.com/wp-content/uploads/2020/12/73095269_788033354989579_6766342858812162048_n-500x400.jpg"
-                />
-                <Card.Body>
-                  <Card.Title>Yashuo bat Emmoshalom Khaimova</Card.Title>
-                  <Card.Text>Nov 3, 2019</Card.Text>
-                </Card.Body>
-                <Button variant="primary">View Profile</Button>
-              </Card>
-              <Card style={{ width: "18rem" }}>
-                <Card.Img
-                  variant="top"
-                  src="https://btpnecrology.com/wp-content/uploads/2020/12/76726982_789394898186758_6826330259013500928_n-500x400.jpg"
-                />
-                <Card.Body>
-                  <Card.Title>
-                    Pinkhas Abayevich Abramov Kobuli samarkandi
-                  </Card.Title>
-                  <Card.Text>Nov 4, 2019</Card.Text>
-                </Card.Body>
-                <Button variant="primary">View Profile</Button>
-              </Card>
-              <Card style={{ width: "18rem" }}>
-                <Card.Img
-                  variant="top"
-                  src="https://btpnecrology.com/wp-content/uploads/2020/12/74643550_790143164778598_2862350644834992128_n-500x400.jpg"
-                />
-                <Card.Body>
-                  <Card.Title>Dora Aronov</Card.Title>
-                  <Card.Text>Nov 5, 2019</Card.Text>
-                </Card.Body>
-                <Button variant="primary">View Profile</Button>
-              </Card>
+            <CardDeck>
+              {profiles.map((profile) => (
+                <Col
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  xl={3}
+                  key={profile._id}
+                  className="py-2 carddeck"
+                >
+                  <Card style={{ width: "16rem", height: "100%" }}>
+                    <Card.Img
+                      variant="top"
+                      height="275px"
+                      style={{ objectFit: "cover" }}
+                      src={
+                        profile.image
+                          ? profile.image.url
+                          : "https://via.placeholder.com/150.png"
+                      }
+                    />
+                    <Card.Body>
+                      <Card.Title>{profile.fullName}</Card.Title>
+                      <Card.Text>{profile.deceaseDate}</Card.Text>
+                      <Link href={`/profiles/${profile._id}`}>
+                        <Button variant="primary">View Profile</Button>
+                      </Link>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
             </CardDeck>
           </Col>
         </Row>
       </Container>
     </section>
   );
+}
+
+export async function getStaticProps() {
+  const res = await fetch("https://btp-necrology.herokuapp.com/profiles");
+  const profiles = await res.json();
+
+  return {
+    props: {
+      profiles,
+    },
+  };
 }

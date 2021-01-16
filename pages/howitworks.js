@@ -1,5 +1,6 @@
-import Head from "next/head";
-import { Container, Row, Col } from "react-bootstrap";
+import Head from "next/head"
+import { Container, Row, Col } from "react-bootstrap"
+import styles from '../styles/HowItWorks.module.css'
 
 export default function Howitworks() {
   return (
@@ -8,7 +9,7 @@ export default function Howitworks() {
         <title>BTP Necrology | How It Works</title>
       </Head>
 
-      <Container fluid>
+      <Container className={styles.howitworks_container}>
         <Row>
           <Col>
             <video controls width="100%">

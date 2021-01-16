@@ -13,7 +13,8 @@ export default function Login() {
       <Head>
         <title>BTP Necrology | Login</title>
       </Head>
-      <Container fluid>
+
+      <Container className={styles.login_container}>
         <Row>
           <Col md={{ span: 4, offset: 4 }}>
             <h1 className={styles.login_logo}>Sign In</h1>

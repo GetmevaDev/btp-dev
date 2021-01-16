@@ -9,17 +9,20 @@ export default function About() {
         <title>BTP Necrology | About Us</title>
       </Head>
 
-      <Container fluid className={styles.about_container}>
+      <Container className={styles.about_container}>
         <Row>
-          <Col sm={6}>
+          <Col>
             <iframe
               title="Relaxing Music Mix | BEAUTIFUL PIANO"
               width="100%"
-              height="100%"
+              height="360px"
               src="https://www.youtube.com/embed/NliYy7iqh-U?feature=oembed"
             ></iframe>
           </Col>
-          <Col sm={6}>
+        </Row>
+        <br />
+        <Row>
+          <Col>
             <h1>About Us</h1>
             <p>
               Laboris reprehenderit quis proident do eu ea incididunt eiusmod
