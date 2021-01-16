@@ -15,20 +15,22 @@ import styles from "../styles/Profiles.module.css";
 
 export default function Profiles() {
   const [profiles, setProfiles] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [filteredProfiles, setFilteredProfiles] = useState([]);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("https://btp-necrology.herokuapp.com/profiles")
       .then((res) => {
         setProfiles(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
 
   useEffect(() => {
     setFilteredProfiles(
@@ -38,7 +40,18 @@ export default function Profiles() {
     );
   }, [search, profiles]);
 
- return (
+  if (loading) {
+    return (
+      <div className="text-center">
+        <img
+          src="https://btpnecrology.com/wp-content/themes/btp/assets/images/loading.gif"
+          alt="loading"
+        />
+      </div>
+    );
+  }
+
+  return (
     <section className="py-5">
       <Head>
         <title>BTP Necrology | Profiles</title>
@@ -59,43 +72,40 @@ export default function Profiles() {
           </Col>
         </Row>
         {filteredProfiles.map((profile) => (
-                <ProfileDetail key={profile._id} {...profile} />
+          <Container>
+            <Row className="justify-content-md-center">
+              <Col md={8}>
+                <ListGroup variant="flush">
+                  <ListGroup.Item>
+                    <Row>
+                      <Col md={2}>
+                        <Image
+                          src={
+                            profile.image
+                              ? profile.image.url
+                              : "https://via.placeholder.com/150.png"
+                          }
+                          alt="Image"
+                          style={{ objectFit: "cover" }}
+                          roundedCircle
+                          width="100px"
+                          height="100px"
+                        />
+                      </Col>
+                      <Col md={6} className={styles.name}>
+                        <br />
+                        <Link href={`/profiles/${profile._id}`}>
+                          {profile.fullName}
+                        </Link>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                </ListGroup>
+              </Col>
+            </Row>
+          </Container>
         ))}
       </Container>
     </section>
   );
 }
-
-const ProfileDetail = (props) => {
-  const { fullName, image, _id} = props;
-  return (
-    <Container>
-      <Row className="justify-content-md-center">
-          <Col md={8}>
-            <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <Row>
-                    <Col md={2}>
-                      <Image
-                        src={image ? image.url : "https://via.placeholder.com/150.png"}
-                        alt="Image"
-                        style={{ objectFit: 'cover'}}
-                        roundedCircle
-                        width="100px"
-                        height="100px"
-                      />
-                    </Col>
-                    <Col md={6} className={styles.name}>
-                    <br />
-                      <Link href={`/profiles/${_id}`}>
-                        {fullName}
-                      </Link>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-            </ListGroup>
-          </Col>
-        </Row>
-    </Container>
-  );
-};
