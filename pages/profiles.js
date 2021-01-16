@@ -15,7 +15,7 @@ import styles from "../styles/Profiles.module.css";
 
 export default function Profiles() {
   const [profiles, setProfiles] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filteredProfiles, setFilteredProfiles] = useState([]);
 
@@ -34,18 +34,20 @@ export default function Profiles() {
 
   useEffect(() => {
     setFilteredProfiles(
+      profiles.sort((a, b) => a.fullName.localeCompare(b.fullName)),
       profiles.filter((profile) =>
         profile.fullName.toLowerCase().includes(search.toLowerCase())
-      )
+      ),
     );
   }, [search, profiles]);
 
   if (loading) {
     return (
-      <div className="text-center">
+      <div className="text-center loader">
         <img
           src="https://btpnecrology.com/wp-content/themes/btp/assets/images/loading.gif"
           alt="loading"
+          width="100px"
         />
       </div>
     );
@@ -104,7 +106,7 @@ export default function Profiles() {
               </Col>
             </Row>
           </Container>
-        ))}
+         ))}
       </Container>
     </section>
   );
