@@ -33,17 +33,17 @@ export default function Profiles() {
   }, []);
 
   useEffect(() => {
+    profiles.sort((a, b) => a.fullName.localeCompare(b.fullName)),
     setFilteredProfiles(
-      profiles.sort((a, b) => a.fullName.localeCompare(b.fullName)),
       profiles.filter((profile) =>
         profile.fullName.toLowerCase().includes(search.toLowerCase())
-      ),
+      )
     );
   }, [search, profiles]);
 
   if (loading) {
     return (
-      <div className="text-center loader">
+      <div className="text-center">
         <img
           src="https://btpnecrology.com/wp-content/themes/btp/assets/images/loading.gif"
           alt="loading"
