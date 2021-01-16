@@ -11,7 +11,9 @@ export default function CallDavidov() {
       <Container>
         <Row>
           <Col mr={{ span: 6, offset: 3 }}>
-            <h1 className={styles.profile_h1}>Call Sam Davidov for mortgages (917) 578-6009</h1>
+            <h1 className={styles.profile_h1}>
+              Call Sam Davidov for mortgages (917) 578-6009
+            </h1>
 
             <div className={styles.profile_image}>
               <img
