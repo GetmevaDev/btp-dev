@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
 import {
@@ -6,13 +8,36 @@ import {
   Col,
   Form,
   ListGroup,
-  Button,
   FormControl,
   Image,
 } from "react-bootstrap";
 import styles from "../styles/Profiles.module.css";
 
-export default function Profiles({ profiles }) {
+export default function Profiles() {
+  const [profiles, setProfiles] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filteredProfiles, setFilteredProfiles] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("https://btp-necrology.herokuapp.com/profiles")
+      .then((res) => {
+        setProfiles(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+
+  useEffect(() => {
+    setFilteredProfiles(
+      profiles.filter((profile) =>
+        profile.fullName.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, profiles]);
+
  return (
     <section className="py-5">
       <Head>
@@ -21,27 +46,38 @@ export default function Profiles({ profiles }) {
 
       <Container>
         <Row className="justify-content-md-center">
-          <Col md={{ span: 4, offset: 2 }}>
+          <Col md={{ span: 4, offset: 1 }}>
             <h1>Search profiles</h1>
-            <Form inline>
+            <Form>
               <FormControl
                 type="text"
                 placeholder="Search"
                 className="mr-sm-2"
+                onChange={(e) => setSearch(e.target.value)}
               />
-              <Button variant="outline-primary">Search</Button>
             </Form>
           </Col>
         </Row>
-        <Row className="justify-content-md-center">
+        {filteredProfiles.map((profile) => (
+                <ProfileDetail key={profile._id} {...profile} />
+        ))}
+      </Container>
+    </section>
+  );
+}
+
+const ProfileDetail = (props) => {
+  const { fullName, image, _id} = props;
+  return (
+    <Container>
+      <Row className="justify-content-md-center">
           <Col md={8}>
             <ListGroup variant="flush">
-              {profiles.map((profile) => (
-                <ListGroup.Item key={profile._id}>
+                <ListGroup.Item>
                   <Row>
                     <Col md={2}>
                       <Image
-                        src={profile.image ? profile.image.url : "https://via.placeholder.com/150.png"}
+                        src={image ? image.url : "https://via.placeholder.com/150.png"}
                         alt="Image"
                         style={{ objectFit: 'cover'}}
                         roundedCircle
@@ -51,28 +87,15 @@ export default function Profiles({ profiles }) {
                     </Col>
                     <Col md={6} className={styles.name}>
                     <br />
-                      <Link href={`/profiles/${profile._id}`}>
-                        {profile.fullName}
+                      <Link href={`/profiles/${_id}`}>
+                        {fullName}
                       </Link>
                     </Col>
                   </Row>
                 </ListGroup.Item>
-              ))}
             </ListGroup>
           </Col>
         </Row>
-      </Container>
-    </section>
+    </Container>
   );
-}
-
-export async function getStaticProps() {
-  const res = await fetch("https://btp-necrology.herokuapp.com/profiles");
-  const profiles = await res.json();
-
-  return {
-    props: {
-      profiles,
-    },
-  };
-}
+};
