@@ -10,7 +10,6 @@ import {
   Media,
   Image,
   Carousel,
-  CardGroup
 } from "react-bootstrap";
 import styles from "../styles/Home.module.css";
 
@@ -25,7 +24,8 @@ export default function Home({ profiles }) {
       <Container>
         <Carousel>
           {profiles.map((profile) => (
-            <Carousel.Item className={styles.carousel_item} key={profile._id}>
+            <Carousel.Item 
+            className={styles.carousel_item} key={profile._id}>
               <Image
                 className={styles.carousel_img}
                 width="500"

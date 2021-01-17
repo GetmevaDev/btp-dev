@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Head from "next/head";
+import Link from 'next/link'
 import { Container, Row, Col, Image } from "react-bootstrap";
 import styles from "../../styles/Profile.module.css";
 
@@ -41,7 +42,7 @@ export default function Profile({ profiles, params }) {
             <div className={styles.comment_reply_title}>
               <h1>Leave a Comment</h1>
               <p>
-                You must be <a href="#">logged in</a> to post a comment.
+                You must be <Link href="/login">logged in</Link> to post a comment.
               </p>
             </div>
           </Col>

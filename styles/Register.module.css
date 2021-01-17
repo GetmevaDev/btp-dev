@@ -1,0 +1,16 @@
+.register_logo {
+    margin-bottom: 20px;
+}
+
+.register_container p {
+    margin-top: 20px;
+}
+
+.register_container p a{
+    text-decoration: none;
+    color: #000;
+}
+
+.register_container h6 a{
+    text-decoration: none;
+}
