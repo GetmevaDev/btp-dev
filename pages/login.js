@@ -4,7 +4,6 @@ import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import styles from "../styles/Login.module.css";
 import Link from "next/link";
 import { setCookie } from "nookies";
-import { useAppContext } from "../context/state";
 import { useRouter } from "next/router";
 import { sendData } from "../lib/api";
 
@@ -48,6 +47,7 @@ export default function Login() {
                 <Form.Label>Email or username</Form.Label>
                 <Form.Control
                   type="text"
+                  required
                   onChange={(e) => setIdentifier(e.target.value)}
                 />
               </Form.Group>
@@ -56,6 +56,7 @@ export default function Login() {
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   type="password"
+                  required
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Form.Group>

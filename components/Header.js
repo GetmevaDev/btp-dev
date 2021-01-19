@@ -52,7 +52,9 @@ const Header = () => {
               {isGuest ? (
                 <Link href="/login">Login</Link>
               ) : (
-                <Link href="/cabinet">{user.username}</Link>
+                <>
+                  <Link href="/sign-out">{user.username}</Link>
+                </>
               )}
             </Nav>
           </Navbar.Collapse>

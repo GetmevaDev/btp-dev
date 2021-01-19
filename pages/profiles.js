@@ -12,6 +12,7 @@ import {
   Image,
 } from "react-bootstrap";
 import styles from "../styles/Profiles.module.css";
+import Loader from "../components/Loader";
 
 export default function Profiles() {
   const [profiles, setProfiles] = useState([]);
@@ -41,14 +42,7 @@ export default function Profiles() {
   }, [search, profiles]);
 
   if (loading) {
-    return (
-      <div className="text-center">
-        <img
-          src="https://btpnecrology.com/wp-content/themes/btp/assets/images/loading.gif"
-          alt="loading"
-        />
-      </div>
-    );
+    return <Loader />;
   }
 
   return (

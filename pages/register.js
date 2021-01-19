@@ -1,40 +1,36 @@
 import Head from "next/head";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import styles from "../styles/Login.module.css";
 import Link from "next/link";
 import { useState } from "react";
 import { setCookie } from "nookies";
+import { sendData } from "../lib/api";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [error, setError] = useState({ show: false, errorMsg: "" });
+  const router = useRouter();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const register = await fetch(
-      `${process.env.BACKEND_URL}/auth/local/register`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          username,
-          password,
-        }),
-      }
-    );
+    sendData(`${process.env.BACKEND_URL}/auth/local/register`, {
+      email,
+      username,
+      password,
+    })
+      .then(({ jwt }) => {
+        setCookie(null, "jwt", jwt, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        });
 
-    const registerResponse = await register.json();
-
-    setCookie(null, "jwt", registerResponse.jwt, {
-      maxAge: 30 * 24 * 60 * 60,
-      path: "/",
-    });
+        router.push("/");
+      })
+      .catch((e) => setError({ show: true, errorMsg: e.message }));
   };
 
   return (
@@ -44,6 +40,7 @@ export default function Login() {
       </Head>
 
       <Container className={styles.login_container}>
+        {error.show && <Alert variant="danger">{error.errorMsg}</Alert>}
         <Row>
           <Col md={{ span: 4, offset: 4 }}>
             <h1 className={styles.login_logo}>Register</h1>
@@ -52,6 +49,7 @@ export default function Login() {
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   type="email"
+                  required
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
@@ -59,6 +57,7 @@ export default function Login() {
                 <Form.Label>Username</Form.Label>
                 <Form.Control
                   type="text"
+                  required
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </Form.Group>
@@ -66,6 +65,7 @@ export default function Login() {
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   type="password"
+                  required
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Form.Group>
@@ -92,7 +92,7 @@ export default function Login() {
                   >
                     <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
                   </svg>
-                  Log in with
+                  Sign up with
                   <strong> Facebook</strong>
                 </a>
               </Link>

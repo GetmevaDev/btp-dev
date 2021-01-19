@@ -1,6 +1,7 @@
 // src/context/state.js
 import { createContext, useContext, useState, useEffect } from "react";
 import { parseCookies, destroyCookie } from "nookies";
+import { logout } from "../lib/user";
 
 const AppContext = createContext();
 
