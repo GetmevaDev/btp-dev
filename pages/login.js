@@ -99,7 +99,7 @@ export default function Login() {
               <a className={styles.bottom_link}>Register</a>
             </Link>{" "}
             |{" "}
-            <Link href="#">
+            <Link href="/forgot-password">
               <a className={styles.bottom_link}>Lost your password?</a>
             </Link>
           </Col>
