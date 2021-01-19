@@ -7,3 +7,11 @@
   color: white;
   text-decoration: none;
 }
+
+.bottom_link {
+  color: inherit;
+}
+
+.bottom_link:hover {
+  text-decoration: none;
+}

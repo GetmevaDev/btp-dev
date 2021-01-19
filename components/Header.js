@@ -1,5 +1,5 @@
-import React from "react"
-import Link from "next/link"
+import React from "react";
+import Link from "next/link";
 import {
   Navbar,
   Nav,
@@ -9,8 +9,11 @@ import {
   Container,
 } from "react-bootstrap";
 import styles from "../styles/Header.module.css";
+import { useAppContext } from "../context/state";
 
 const Header = () => {
+  const { user, isGuest } = useAppContext();
+
   return (
     <header>
       <Navbar
@@ -21,15 +24,14 @@ const Header = () => {
       >
         <Container>
           <Link href="/">
-          <Navbar.Brand>
-            {" "}
-            <img
-              src="https://btpnecrology.com/wp-content/uploads/2020/07/btp_logo-1.svg"
-              width="50"
-              className="d-inline-block align-top"
-              alt="React Bootstrap logo"
-            />
-          </Navbar.Brand>
+            <Navbar.Brand>
+              <img
+                src="https://btpnecrology.com/wp-content/uploads/2020/07/btp_logo-1.svg"
+                width="50"
+                className="d-inline-block align-top"
+                alt="React Bootstrap logo"
+              />
+            </Navbar.Brand>
           </Link>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -47,13 +49,19 @@ const Header = () => {
               <Link href="/howitworks">How It works</Link>
               <Link href="/profiles">Profiles</Link>
               <Link href="/resources">Resources</Link>
-              <Link href="/login">Login</Link>
+              {isGuest ? (
+                <Link href="/login">Login</Link>
+              ) : (
+                <Link href="/cabinet">{user.username}</Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
       <marquee>
-        <Link href="/callDavidov">Call Sam Davidov for mortgages (917) 578-6009</Link>
+        <Link href="/callDavidov">
+          Call Sam Davidov for mortgages (917) 578-6009
+        </Link>
         <Link href="/inMemory">In Memory We Live Forever</Link>
       </marquee>
     </header>

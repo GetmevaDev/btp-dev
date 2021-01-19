@@ -1,57 +1,67 @@
-import { useState } from "react";
 import Head from "next/head";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import styles from "../styles/Login.module.css";
 import Link from "next/link";
+import { useState } from "react";
 import { setCookie } from "nookies";
-import { useAppContext } from "../context/state";
-import { useRouter } from "next/router";
-import { sendData } from "../lib/api";
 
 export default function Login() {
-  const [identifier, setIdentifier] = useState();
+  const [email, setEmail] = useState();
+  const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const router = useRouter();
-  const [error, setError] = useState({ show: false, errorMsg: "" });
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    sendData(`${process.env.BACKEND_URL}/auth/local`, {
-      identifier,
-      password,
-    })
-      .then(({ jwt }) => {
-        setCookie(null, "jwt", jwt, {
-          maxAge: 30 * 24 * 60 * 60,
-          path: "/",
-        });
+    const register = await fetch(
+      `${process.env.BACKEND_URL}/auth/local/register`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          username,
+          password,
+        }),
+      }
+    );
 
-        router.push("/");
-      })
-      .catch((e) => setError({ show: true, errorMsg: e.message }));
+    const registerResponse = await register.json();
+
+    setCookie(null, "jwt", registerResponse.jwt, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: "/",
+    });
   };
 
   return (
     <section className="py-5">
       <Head>
-        <title>BTP Necrology | Login</title>
+        <title>BTP Necrology | Register</title>
       </Head>
 
       <Container className={styles.login_container}>
-        {error.show && <Alert variant="danger">{error.errorMsg}</Alert>}
         <Row>
           <Col md={{ span: 4, offset: 4 }}>
-            <h1 className={styles.login_logo}>Sign In</h1>
-            <Form onSubmit={handleLogin}>
-              <Form.Group controlId="formBasicIdentifier">
-                <Form.Label>Email or username</Form.Label>
+            <h1 className={styles.login_logo}>Register</h1>
+            <Form onSubmit={handleRegister}>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Email address</Form.Label>
                 <Form.Control
-                  type="text"
-                  onChange={(e) => setIdentifier(e.target.value)}
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
-
+              <Form.Group controlId="formBasicusername">
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  type="text"
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </Form.Group>
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
@@ -59,11 +69,8 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Form.Group>
-              <Form.Group controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Remember me" />
-              </Form.Group>
               <Button variant="primary" type="submit">
-                Log in
+                Register
               </Button>
             </Form>
           </Col>
@@ -94,8 +101,8 @@ export default function Login() {
         </Row>
         <Row className="mt-3">
           <Col md={{ span: 4, offset: 4 }}>
-            <Link href="/register">
-              <a className={styles.bottom_link}>Register</a>
+            <Link href="/login">
+              <a className={styles.bottom_link}>Login</a>
             </Link>{" "}
             |{" "}
             <Link href="#">
