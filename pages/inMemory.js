@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Container, Row, Col } from "react-bootstrap";
-import styles from '../styles/InMemory.module.css'
+import styles from "../styles/InMemory.module.css";
 
 export default function InMemory() {
   return (

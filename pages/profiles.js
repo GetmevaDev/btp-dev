@@ -12,6 +12,7 @@ import {
   Image,
 } from "react-bootstrap";
 import styles from "../styles/Profiles.module.css";
+import Loader from "../components/Loader";
 
 export default function Profiles() {
   const [profiles, setProfiles] = useState([]);
@@ -34,23 +35,15 @@ export default function Profiles() {
 
   useEffect(() => {
     profiles.sort((a, b) => a.fullName.localeCompare(b.fullName)),
-    setFilteredProfiles(
-      profiles.filter((profile) =>
-        profile.fullName.toLowerCase().includes(search.toLowerCase())
-      )
-    );
+      setFilteredProfiles(
+        profiles.filter((profile) =>
+          profile.fullName.toLowerCase().includes(search.toLowerCase())
+        )
+      );
   }, [search, profiles]);
 
   if (loading) {
-    return (
-      <div className="text-center">
-        <img
-          src="https://btpnecrology.com/wp-content/themes/btp/assets/images/loading.gif"
-          alt="loading"
-          width="100px"
-        />
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
@@ -106,7 +99,7 @@ export default function Profiles() {
               </Col>
             </Row>
           </Container>
-         ))}
+        ))}
       </Container>
     </section>
   );

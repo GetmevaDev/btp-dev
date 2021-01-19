@@ -10,12 +10,11 @@ import {
   Media,
   Image,
   Carousel,
+  CardGroup,
 } from "react-bootstrap";
 import styles from "../styles/Home.module.css";
 
-
 export default function Home({ profiles }) {
-
   return (
     <section className="py-4">
       <Head>
@@ -24,14 +23,17 @@ export default function Home({ profiles }) {
       <Container>
         <Carousel>
           {profiles.map((profile) => (
-            <Carousel.Item 
-            className={styles.carousel_item} key={profile._id}>
+            <Carousel.Item className={styles.carousel_item} key={profile._id}>
               <Image
                 className={styles.carousel_img}
                 width="500"
                 height="400"
-                style={{ objectFit: 'cover'}}
-                src={profile.image ? profile.image.url : "https://via.placeholder.com/500x400.png"}
+                style={{ objectFit: "cover" }}
+                src={
+                  profile.image
+                    ? profile.image.url
+                    : "https://via.placeholder.com/500x400.png"
+                }
                 alt="First slide"
               />
               <Carousel.Caption className={styles.carousel_info}>
@@ -43,10 +45,10 @@ export default function Home({ profiles }) {
               </Carousel.Caption>
             </Carousel.Item>
           ))}
-          </Carousel>
+        </Carousel>
       </Container>
 
-      <Container className={styles.useful}>
+      {/* <Container className={styles.useful}>
         <h1 className={styles.useful_links}>Useful Links</h1>
         <Row>
           <Col>
@@ -86,30 +88,46 @@ export default function Home({ profiles }) {
             <hr />
           </Col>
         </Row>
-      </Container>
+      </Container> */}
 
-    <Container>
-      <Row>   
-        <Col>  
-      <CardDeck>
-            {profiles.map((profile) => (   
-              <Col sm={12} md={6} lg={4} xl={3} key={profile._id} className="py-2 carddeck">  
-                <Card style={{ width: "16rem", height: "100%" }}>
-                  <Card.Img variant="top" height="275px" style={{ objectFit: 'cover'}} src={profile.image ? profile.image.url : "https://via.placeholder.com/150.png"} />
-                  <Card.Body>
-                    <Card.Title>{profile.fullName}</Card.Title>
-                    <Card.Text>{profile.deceaseDate}</Card.Text>
-                    <Link href={`/profiles/${profile._id}`}>
-                    <Button variant="primary">View Profile</Button>
-                  </Link>
-                  </Card.Body>
-                </Card>
+      <Container>
+        <Row>
+          <Col>
+            <CardDeck>
+              {profiles.map((profile) => (
+                <Col
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  xl={3}
+                  key={profile._id}
+                  className="py-2 carddeck"
+                >
+                  <Card style={{ width: "16rem", height: "100%" }}>
+                    <Card.Img
+                      variant="top"
+                      height="275px"
+                      style={{ objectFit: "cover" }}
+                      src={
+                        profile.image
+                          ? profile.image.url
+                          : "https://via.placeholder.com/150.png"
+                      }
+                    />
+                    <Card.Body>
+                      <Card.Title>{profile.fullName}</Card.Title>
+                      <Card.Text>{profile.deceaseDate}</Card.Text>
+                      <Link href={`/profiles/${profile._id}`}>
+                        <Button variant="primary">View Profile</Button>
+                      </Link>
+                    </Card.Body>
+                  </Card>
                 </Col>
-            ))}
-        </CardDeck>
-        </Col>
+              ))}
+            </CardDeck>
+          </Col>
         </Row>
-        </Container>
+      </Container>
     </section>
   );
 }

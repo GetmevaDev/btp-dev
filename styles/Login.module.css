@@ -1,21 +1,36 @@
 .login_logo {
-    margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 
-.login_container p a{
-    text-decoration: none;
-    color: #000;
+.login_container p a {
+  text-decoration: none;
+  color: #000;
 }
 
 .login_container p {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
-.login_container p a{
-    text-decoration: none;
-    color: #000;
+.login_container p a {
+  text-decoration: none;
+  color: #000;
 }
 
-.login_container h6 a{
-    text-decoration: none;
+.login_container h6 a {
+  text-decoration: none;
+  margin-bottom: 40px;
+}
+
+.login_facebook_link,
+.login_facebook_link:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.bottom_link {
+  color: inherit;
+}
+
+.bottom_link:hover {
+  text-decoration: none;
 }
