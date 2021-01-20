@@ -24,12 +24,12 @@ const Header = () => {
       >
         <Container>
           <Link href="/">
-            <Navbar.Brand>
+            <Navbar.Brand className={styles.logo}>
               <img
                 src="https://btpnecrology.com/wp-content/uploads/2020/07/btp_logo-1.svg"
                 width="50"
                 className="d-inline-block align-top"
-                alt="React Bootstrap logo"
+                alt="BTP"
               />
             </Navbar.Brand>
           </Link>
@@ -60,12 +60,14 @@ const Header = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <marquee>
-        <Link href="/callDavidov">
-          Call Sam Davidov for mortgages (917) 578-6009
-        </Link>
-        <Link href="/inMemory">In Memory We Live Forever</Link>
-      </marquee>
+      <div className={styles.marquee}>
+        <p>
+          <Link href="/callDavidov">
+            Call Sam Davidov for mortgages (917) 578-6009
+          </Link>
+          <Link href="/inMemory">In Memory We Live Forever</Link>
+        </p>
+      </div>
     </header>
   );
 };

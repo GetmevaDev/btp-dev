@@ -47,11 +47,22 @@ export default function Profiles() {
   }
 
   return (
-    <section className="py-5">
+    <section className="py-5" style={{ position: "relative" }}>
       <Head>
         <title>BTP Necrology | Profiles</title>
       </Head>
 
+      <div className={styles.bookmarks}>
+        {[..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"].map((letter, idx) => {
+          return filteredProfiles.find(
+            (profile) => profile.fullName.charAt(0) == letter
+          ) ? (
+            <a href={`#letter-${letter}`}>{letter}</a>
+          ) : (
+            <span>{letter}</span>
+          );
+        })}
+      </div>
       <Container>
         <Row className="justify-content-md-center">
           <Col md={{ span: 4, offset: 1 }}>
@@ -66,11 +77,29 @@ export default function Profiles() {
             </Form>
           </Col>
         </Row>
-        {filteredProfiles.map((profile) => (
-          <Container>
-            <Row className="justify-content-md-center">
-              <Col md={8}>
-                <ListGroup variant="flush">
+        <Row className="justify-content-md-center mt-4">
+          <Col md={8}>
+            <ListGroup variant="flush">
+              {filteredProfiles.map((profile, idx) => (
+                <>
+                  {filteredProfiles[idx - 1] ? (
+                    profile.fullName.charAt(0) !=
+                    filteredProfiles[idx - 1].fullName.charAt(0) ? (
+                      <Row
+                        className={styles.groupLetter}
+                        id={`letter-${profile.fullName.charAt(0)}`}
+                      >
+                        {profile.fullName.charAt(0)}
+                      </Row>
+                    ) : null
+                  ) : (
+                    <Row
+                      className={styles.groupLetter}
+                      id={`letter-${profile.fullName.charAt(0)}`}
+                    >
+                      {profile.fullName.charAt(0)}
+                    </Row>
+                  )}
                   <ListGroup.Item>
                     <Row>
                       <Col md={2}>
@@ -95,11 +124,11 @@ export default function Profiles() {
                       </Col>
                     </Row>
                   </ListGroup.Item>
-                </ListGroup>
-              </Col>
-            </Row>
-          </Container>
-        ))}
+                </>
+              ))}
+            </ListGroup>
+          </Col>
+        </Row>
       </Container>
     </section>
   );

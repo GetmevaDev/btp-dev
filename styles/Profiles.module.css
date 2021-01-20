@@ -1,11 +1,43 @@
-.name a{
-    text-decoration: none;
-    color: #000;
-    font-size: 20px;
+.name a {
+  text-decoration: none;
+  color: #000;
+  font-size: 20px;
 }
 
-@media only screen and (min-width : 768px) and (max-width : 992px) {
-    .name a {
-        margin-left: 30px;
-    }
+.groupLetter {
+  background: #efefef;
+  padding-left: 1em;
+  font-size: 18px;
+}
+
+.bookmarks {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  right: 0.8em;
+  width: 30px;
+  transform: translateY(-50%);
+  z-index: 1;
+  background: white;
+  box-shadow: 0 0 10px 10px #fff;
+  text-align: center;
+  width: 10px;
+}
+
+.bookmarks a {
+  color: inherit;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.bookmarks span {
+  color: gray;
+  line-height: 20px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+  .name a {
+    margin-left: 30px;
+  }
 }

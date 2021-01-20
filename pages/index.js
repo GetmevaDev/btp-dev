@@ -90,7 +90,7 @@ export default function Home({ profiles }) {
         </Row>
       </Container> */}
 
-      <Container>
+      <Container className="mt-5">
         <Row>
           <Col>
             <CardDeck>
