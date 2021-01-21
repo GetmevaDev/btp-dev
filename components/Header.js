@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
 import {
   Navbar,
@@ -7,12 +7,27 @@ import {
   FormControl,
   Button,
   Container,
+  NavDropdown,
 } from "react-bootstrap";
 import styles from "../styles/Header.module.css";
 import { useAppContext } from "../context/state";
 
-const Header = () => {
-  const { user, isGuest } = useAppContext();
+const Header = (props) => {
+  const { user, isGuest, navigations } = useAppContext();
+
+  const mainNavigation = useMemo(
+    () => navigations.find((navigation) => navigation.name == "Main"),
+    [navigations]
+  );
+
+  const navItems = useMemo(
+    () =>
+      mainNavigation &&
+      mainNavigation.navigationItems.sort((a, b) => a.order > b.order),
+    [mainNavigation]
+  );
+
+  console.log(navItems);
 
   return (
     <header>
@@ -44,18 +59,41 @@ const Header = () => {
               <Button variant="outline-light">Search</Button>
             </Form>
             <Nav className="ml-auto">
-              <Link href="/">Home</Link>
-              <Link href="/about">About Us</Link>
-              <Link href="/howitworks">How It works</Link>
-              <Link href="/profiles">Profiles</Link>
-              {/* <Link href="/resources">Resources</Link> */}
-              {isGuest ? (
-                <Link href="/login">Login</Link>
-              ) : (
-                <>
-                  <Link href="/sign-out">{user.username}</Link>
-                </>
-              )}
+              {navItems &&
+                navItems.map((navItem) => {
+                  if (!navItem.parent && !navItem.children.length) {
+                    return (
+                      <Link href={navItem.path} key={navItem.id}>
+                        {navItem.name}
+                      </Link>
+                    );
+                  } else if (!navItem.parent && navItem.children.length) {
+                    if (navItem.path == "/account" && isGuest) {
+                      return <Link href="/login">Login</Link>;
+                    } else {
+                      return (
+                        <NavDropdown
+                          title={navItem.name}
+                          className={styles.dropdownGroup}
+                          key={navItem.id}
+                        >
+                          {navItem.children.map((childItemId) => {
+                            const childItem = navItems.find(
+                              (item) => item.id == childItemId
+                            );
+                            return (
+                              <NavDropdown.Item className={styles.dropdownItem}>
+                                <Link href={childItem.path}>
+                                  {childItem.name}
+                                </Link>
+                              </NavDropdown.Item>
+                            );
+                          })}
+                        </NavDropdown>
+                      );
+                    }
+                  }
+                })}
             </Nav>
           </Navbar.Collapse>
         </Container>

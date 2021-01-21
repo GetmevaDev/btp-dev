@@ -57,9 +57,11 @@ export default function Profiles() {
           return filteredProfiles.find(
             (profile) => profile.fullName.charAt(0) == letter
           ) ? (
-            <a href={`#letter-${letter}`}>{letter}</a>
+            <a href={`#letter-${letter}`} key={letter}>
+              {letter}
+            </a>
           ) : (
-            <span>{letter}</span>
+            <span key={letter}>{letter}</span>
           );
         })}
       </div>
@@ -100,7 +102,7 @@ export default function Profiles() {
                       {profile.fullName.charAt(0)}
                     </Row>
                   )}
-                  <ListGroup.Item>
+                  <ListGroup.Item key={profile.id}>
                     <Row>
                       <Col md={2}>
                         <Image

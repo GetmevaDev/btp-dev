@@ -2,11 +2,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { parseCookies, destroyCookie } from "nookies";
 import { logout } from "../lib/user";
+import axios from "axios";
 
 const AppContext = createContext();
 
 export function AppWrapper({ children }) {
   const [user, setUser] = useState(null);
+  const [navigations, setNavigations] = useState([]);
   const { jwt } = parseCookies();
 
   useEffect(() => {
@@ -29,12 +31,19 @@ export function AppWrapper({ children }) {
     }
   }, [jwt]);
 
+  useEffect(() => {
+    axios.get(`${process.env.BACKEND_URL}/navigations`).then(({ data }) => {
+      setNavigations(data);
+    });
+  }, []);
+
   return (
     <AppContext.Provider
       value={{
         user,
         setUser,
         isGuest: !!!user,
+        navigations,
       }}
     >
       {children}

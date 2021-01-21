@@ -13,6 +13,15 @@
   padding: 10px;
 }
 
+.navbar .dropdownGroup a {
+  color: white !important;
+}
+
+.navbar .dropdownItem a {
+  color: black !important;
+  font-size: 1.2rem;
+}
+
 .marquee {
   width: 100%;
   background-color: #8b9dc3;
