@@ -2,7 +2,7 @@ import Head from "next/head";
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "../styles/About.module.css";
 
-export default function About() {
+export default function AboutUs() {
   return (
     <section>
       <Head>
