@@ -3,9 +3,9 @@ import Head from "next/head";
 import Link from "next/link";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import styles from "../styles/Login.module.css";
-import { setCookie } from "nookies";
 import { useRouter } from "next/router";
-import { sendData } from "../lib/api";
+import { login } from "../lib/user";
+import { setCookie } from "nookies";
 
 export default function Login() {
   const [identifier, setIdentifier] = useState();
@@ -16,16 +16,12 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    sendData(`${process.env.BACKEND_URL}/auth/local`, {
-      identifier,
-      password,
-    })
-      .then(({ jwt }) => {
+    login(identifier, password)
+      .then((jwt) => {
         setCookie(null, "jwt", jwt, {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
         });
-
         router.push("/");
       })
       .catch((e) => setError({ show: true, errorMsg: e.message }));

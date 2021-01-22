@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import Loader from "../../../components/Loader";
 import { useRouter } from "next/router";
 import { setCookie } from "nookies";
-import { getResource } from "../../../lib/api";
 import { Alert } from "react-bootstrap";
 import { useAppContext } from "../../../context/state";
+import axios from "axios";
 
 const Redirect = ({ jwt, user, error }) => {
   const router = useRouter();
@@ -30,7 +30,7 @@ const Redirect = ({ jwt, user, error }) => {
 
 Redirect.getInitialProps = async ({ query }) => {
   try {
-    const res = await getResource(
+    const res = await axios(
       `${process.env.BACKEND_URL}/auth/facebook/callback?access_token=${query.access_token}`
     );
     const { jwt, user } = await res;

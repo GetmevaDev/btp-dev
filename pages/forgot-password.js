@@ -11,7 +11,6 @@ import {
 } from "react-bootstrap";
 import styles from "../styles/Login.module.css";
 import Link from "next/link";
-import { sendData } from "../lib/api";
 import axios from "axios";
 
 const ForgotPassword = () => {
@@ -25,9 +24,10 @@ const ForgotPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    sendData(`${process.env.BACKEND_URL}/auth/forgot-password`, {
-      email,
-    })
+    axios
+      .post(`${process.env.BACKEND_URL}/auth/forgot-password`, {
+        email,
+      })
       .then((res) => {
         setAlert({
           show: true,
