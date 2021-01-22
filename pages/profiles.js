@@ -120,7 +120,7 @@ export default function Profiles() {
                       </Col>
                       <Col md={6} className={styles.name}>
                         <br />
-                        <Link href={`/profiles/${profile._id}`}>
+                        <Link href={`/profiles/${profile.slug}`}>
                           {profile.fullName}
                         </Link>
                       </Col>

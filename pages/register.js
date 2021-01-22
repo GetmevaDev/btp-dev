@@ -4,10 +4,10 @@ import styles from "../styles/Login.module.css";
 import Link from "next/link";
 import { useState } from "react";
 import { setCookie } from "nookies";
-import { sendData } from "../lib/api";
 import { useRouter } from "next/router";
+import { register } from "../lib/user";
 
-export default function Login() {
+export default function Register() {
   const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -17,17 +17,12 @@ export default function Login() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    sendData(`${process.env.BACKEND_URL}/auth/local/register`, {
-      email,
-      username,
-      password,
-    })
-      .then(({ jwt }) => {
+    register(email, username, password)
+      .then((jwt) => {
         setCookie(null, "jwt", jwt, {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
         });
-
         router.push("/");
       })
       .catch((e) => setError({ show: true, errorMsg: e.message }));

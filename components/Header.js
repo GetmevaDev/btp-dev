@@ -27,8 +27,6 @@ const Header = (props) => {
     [mainNavigation]
   );
 
-  console.log(navItems);
-
   return (
     <header>
       <Navbar

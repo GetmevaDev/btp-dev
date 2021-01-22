@@ -3,11 +3,13 @@ import Head from "next/head";
 import Link from "next/link";
 import { Container, Row, Col, Image } from "react-bootstrap";
 import styles from "../../styles/Profile.module.css";
+import axios from "axios";
+import ErrorPage from "next/error";
 
-export default function Profile({ profiles, params }) {
-  const [profile, setProfile] = useState(
-    profiles.find((p) => p._id === params._id)
-  );
+export default function Profile({ profile }) {
+  if (!profile) {
+    return <ErrorPage statusCode={404} />;
+  }
 
   return (
     <section className="py-5">
@@ -52,22 +54,23 @@ export default function Profile({ profiles, params }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch("https://btp-necrology.herokuapp.com/profiles");
-  const profiles = await res.json();
+  const { data } = await axios.get(`${process.env.BACKEND_URL}/profiles`);
 
-  const paths = profiles.map((profile) => `/profiles/${profile._id}`);
+  const paths = data.map((profile) => `/profiles/${profile.slug}`);
 
-  return { paths, fallback: false };
+  return { paths, fallback: true };
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch("https://btp-necrology.herokuapp.com/profiles");
-  const profiles = await res.json();
+  const profiles = await axios
+    .get(`${process.env.BACKEND_URL}/profiles?slug=${params.slug}`)
+    .then(({ data }) => data)
+    .catch((e) => null);
 
   return {
     props: {
-      profiles,
-      params,
+      profile: profiles ? profiles[0] : profiles,
     },
+    revalidate: 60, // In seconds
   };
 }
