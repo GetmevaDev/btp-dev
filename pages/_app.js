@@ -2,6 +2,7 @@ import Head from "next/head";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/globals.css";
+import "react-quill/dist/quill.snow.css"; // ES6
 import { AppWrapper } from "../context/state";
 
 function MyApp({ Component, pageProps }) {
