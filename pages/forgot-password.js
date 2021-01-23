@@ -17,8 +17,6 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState();
   const [alert, setAlert] = useState({
     show: false,
-    msg: "",
-    variant: "success",
   });
 
   const handleSubmit = (e) => {

@@ -1,6 +1,5 @@
-// src/context/state.js
 import { createContext, useContext, useState, useEffect } from "react";
-import { parseCookies, destroyCookie } from "nookies";
+import { parseCookies } from "nookies";
 import { logout } from "../lib/user";
 import axios from "axios";
 
@@ -9,6 +8,8 @@ const AppContext = createContext();
 export function AppWrapper({ children }) {
   const [user, setUser] = useState(null);
   const [navigations, setNavigations] = useState([]);
+  const [pominkis, setPominkis] = useState([]);
+  const [profiles, setProfiles] = useState([]);
   const { jwt } = parseCookies();
 
   useEffect(() => {
@@ -37,6 +38,13 @@ export function AppWrapper({ children }) {
     });
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      fetchProfiles(user, setProfiles);
+      fetchPominkis(user, setPominkis);
+    }
+  }, [user]);
+
   return (
     <AppContext.Provider
       value={{
@@ -44,12 +52,28 @@ export function AppWrapper({ children }) {
         setUser,
         isGuest: !!!user,
         navigations,
+        pominkis,
+        profiles,
+        setProfiles,
+        setPominkis,
       }}
     >
       {children}
     </AppContext.Provider>
   );
 }
+
+export const fetchProfiles = (user, setProfiles) => {
+  axios
+    .get(`${process.env.BACKEND_URL}/profiles?createdByUser.id=${user.id}`)
+    .then(({ data }) => setProfiles(data));
+};
+
+export const fetchPominkis = (user, setPominkis) => {
+  axios
+    .get(`${process.env.BACKEND_URL}/pominkis?profile.createdByUser=${user.id}`)
+    .then(({ data }) => setPominkis(data));
+};
 
 export function useAppContext() {
   return useContext(AppContext);

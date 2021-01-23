@@ -40,7 +40,7 @@ export default function Profile({ profile }) {
         <Row>
           <Col md={{ span: 13, offset: 0 }}>
             <div className={styles.profile_description}>
-              <div dangerouslySetInnerHTML={{ __html: profile.desciption }} />
+              <div dangerouslySetInnerHTML={{ __html: profile.description }} />
             </div>
 
             <div className={styles.funeral_date}>
