@@ -52,9 +52,9 @@ export function AppWrapper({ children }) {
         setUser,
         isGuest: !!!user,
         navigations,
-        pominkis,
         profiles,
         setProfiles,
+        pominkis,
         setPominkis,
       }}
     >
