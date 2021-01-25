@@ -49,7 +49,6 @@ const ProfileEditScreen = () => {
             deceaseDate: moment(deceaseDate).format("MMM D, yyyy"),
             description,
             slug: slugify(fullName),
-            createdByUser: user,
           },
           {
             headers: {
@@ -90,7 +89,6 @@ const ProfileEditScreen = () => {
             deceaseDate: moment(deceaseDate).format("MMM D, yyyy"),
             description,
             slug: slugify(fullName),
-            createdByUser: user,
           },
           {
             headers: {
