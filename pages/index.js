@@ -128,7 +128,7 @@ export default function Home({ profiles }) {
                 ))}
             </CardDeck>
             {currentPage !== maxPage ? (
-              <h2 ref={setElement}>Loading Profiles...</h2>
+              <h2 ref={setElement}></h2>
             ) : (
               <h2>No more profiles available...</h2>
             )}

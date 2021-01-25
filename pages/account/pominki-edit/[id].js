@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import FormContainer from "../../../components/FormContainer";
 import { useRouter } from "next/router";
 import { useAppContext } from "../../../context/state";
 import moment from "moment";
 import { parseCookies } from "nookies";
 import slugify from "react-slugify";
+import Select from "react-select";
 
 const ReactQuill =
   typeof window === "object" ? require("react-quill") : () => false;
@@ -14,18 +15,26 @@ const ReactQuill =
 const PominkisEditScreen = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [relatedProfileName, setRelatedProfileName] = useState("");
+  const [relatedProfile, setRelatedProfile] = useState("");
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [location, setLocation] = useState("");
   const router = useRouter();
-  const { pominkis, setPominkis, user, profiles, setProfiles } = useAppContext();
+  const { pominkis, setPominkis, user, profiles } = useAppContext();
   const pominki = pominkis.find((pominki) => pominki.id == router.query.id);
   const { jwt } = parseCookies();
   const [alert, setAlert] = useState({
     show: false,
   });
+  const profileOptions = useMemo(
+    () =>
+      profiles.map((profile) => ({
+        label: profile.fullName,
+        value: profile,
+      })),
+    [profiles]
+  );
 
   useEffect(() => {
     if (pominki) {
@@ -34,7 +43,8 @@ const PominkisEditScreen = () => {
       setDate(pominki.date || "");
       setStartTime(pominki.startTime || "");
       setEndTime(pominki.endTime || "");
-      setLocation(pominki.location|| "");
+      setLocation(pominki.location || "");
+      setRelatedProfile(pominki.profile || null);
     }
   }, [pominki]);
 
@@ -50,9 +60,10 @@ const PominkisEditScreen = () => {
             title,
             description,
             date: moment(date).format("MMM D, yyyy"),
-            startTime: moment(startTime).format("HH:mm"),
-            endTime: moment(endTime).format("HH:mm"),
-            slug: slugify(title)
+            startTime: startTime,
+            endTime: endTime,
+            slug: slugify(title),
+            profile: relatedProfile,
           },
           {
             headers: {
@@ -91,9 +102,10 @@ const PominkisEditScreen = () => {
             title,
             description,
             date: moment(date).format("MMM D, yyyy"),
-            startTime: moment(startTime).format("HH:mm"),
-            endTime: moment(endTime).format("HH:mm"),
-            slug: slugify(title)
+            startTime: startTime,
+            endTime: endTime,
+            profile: relatedProfile,
+            slug: slugify(title),
           },
           {
             headers: {
@@ -136,12 +148,20 @@ const PominkisEditScreen = () => {
 
             <Form.Group>
               <Form.Label>Related Profile Name</Form.Label>
-              <Form.Control
-                as="select"
-                placeholder="Enter Related Profile Name"
-                value={relatedProfileName}
-                onChange={(e) => setRelatedProfileName(e.target.value)}
-              ><option>Azamat</option></Form.Control>
+              <Select
+                options={profileOptions}
+                placeholder="Select profile"
+                onChange={({ value }) => setRelatedProfile(value)}
+                defaultValue={null}
+                value={
+                  relatedProfile
+                    ? {
+                        label: relatedProfile.fullName,
+                        value: relatedProfile,
+                      }
+                    : null
+                }
+              />
             </Form.Group>
 
             <Form.Group>
@@ -159,7 +179,7 @@ const PominkisEditScreen = () => {
               <Form.Control
                 type="time"
                 placeholder="Enter Event Time Start"
-                value={moment(startTime).format("HH:mm")}
+                value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
               ></Form.Control>
             </Form.Group>
@@ -169,7 +189,7 @@ const PominkisEditScreen = () => {
               <Form.Control
                 type="time"
                 placeholder="Enter Event Time End"
-                value={moment(endTime).format("HH:mm")}
+                value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
               ></Form.Control>
             </Form.Group>
@@ -193,7 +213,7 @@ const PominkisEditScreen = () => {
             </Form.Group>
 
             <Button type="submit" variant="primary">
-            {pominki ? "Update" : "New"}
+              {pominki ? "Update" : "Create"}
             </Button>
           </Form>
         </FormContainer>
