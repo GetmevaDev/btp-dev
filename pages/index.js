@@ -103,7 +103,7 @@ export default function Home({ profiles }) {
                     lg={4}
                     xl={3}
                     key={profile._id}
-                    className="py-2 carddeck"
+                    className={styles.carddeck}
                   >
                     <Card style={{ width: "16rem", height: "100%" }}>
                       <Card.Img

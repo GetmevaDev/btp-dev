@@ -1,5 +1,6 @@
+import React from "react";
 import Head from "next/head";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Container, Row, Col, Image, Table } from "react-bootstrap";
 import styles from "../../styles/Profile.module.css";
 import axios from "axios";
 import ErrorPage from "next/error";

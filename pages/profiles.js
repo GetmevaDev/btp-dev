@@ -104,7 +104,7 @@ export default function Profiles() {
                   )}
                   <ListGroup.Item key={profile.id}>
                     <Row>
-                      <Col md={2}>
+                      <Col md={2} className={styles.img}>
                         <Image
                           src={
                             profile.image

@@ -54,3 +54,15 @@
     transform: translate(-100%, 0);
   }
 }
+
+@media only screen and (max-width: 991px) {
+	.navbar form {
+		display: none;
+  }
+  .logo {
+    margin-bottom: 20px;
+  }
+  .dropdownGroup {
+    margin-left: 10px;
+  }
+}
