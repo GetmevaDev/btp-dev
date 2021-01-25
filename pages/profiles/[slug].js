@@ -1,6 +1,4 @@
-import { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import { Container, Row, Col, Image } from "react-bootstrap";
 import styles from "../../styles/Profile.module.css";
 import axios from "axios";
@@ -44,7 +42,7 @@ export default function Profile({ profile }) {
             </div>
 
             <div className={styles.funeral_date}>
-              <span>Pominki Date:</span> {profile.pominkis}
+              <span>Pominki Date:</span>
             </div>
           </Col>
         </Row>

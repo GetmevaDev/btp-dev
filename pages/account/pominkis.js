@@ -2,9 +2,22 @@ import React from "react";
 import Link from "next/link";
 import { Container, Table, Button, Row, Col } from "react-bootstrap";
 import { useAppContext } from "../../context/state";
+import axios from "axios";
+import { parseCookies } from "nookies";
 
 const PominkisListScreen = () => {
-  const { pominkis } = useAppContext();
+  const { pominkis, setPominkis } = useAppContext();
+  const { jwt } = parseCookies();
+
+  const handleDelete = (id) => {
+    axios
+      .delete(`${process.env.BACKEND_URL}/pominkis/${id}`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
+      .then(() => {
+        setPominkis(pominkis.filter((pominki) => pominki.id != id));
+      });
+  };
 
   return (
     <Container className="py-3">
@@ -13,7 +26,7 @@ const PominkisListScreen = () => {
           <h2>Pominkis</h2>
         </Col>
         <Col className="text-right">
-          <Link href="/account/pominkis-edit">
+          <Link href="/account/pominki-edit/new">
             <Button className="my-3">
               <i className="fas fa-plus"></i> Create Pominkis
             </Button>
@@ -48,7 +61,7 @@ const PominkisListScreen = () => {
                       <i className="fas fa-edit"></i>
                     </Button>
                   </Link>
-                  <Button variant="danger" className="btn-sm">
+                  <Button variant="danger" className="btn-sm" onClick={() => handleDelete(pominki.id)}>
                     <i className="fas fa-trash"></i>
                   </Button>
                 </td>
