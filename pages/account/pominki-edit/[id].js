@@ -113,8 +113,8 @@ const PominkisEditScreen = () => {
             },
           }
         )
-        .then(() => {
-          setPominkis([...pominkis]);
+        .then(({ data }) => {
+          setPominkis([...pominkis, data]);
           router.push(`/account/pominkis`);
         })
         .catch((e) =>

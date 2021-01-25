@@ -71,7 +71,7 @@ export const fetchProfiles = (user, setProfiles) => {
 
 export const fetchPominkis = (user, setPominkis) => {
   axios
-    .get(`${process.env.BACKEND_URL}/pominkis?profile.createdByUser=${user.id}`)
+    .get(`${process.env.BACKEND_URL}/pominkis?createdByUser.id=${user.id}`)
     .then(({ data }) => setPominkis(data));
 };
 
