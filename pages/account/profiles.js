@@ -4,9 +4,10 @@ import { Container, Table, Button, Row, Col } from "react-bootstrap";
 import { useAppContext } from "../../context/state";
 import axios from "axios";
 import { parseCookies } from "nookies";
+import { DELETE_PROFILE } from "../../context/appReducer";
 
 const ProfileListScreen = () => {
-  const { profiles, setProfiles } = useAppContext();
+  const { appState, dispatch } = useAppContext();
   const { jwt } = parseCookies();
 
   const handleDelete = (id) => {
@@ -15,7 +16,10 @@ const ProfileListScreen = () => {
         headers: { Authorization: `Bearer ${jwt}` },
       })
       .then(() => {
-        setProfiles(profiles.filter((profile) => profile.id != id));
+        dispatch({
+          type: DELETE_PROFILE,
+          payload: { profileId: id },
+        });
       });
   };
 
@@ -44,7 +48,7 @@ const ProfileListScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {profiles.map((profile) => (
+            {appState.profiles.map((profile) => (
               <tr key={profile.id}>
                 <td>{profile.fullName}</td>
                 <td>{profile.birthDate}</td>

@@ -1,16 +1,27 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { parseCookies } from "nookies";
-import { logout } from "../lib/user";
 import axios from "axios";
+import {
+  appReducer,
+  SET_POMINKIS,
+  SET_PROFILES,
+  SET_NAVIGATIONS,
+  SET_USER,
+  LOGOUT,
+} from "./appReducer";
 
 const AppContext = createContext();
+const initialState = {
+  user: null,
+  isGuest: true,
+  navigations: [],
+  pominkis: [],
+  profiles: [],
+};
 
 export function AppWrapper({ children }) {
-  const [user, setUser] = useState(null);
-  const [navigations, setNavigations] = useState([]);
-  const [pominkis, setPominkis] = useState([]);
-  const [profiles, setProfiles] = useState([]);
   const { jwt } = parseCookies();
+  const [appState, dispatch] = useReducer(appReducer, initialState);
 
   useEffect(() => {
     if (jwt) {
@@ -22,57 +33,56 @@ export function AppWrapper({ children }) {
           },
         })
         .then(({ data }) => {
-          setUser(data);
+          dispatch({
+            type: SET_USER,
+            payload: { user: data },
+          });
         })
         .catch(() => {
           // if res comes back not valid, token is not valid
           // delete the token and log the user out on client
-          logout(setUser);
+          dispatch({ type: LOGOUT });
         });
     }
   }, [jwt]);
 
   useEffect(() => {
     axios.get(`${process.env.BACKEND_URL}/navigations`).then(({ data }) => {
-      setNavigations(data);
+      dispatch({
+        type: SET_NAVIGATIONS,
+        payload: { navigations: data },
+      });
     });
   }, []);
 
   useEffect(() => {
-    if (user) {
-      fetchProfiles(user, setProfiles);
-      fetchPominkis(user, setPominkis);
+    if (appState.user) {
+      fetchProfiles(appState.user, dispatch);
+      fetchPominkis(appState.user, dispatch);
     }
-  }, [user]);
+  }, [appState.user]);
 
   return (
-    <AppContext.Provider
-      value={{
-        user,
-        setUser,
-        isGuest: !!!user,
-        navigations,
-        profiles,
-        setProfiles,
-        pominkis,
-        setPominkis,
-      }}
-    >
+    <AppContext.Provider value={{ appState, dispatch }}>
       {children}
     </AppContext.Provider>
   );
 }
 
-export const fetchProfiles = (user, setProfiles) => {
+export const fetchProfiles = (user, dispatch) => {
   axios
     .get(`${process.env.BACKEND_URL}/profiles?createdByUser.id=${user.id}`)
-    .then(({ data }) => setProfiles(data));
+    .then(({ data }) =>
+      dispatch({ type: SET_PROFILES, payload: { profiles: data } })
+    );
 };
 
-export const fetchPominkis = (user, setPominkis) => {
+export const fetchPominkis = (user, dispatch) => {
   axios
     .get(`${process.env.BACKEND_URL}/pominkis?createdByUser.id=${user.id}`)
-    .then(({ data }) => setPominkis(data));
+    .then(({ data }) =>
+      dispatch({ type: SET_POMINKIS, payload: { pominkis: data } })
+    );
 };
 
 export function useAppContext() {

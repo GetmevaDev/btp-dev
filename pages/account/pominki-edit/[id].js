@@ -8,6 +8,7 @@ import moment from "moment";
 import { parseCookies } from "nookies";
 import slugify from "react-slugify";
 import Select from "react-select";
+import { SET_POMINKIS, UPDATE_POMINKI } from "../../../context/appReducer";
 
 const ReactQuill =
   typeof window === "object" ? require("react-quill") : () => false;
@@ -21,19 +22,21 @@ const PominkisEditScreen = () => {
   const [endTime, setEndTime] = useState("");
   const [location, setLocation] = useState("");
   const router = useRouter();
-  const { pominkis, setPominkis, user, profiles } = useAppContext();
-  const pominki = pominkis.find((pominki) => pominki.id == router.query.id);
+  const { appState, dispatch } = useAppContext();
+  const pominki = appState.pominkis.find(
+    (pominki) => pominki.id == router.query.id
+  );
   const { jwt } = parseCookies();
   const [alert, setAlert] = useState({
     show: false,
   });
   const profileOptions = useMemo(
     () =>
-      profiles.map((profile) => ({
+      appState.profiles.map((profile) => ({
         label: profile.fullName,
         value: profile,
       })),
-    [profiles]
+    [appState.profiles]
   );
 
   useEffect(() => {
@@ -59,7 +62,7 @@ const PominkisEditScreen = () => {
           {
             title,
             description,
-            date: moment(date).format("MMM D, yyyy"),
+            date: date.length ? moment(date).format("MMM D, yyyy") : "",
             startTime: startTime,
             endTime: endTime,
             slug: slugify(title),
@@ -72,14 +75,10 @@ const PominkisEditScreen = () => {
           }
         )
         .then(({ data }) => {
-          const updatedPominkis = pominkis.map((el) => {
-            if (el.id == data.id) {
-              return data;
-            } else {
-              return el;
-            }
+          dispatch({
+            type: UPDATE_POMINKI,
+            payload: { pominki: data },
           });
-          setPominkis(updatedPominkis);
 
           setAlert({
             show: true,
@@ -101,7 +100,7 @@ const PominkisEditScreen = () => {
           {
             title,
             description,
-            date: moment(date).format("MMM D, yyyy"),
+            date: date.length ? moment(date).format("MMM D, yyyy") : "",
             startTime: startTime,
             endTime: endTime,
             profile: relatedProfile,
@@ -114,7 +113,10 @@ const PominkisEditScreen = () => {
           }
         )
         .then(({ data }) => {
-          setPominkis([...pominkis, data]);
+          dispatch({
+            type: SET_POMINKIS,
+            payload: { pominkis: [...appState.pominkis, data] },
+          });
           router.push(`/account/pominkis`);
         })
         .catch((e) =>
@@ -132,7 +134,7 @@ const PominkisEditScreen = () => {
       {
         <FormContainer>
           {alert.show && <Alert variant={alert.variant}>{alert.msg}</Alert>}
-          <h2>{pominki ? `Edit Pominki: ${title}` : `New Pominki`}</h2>
+          <h2>{pominki ? `Edit Pominki: ${pominki.title}` : `New Pominki`}</h2>
 
           <Form onSubmit={handleFormSubmit}>
             <Form.Group>

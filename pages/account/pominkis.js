@@ -4,9 +4,10 @@ import { Container, Table, Button, Row, Col } from "react-bootstrap";
 import { useAppContext } from "../../context/state";
 import axios from "axios";
 import { parseCookies } from "nookies";
+import { DELETE_POMINKI } from "../../context/appReducer";
 
 const PominkisListScreen = () => {
-  const { pominkis, setPominkis } = useAppContext();
+  const { appState, dispatch } = useAppContext();
   const { jwt } = parseCookies();
 
   const handleDelete = (id) => {
@@ -15,7 +16,10 @@ const PominkisListScreen = () => {
         headers: { Authorization: `Bearer ${jwt}` },
       })
       .then(() => {
-        setPominkis(pominkis.filter((pominki) => pominki.id != id));
+        dispatch({
+          type: DELETE_POMINKI,
+          payload: { pominkiId: id },
+        });
       });
   };
 
@@ -47,7 +51,7 @@ const PominkisListScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {pominkis.map((pominki) => (
+            {appState.pominkis.map((pominki) => (
               <tr key={pominki.id}>
                 <td>{pominki.title}</td>
                 <td>{pominki.profile.fullName}</td>
@@ -61,7 +65,11 @@ const PominkisListScreen = () => {
                       <i className="fas fa-edit"></i>
                     </Button>
                   </Link>
-                  <Button variant="danger" className="btn-sm" onClick={() => handleDelete(pominki.id)}>
+                  <Button
+                    variant="danger"
+                    className="btn-sm"
+                    onClick={() => handleDelete(pominki.id)}
+                  >
                     <i className="fas fa-trash"></i>
                   </Button>
                 </td>

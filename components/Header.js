@@ -13,11 +13,11 @@ import styles from "../styles/Header.module.css";
 import { useAppContext } from "../context/state";
 
 const Header = (props) => {
-  const { user, isGuest, navigations } = useAppContext();
+  const { appState } = useAppContext();
 
   const mainNavigation = useMemo(
-    () => navigations.find((navigation) => navigation.name == "Main"),
-    [navigations]
+    () => appState.navigations.find((navigation) => navigation.name == "Main"),
+    [appState.navigations]
   );
 
   const navItems = useMemo(
@@ -66,7 +66,7 @@ const Header = (props) => {
                       </Link>
                     );
                   } else if (!navItem.parent && navItem.children.length) {
-                    if (navItem.path == "/account" && isGuest) {
+                    if (navItem.path == "/account" && appState.isGuest) {
                       return <Link href="/login">Login</Link>;
                     } else {
                       return (
