@@ -8,6 +8,7 @@ import { useAppContext } from "../../../context/state";
 import moment from "moment";
 import { parseCookies } from "nookies";
 import slugify from "react-slugify";
+import { SET_PROFILES, UPDATE_PROFILE } from "../../../context/appReducer";
 
 const ReactQuill =
   typeof window === "object" ? require("react-quill") : () => false;
@@ -19,8 +20,10 @@ const ProfileEditScreen = () => {
   const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
   const router = useRouter();
-  const { profiles, setProfiles, user } = useAppContext();
-  const profile = profiles.find((profile) => profile.id == router.query.id);
+  const { appState, dispatch } = useAppContext();
+  const profile = appState.profiles.find(
+    (profile) => profile.id == router.query.id
+  );
   const { jwt } = parseCookies();
   const [alert, setAlert] = useState({
     show: false,
@@ -45,8 +48,12 @@ const ProfileEditScreen = () => {
           `${process.env.BACKEND_URL}/profiles/${profile.id}`,
           {
             fullName,
-            birthDate: moment(birthDate).format("MMM D, yyyy"),
-            deceaseDate: moment(deceaseDate).format("MMM D, yyyy"),
+            birthDate: birthDate.length
+              ? moment(birthDate).format("MMM D, yyyy")
+              : "",
+            deceaseDate: deceaseDate.length
+              ? moment(deceaseDate).format("MMM D, yyyy")
+              : "",
             description,
             slug: slugify(fullName),
           },
@@ -57,14 +64,10 @@ const ProfileEditScreen = () => {
           }
         )
         .then(({ data }) => {
-          const updatedProfiles = profiles.map((el) => {
-            if (el.id == data.id) {
-              return data;
-            } else {
-              return el;
-            }
+          dispatch({
+            type: UPDATE_PROFILE,
+            payload: { profile: data },
           });
-          setProfiles(updatedProfiles);
 
           setAlert({
             show: true,
@@ -85,8 +88,12 @@ const ProfileEditScreen = () => {
           `${process.env.BACKEND_URL}/profiles`,
           {
             fullName,
-            birthDate: moment(birthDate).format("MMM D, yyyy"),
-            deceaseDate: moment(deceaseDate).format("MMM D, yyyy"),
+            birthDate: birthDate.length
+              ? moment(birthDate).format("MMM D, yyyy")
+              : "",
+            deceaseDate: deceaseDate.length
+              ? moment(deceaseDate).format("MMM D, yyyy")
+              : "",
             description,
             slug: slugify(fullName),
           },
@@ -97,7 +104,11 @@ const ProfileEditScreen = () => {
           }
         )
         .then(({ data }) => {
-          setProfiles([...profiles, data]);
+          dispatch({
+            type: SET_PROFILES,
+            payload: { profiles: [...appState.profiles, data] },
+          });
+
           router.push(`/profiles/${data.slug}`);
         })
         .catch((e) =>
@@ -142,7 +153,9 @@ const ProfileEditScreen = () => {
       {
         <FormContainer>
           {alert.show && <Alert variant={alert.variant}>{alert.msg}</Alert>}
-          <h2>{profile ? `Edit Profile: ${fullName}` : `New Profile`}</h2>
+          <h2>
+            {profile ? `Edit Profile: ${profile.fullName}` : `New Profile`}
+          </h2>
           <Form className="mt-4" onSubmit={handleFormSubmit}>
             <Form.Group>
               <Form.Label>Full Name</Form.Label>
@@ -194,7 +207,7 @@ const ProfileEditScreen = () => {
               {uploading && <Loader />}
             </Form.Group>
             <Button type="submit" variant="primary">
-              {profile ? "Update" : "New"}
+              {profile ? "Update" : "Create"}
             </Button>
           </Form>
         </FormContainer>
