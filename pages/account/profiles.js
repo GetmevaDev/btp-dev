@@ -10,15 +10,26 @@ const ProfileListScreen = () => {
   const { appState, dispatch } = useAppContext();
   const { jwt } = parseCookies();
 
-  const handleDelete = (id) => {
+  const handleDelete = (profile) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    };
+
+    if (profile.image) {
+      axios.delete(
+        `${process.env.BACKEND_URL}/upload/files/${profile.image.id}`,
+        config
+      );
+    }
+
     axios
-      .delete(`${process.env.BACKEND_URL}/profiles/${id}`, {
-        headers: { Authorization: `Bearer ${jwt}` },
-      })
+      .delete(`${process.env.BACKEND_URL}/profiles/${profile.id}`, config)
       .then(() => {
         dispatch({
           type: DELETE_PROFILE,
-          payload: { profileId: id },
+          payload: { profileId: profile.id },
         });
       });
   };
@@ -62,7 +73,7 @@ const ProfileListScreen = () => {
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    onClick={() => handleDelete(profile.id)}
+                    onClick={() => handleDelete(profile)}
                   >
                     <i className="fas fa-trash"></i>
                   </Button>
