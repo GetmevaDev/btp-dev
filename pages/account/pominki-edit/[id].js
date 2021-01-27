@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import FormContainer from "../../../components/FormContainer";
 import { useRouter } from "next/router";
 import { useAppContext } from "../../../context/state";
@@ -16,11 +16,12 @@ const ReactQuill =
 const PominkisEditScreen = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [relatedProfile, setRelatedProfile] = useState("");
+  const [relatedProfile, setRelatedProfile] = useState(null);
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [location, setLocation] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { appState, dispatch } = useAppContext();
   const pominki = appState.pominkis.find(
@@ -54,6 +55,16 @@ const PominkisEditScreen = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
+    if (!relatedProfile) {
+      setAlert({
+        show: true,
+        msg: "You must select a profile!",
+        variant: "danger",
+      });
+      return;
+    }
+
+    setIsLoading(true);
     //If pominki exists update if not create
     if (pominki) {
       axios
@@ -79,6 +90,7 @@ const PominkisEditScreen = () => {
             type: UPDATE_POMINKI,
             payload: { pominki: data },
           });
+          setIsLoading(false);
 
           setAlert({
             show: true,
@@ -86,13 +98,14 @@ const PominkisEditScreen = () => {
             variant: "success",
           });
         })
-        .catch((e) =>
+        .catch((e) => {
+          setIsLoading(false);
           setAlert({
             show: true,
             msg: e.message,
             variant: "danger",
-          })
-        );
+          });
+        });
     } else {
       axios
         .post(
@@ -117,15 +130,17 @@ const PominkisEditScreen = () => {
             type: SET_POMINKIS,
             payload: { pominkis: [...appState.pominkis, data] },
           });
+          setIsLoading(false);
           router.push(`/account/pominkis`);
         })
-        .catch((e) =>
+        .catch((e) => {
+          setIsLoading(false);
           setAlert({
             show: true,
             msg: e.message,
             variant: "danger",
-          })
-        );
+          });
+        });
     }
   };
 
@@ -215,7 +230,16 @@ const PominkisEditScreen = () => {
             </Form.Group>
 
             <Button type="submit" variant="primary">
-              {pominki ? "Update" : "Create"}
+              {isLoading ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : null}
+              {pominki ? " Update" : " Create"}{" "}
             </Button>
           </Form>
         </FormContainer>
