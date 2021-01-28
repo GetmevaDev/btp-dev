@@ -22,16 +22,6 @@ export default function CallDavidov() {
             </div>
           </Col>
         </Row>
-        <Row>
-          <Col md={{ span: 13, offset: 0 }}>
-            <div className={styles.comment_reply_title}>
-              <h1>Leave a Comment</h1>
-              <p>
-                You must be <a href="#">logged in</a> to post a comment.
-              </p>
-            </div>
-          </Col>
-        </Row>
       </Container>
     </section>
   );
