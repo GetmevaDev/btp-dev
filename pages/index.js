@@ -66,7 +66,7 @@ export default function Home({ profiles }) {
       <Container>
         <Carousel>
           {profiles &&
-            profiles.map((profile) => (
+            profiles.slice(0, 7).map((profile) => (
               <Carousel.Item className={styles.carousel_item} key={profile._id}>
                 <Image
                   className={styles.carousel_img}
@@ -141,7 +141,7 @@ export default function Home({ profiles }) {
 
 export async function getStaticProps() {
   const { data } = await axios.get(
-    "https://btp-necrology.herokuapp.com/profiles"
+    "https://btp-necrology.herokuapp.com/profiles?_sort=createdAt:DESC"
   );
 
   return {
