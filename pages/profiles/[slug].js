@@ -1,11 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
-import { Container, Row, Col, Image, Table } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Image,
+  Form,
+  InputGroup,
+  FormControl,
+  Button,
+  Alert,
+} from "react-bootstrap";
 import styles from "../../styles/Profile.module.css";
 import axios from "axios";
 import ErrorPage from "next/error";
+import parsePhoneNumber from "libphonenumber-js";
 
 export default function Profile({ profile }) {
+  const [number, setNumber] = useState("");
+  const [alert, setAlert] = useState(null);
+
+  const handleSubscribe = () => {
+    let phoneNumber = parsePhoneNumber(number, "US");
+
+    if (phoneNumber.isValid()) {
+      axios
+        .post(`${process.env.BACKEND_URL}/reminder-subscribers`, {
+          number: phoneNumber.number,
+          profile,
+        })
+        .then(() => {
+          setAlert({
+            text: "Successfully subscribed!",
+            variant: "success",
+          });
+        })
+        .catch((e) => {
+          setAlert({
+            text: e.message,
+            variant: "danger",
+          });
+        });
+    } else {
+      setAlert({ variant: "danger", text: "Invalid number" });
+    }
+  };
+
   if (!profile) {
     return <ErrorPage statusCode={404} />;
   }
@@ -37,15 +77,62 @@ export default function Profile({ profile }) {
           </Col>
         </Row>
         <Row>
-          <Col md={{ span: 13, offset: 0 }}>
+          <Col>
             <div className={styles.profile_description}>
               <div dangerouslySetInnerHTML={{ __html: profile.description }} />
             </div>
-
-            <div className={styles.funeral_date}>
-              <span>Pominki Date:</span>
-            </div>
           </Col>
+        </Row>
+        <Row>
+          <Col>
+            {profile.pominkis.map((pominki) => (
+              <div className={styles.funeral_date}>
+                <span>
+                  Pominki Date: {pominki.date} ({pominki.startTime} -{" "}
+                  {pominki.endTime})
+                </span>
+                <br />
+                <span>Location: {pominki.location}</span>
+              </div>
+            ))}
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12}>
+            <Form>
+              <Form.Row className="align-items-center">
+                <Col xs="auto">
+                  <Form.Label htmlFor="inlineFormInputGroup" srOnly>
+                    Username
+                  </Form.Label>
+                  <InputGroup className="mb-2" hasValidation>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text>
+                        Subscribe for Whatsapp reminders:
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <FormControl
+                      id="inlineFormInputGroup"
+                      placeholder="Whatsapp number"
+                      value={number}
+                      onChange={(e) => setNumber(e.target.value)}
+                    />
+                  </InputGroup>
+                </Col>
+
+                <Col xs="auto">
+                  <Button className="mb-2" onClick={handleSubscribe}>
+                    Subscribe
+                  </Button>
+                </Col>
+              </Form.Row>
+            </Form>
+          </Col>
+          {alert && (
+            <Col md={4} sm={12}>
+              <Alert variant={alert.variant}>{alert.text}</Alert>
+            </Col>
+          )}
         </Row>
       </Container>
     </section>

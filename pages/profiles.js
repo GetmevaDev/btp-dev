@@ -12,39 +12,19 @@ import {
   Image,
 } from "react-bootstrap";
 import styles from "../styles/Profiles.module.css";
-import Loader from "../components/Loader";
 
-export default function Profiles() {
-  const [profiles, setProfiles] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function Profiles({ profiles }) {
   const [search, setSearch] = useState("");
   const [filteredProfiles, setFilteredProfiles] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get("https://btp-necrology.herokuapp.com/profiles")
-      .then((res) => {
-        setProfiles(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    profiles.sort((a, b) => a.fullName.localeCompare(b.fullName)),
+    if (profiles)
       setFilteredProfiles(
         profiles.filter((profile) =>
           profile.fullName.toLowerCase().includes(search.toLowerCase())
         )
       );
   }, [search, profiles]);
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <section className="py-5" style={{ position: "relative" }}>
@@ -134,4 +114,19 @@ export default function Profiles() {
       </Container>
     </section>
   );
+}
+
+export async function getStaticProps() {
+  const { data } = await axios.get(
+    `${process.env.BACKEND_URL}/profiles?_sort=fullName:ASC&_limit=10000`
+  );
+
+  console.log(data.length);
+
+  return {
+    props: {
+      profiles: data,
+    },
+    revalidate: 60, // In seconds
+  };
 }
