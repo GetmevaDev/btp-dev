@@ -56,9 +56,8 @@ const ForgotPassword = () => {
             <Card>
               <Card.Body>
                 <Card.Text>
-                  NOT WORKING YET!!! Please enter your email address. You will
-                  receive a message with instructions on how to reset your
-                  password.
+                  Please enter your email address. You will receive a message
+                  with instructions on how to reset your password.
                 </Card.Text>
               </Card.Body>
             </Card>

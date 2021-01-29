@@ -9,7 +9,7 @@ import { SET_USER } from "../../../context/appReducer";
 
 const Redirect = () => {
   const router = useRouter();
-  const { dispatch, appState } = useAppContext();
+  const { dispatch } = useAppContext();
   const { access_token } = router.query;
   const [alert, setAlert] = useState(null);
 

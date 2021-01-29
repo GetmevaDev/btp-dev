@@ -7,23 +7,27 @@ import {
   Form,
   Button,
   Alert,
-  Card,
+  Spinner,
 } from "react-bootstrap";
 import styles from "../styles/Login.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 const ForgotPassword = () => {
+  const router = useRouter();
   const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [alert, setAlert] = useState({
     show: false,
   });
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     if (
-      passwordConfirm.length > 0 &&
-      passwordConfirm.length >= password.length &&
-      passwordConfirm != password
+      passwordConfirmation.length > 0 &&
+      passwordConfirmation.length >= password.length &&
+      passwordConfirmation != password
     ) {
       setAlert({
         show: true,
@@ -35,23 +39,29 @@ const ForgotPassword = () => {
         show: false,
       });
     }
-  }, [password, passwordConfirm]);
+  }, [password, passwordConfirmation]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    setLoading(true);
     axios
-      .post(`${process.env.BACKEND_URL}/auth/forgot-password`, {
-        email,
+      .post(`${process.env.BACKEND_URL}/auth/reset-password`, {
+        code: router.query.code, // code contained in the reset link of step 3.
+        password,
+        passwordConfirmation,
       })
       .then((res) => {
         setAlert({
           show: true,
-          msg: "Please check your email for futher instructions.",
+          msg: "Password updated.",
           variant: "success",
         });
+
+        router.push("/");
       })
       .catch((e) => {
+        setLoading(false);
         setAlert({
           show: true,
           msg: e.message,
@@ -85,10 +95,19 @@ const ForgotPassword = () => {
                 <Form.Control
                   type="password"
                   required
-                  onChange={(e) => setPasswordConfirm(e.target.value)}
+                  onChange={(e) => setPasswordConfirmation(e.target.value)}
                 />
               </Form.Group>
               <Button variant="primary" type="submit">
+                {isLoading && (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                )}{" "}
                 Submit
               </Button>
             </Form>
