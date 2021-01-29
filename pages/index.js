@@ -141,7 +141,7 @@ export default function Home({ profiles }) {
 
 export async function getStaticProps() {
   const { data } = await axios.get(
-    "https://btp-necrology.herokuapp.com/profiles?_sort=createdAt:DESC"
+    `${process.env.BACKEND_URL}/profiles?_sort=createdAt:DESC`
   );
 
   return {
