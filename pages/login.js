@@ -68,9 +68,7 @@ export default function Login() {
         <Row className="mt-3">
           <Col md={{ span: 4, offset: 4 }}>
             <Button variant="primary">
-              <Link
-                href={`${process.env.BACKEND_URL}/connect/facebook/redirect`}
-              >
+              <Link href={`${process.env.BACKEND_URL}/connect/facebook`}>
                 <a className={styles.login_facebook_link}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
