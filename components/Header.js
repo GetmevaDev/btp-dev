@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import axios from "axios";
 import Link from "next/link";
 import {
@@ -17,6 +18,7 @@ import styles from "../styles/Header.module.css";
 import { useAppContext } from "../context/state";
 
 export default function Header() {
+  const [open, setOpen] = useState(false);
   const { appState } = useAppContext();
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -49,6 +51,15 @@ export default function Header() {
     }
   }, [search])
 
+  const handleClick = (e) => {
+    setSearch(e.target.value)
+    setOpen((prev) => !prev);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
+
   const mainNavigation = useMemo(
     () => appState.navigations.find((navigation) => navigation.name == "Main"),
     [appState.navigations]
@@ -62,7 +73,6 @@ export default function Header() {
   );
 
   return (
-    <>
       <header>
         <Navbar
           collapseOnSelect
@@ -89,7 +99,7 @@ export default function Header() {
                   placeholder="Search"
                   className="mr-sm-2"
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={handleClick}
                 />
               </Form>
               <Nav className="ml-auto">
@@ -134,7 +144,9 @@ export default function Header() {
             </Navbar.Collapse>
           </Container>
         </Navbar>
+        <ClickAwayListener onClickAway={handleClickAway}>
         <Container>
+        {open ? (
           <ListGroup className={styles.dropdown_ul}>
             {searchResults.slice(0, 5).map((profile) => (
               <ListGroup.Item key={profile.id}>
@@ -163,7 +175,9 @@ export default function Header() {
               </ListGroup.Item>
             ))}
           </ListGroup>
+          ) : null}
         </Container>
+        </ClickAwayListener>
         <div className={styles.marquee}>
           <p>
             <Link href="/callDavidov">
@@ -173,6 +187,5 @@ export default function Header() {
           </p>
         </div>
       </header>
-    </>
   );
 }
