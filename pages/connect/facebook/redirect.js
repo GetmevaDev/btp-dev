@@ -1,44 +1,47 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Loader from "../../../components/Loader";
 import { useRouter } from "next/router";
 import { setCookie } from "nookies";
 import { Alert } from "react-bootstrap";
 import { useAppContext } from "../../../context/state";
 import axios from "axios";
+import { SET_USER } from "../../../context/appReducer";
 
-const Redirect = ({ jwt, user, error }) => {
+const Redirect = () => {
   const router = useRouter();
-  const { setUser } = useAppContext();
+  const { dispatch, appState } = useAppContext();
+  const { access_token } = router.query;
+  const [alert, setAlert] = useState(null);
 
   useEffect(() => {
-    if (jwt) {
-      setCookie(null, "jwt", jwt, {
-        maxAge: 30 * 24 * 60 * 60,
-        path: "/",
-      });
+    if (access_token) {
+      axios(
+        `${process.env.BACKEND_URL}/auth/facebook/callback?access_token=${access_token}`
+      )
+        .then(({ data }) => {
+          setCookie(null, "jwt", data.jwt, {
+            maxAge: 30 * 24 * 60 * 60,
+            path: "/",
+          });
 
-      setUser(user);
-      router.push("/");
+          dispatch({
+            type: SET_USER,
+            payload: { user: data.user },
+          });
+
+          router.push("/");
+        })
+        .catch((e) => {
+          setAlert(e.message);
+        });
     }
-  }, [jwt, error]);
+  }, [access_token]);
 
-  if (error) {
-    return <Alert variant="danger">{error}</Alert>;
+  if (alert) {
+    return <Alert variant="danger">{alert}</Alert>;
   }
+
   return <Loader />;
-};
-
-Redirect.getInitialProps = async ({ query }) => {
-  try {
-    const res = await axios(
-      `${process.env.BACKEND_URL}/auth/facebook/callback?access_token=${query.access_token}`
-    );
-    const { jwt, user } = await res;
-
-    return { jwt, user, error: null };
-  } catch (e) {
-    return { jwt: null, user: null, error: e.message };
-  }
 };
 
 export default Redirect;
