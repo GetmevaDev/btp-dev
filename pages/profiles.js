@@ -21,7 +21,7 @@ export default function Profiles({ profiles }) {
     if (profiles)
       setFilteredProfiles(
         profiles.filter((profile) =>
-          profile.fullName.toLowerCase().includes(search.toLowerCase())
+          profile.toLowerCase().includes(search.toLowerCase())
         )
       );
   }, [search, profiles]);
