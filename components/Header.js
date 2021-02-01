@@ -16,8 +16,10 @@ import {
 } from "react-bootstrap";
 import styles from "../styles/Header.module.css";
 import { useAppContext } from "../context/state";
+import Loader from '../components/Loader'
 
 export default function Header() {
+  const [loading, setLoading] = useState(true)
   const [open, setOpen] = useState(false);
   const { appState } = useAppContext();
   const [search, setSearch] = useState("");
@@ -25,10 +27,12 @@ export default function Header() {
   const [profiles, setProfiles] = useState([]);
 
   useEffect(() => {
+    setLoading(true)
     axios
       .get(`${process.env.BACKEND_URL}/profiles`)
       .then((res) => {
         setProfiles(res.data);
+        setLoading(false)
       })
       .catch((err) => {
         console.log(err);
@@ -74,6 +78,10 @@ export default function Header() {
   );
 
   return (
+    <>
+    {loading ? (
+      <Loader />
+    ) : (
     <header>
       <Navbar
         collapseOnSelect
@@ -186,5 +194,7 @@ export default function Header() {
         </p>
       </div>
     </header>
+    )}
+    </>
   );
 }
