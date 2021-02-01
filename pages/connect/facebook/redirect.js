@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Loader from "../../../components/Loader";
 import { useRouter } from "next/router";
 import { setCookie } from "nookies";
-import { Alert } from "react-bootstrap";
+import { Alert, Container } from "react-bootstrap";
 import { useAppContext } from "../../../context/state";
 import axios from "axios";
 import { SET_USER } from "../../../context/appReducer";
@@ -32,13 +32,17 @@ const Redirect = () => {
           router.push("/");
         })
         .catch((e) => {
-          setAlert(e.message);
+          setAlert("Profile already registered");
         });
     }
   }, [access_token]);
 
   if (alert) {
-    return <Alert variant="danger">{alert}</Alert>;
+    return (
+      <Container>
+        <Alert variant="danger">{alert}</Alert>
+      </Container>
+    );
   }
 
   return <Loader />;

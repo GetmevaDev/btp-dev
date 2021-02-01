@@ -105,7 +105,7 @@ export default function Profile({ profile }) {
                   <Form.Label htmlFor="inlineFormInputGroup" srOnly>
                     Username
                   </Form.Label>
-                  <InputGroup className="mb-2" hasValidation>
+                  <InputGroup className="mb-2">
                     <InputGroup.Prepend>
                       <InputGroup.Text>
                         Subscribe for Whatsapp reminders:
@@ -140,7 +140,9 @@ export default function Profile({ profile }) {
 }
 
 export async function getStaticPaths() {
-  const { data } = await axios.get(`${process.env.BACKEND_URL}/profiles`);
+  const { data } = await axios.get(
+    `${process.env.BACKEND_URL}/profiles?_limit=10000`
+  );
 
   const paths = data.map((profile) => `/profiles/${profile.slug}`);
 
