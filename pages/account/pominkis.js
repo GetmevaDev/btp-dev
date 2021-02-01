@@ -27,12 +27,12 @@ const PominkisListScreen = () => {
     <Container className="py-3">
       <Row className="align-items-center">
         <Col>
-          <h2>Pominkis</h2>
+          <h2>Pominki</h2>
         </Col>
         <Col className="text-right">
           <Link href="/account/pominki-edit/new">
             <Button className="my-3">
-              <i className="fas fa-plus"></i> Create Pominkis
+              <i className="fas fa-plus"></i> Create Pominki
             </Button>
           </Link>
         </Col>
