@@ -28,6 +28,7 @@ export default function Home({ profiles }) {
 
   const observer = useRef();
   const prevY = useRef(0);
+
   useEffect(() => {
     observer.current = new IntersectionObserver(
       (entries) => {
@@ -44,6 +45,7 @@ export default function Home({ profiles }) {
   }, []);
 
   useEffect(() => {
+    console.log("her");
     const currentElement = element;
     const currentObserver = observer.current;
 
@@ -128,7 +130,7 @@ export default function Home({ profiles }) {
                 ))}
             </CardDeck>
             {currentPage !== maxPage ? (
-              <h2 ref={setElement}></h2>
+              <h2 ref={setElement}>Loading...</h2>
             ) : (
               <h2>No more profiles available...</h2>
             )}
@@ -141,7 +143,7 @@ export default function Home({ profiles }) {
 
 export async function getStaticProps() {
   const { data } = await axios.get(
-    `${process.env.BACKEND_URL}/profiles?_sort=createdAt:DESC`
+    `${process.env.BACKEND_URL}/profiles?_sort=createdAt:DESC&_limit=10000`
   );
 
   return {

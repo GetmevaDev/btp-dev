@@ -21,7 +21,7 @@ export default function Profiles({ profiles }) {
     if (profiles)
       setFilteredProfiles(
         profiles.filter((profile) =>
-          profile.toLowerCase().includes(search.toLowerCase())
+          profile.fullName.toLowerCase().includes(search.toLowerCase())
         )
       );
   }, [search, profiles]);
@@ -120,8 +120,6 @@ export async function getStaticProps() {
   const { data } = await axios.get(
     `${process.env.BACKEND_URL}/profiles?_sort=fullName:ASC&_limit=10000`
   );
-
-  console.log(data.length);
 
   return {
     props: {
