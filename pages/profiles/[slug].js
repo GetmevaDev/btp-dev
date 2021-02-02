@@ -57,7 +57,7 @@ export default function Profile({ profile }) {
       </Head>
       <Container>
         <Row>
-          <Col mr={{ span: 7, offset: 3 }}>
+          <Col>
             <h5 className={styles.profile_h5}>In Loving Memory Of</h5>
             <h1 className={styles.profile_h1}>{profile.fullName}</h1>
             <div className={styles.profile_image}>
@@ -97,7 +97,7 @@ export default function Profile({ profile }) {
             ))}
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-4">
           <Col md={12}>
             <Form>
               <Form.Row className="align-items-center">
@@ -133,6 +133,9 @@ export default function Profile({ profile }) {
               <Alert variant={alert.variant}>{alert.text}</Alert>
             </Col>
           )}
+        </Row>
+        <Row className="mt-4 d-flex justify-content-center">
+          <div class="fb-comments" data-width="" data-numposts="5"></div>
         </Row>
       </Container>
     </section>
