@@ -6,7 +6,11 @@ html {
 body {
     margin: 0 0 100px;
 }
-
+.pagination a li{
+	text-decoration: none;
+	padding-left: 10px;
+	padding-right: 10px;
+}
 footer {
     position: absolute;
     left: 0;
