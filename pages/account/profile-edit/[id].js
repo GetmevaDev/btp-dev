@@ -213,20 +213,20 @@ const ProfileEditScreen = () => {
             </Form.Group>
 
             <Form.Group>
-              <Form.Label>Birth Date</Form.Label>
+              <Form.Label>Date of Birth</Form.Label>
               <Form.Control
                 type="date"
-                placeholder="Enter Birth Date"
+                placeholder="Enter the Date of Birth"
                 value={moment(birthDate).format("YYYY-MM-DD")}
                 onChange={(e) => setBirthDate(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
             <Form.Group>
-              <Form.Label>Decease Date</Form.Label>
+              <Form.Label>Date of Passing</Form.Label>
               <Form.Control
                 type="date"
-                placeholder="Enter Decease Date"
+                placeholder="Enter the date of passing"
                 value={moment(deceaseDate).format("YYYY-MM-DD")}
                 onChange={(e) => setDeceaseDate(e.target.value)}
               ></Form.Control>

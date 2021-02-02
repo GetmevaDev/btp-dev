@@ -8,6 +8,14 @@ import { AppWrapper } from "../context/state";
 function MyApp({ Component, pageProps }) {
   return (
     <AppWrapper>
+      <div id="fb-root"></div>
+      <script
+        async
+        defer
+        crossorigin="anonymous"
+        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v9.0&appId=256804745887047&autoLogAppEvents=1"
+        nonce="SwLeqip0"
+      ></script>
       <Head>
         <link
           rel="stylesheet"
@@ -23,6 +31,7 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
       <Header />
+
       <Component {...pageProps} />
       <Footer />
     </AppWrapper>
