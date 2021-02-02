@@ -15,6 +15,7 @@ const ReactQuill =
 
 const ProfileEditScreen = () => {
   const [fullName, setFullName] = useState("");
+  const [fullNameNative, setFullNameNative] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [deceaseDate, setDeceaseDate] = useState("");
   const [description, setDescription] = useState("");
@@ -34,6 +35,7 @@ const ProfileEditScreen = () => {
   useEffect(() => {
     if (profile) {
       setFullName(profile.fullName || "");
+      setFullNameNative(profile.fullNameNative || "");
       setBirthDate(profile.birthDate || "");
       setDeceaseDate(profile.deceaseDate || "");
       setDescription(profile.description || "");
@@ -96,6 +98,7 @@ const ProfileEditScreen = () => {
     const formData = new FormData();
     const data = {};
     data.fullName = fullName;
+    data.fullNameNative = fullNameNative;
     data.birthDate = birthDate.length
       ? moment(birthDate).format("MMM D, yyyy")
       : "";
@@ -133,6 +136,7 @@ const ProfileEditScreen = () => {
           `${process.env.BACKEND_URL}/profiles/${profile.id}`,
           {
             fullName,
+            fullNameNative,
             birthDate: birthDate.length
               ? moment(birthDate).format("MMM D, yyyy")
               : "",
@@ -208,6 +212,16 @@ const ProfileEditScreen = () => {
                 placeholder="Enter Full Name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
+                required
+              ></Form.Control>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Full Name in native</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Full Name in native"
+                value={fullNameNative}
+                onChange={(e) => setFullNameNative(e.target.value)}
                 required
               ></Form.Control>
             </Form.Group>

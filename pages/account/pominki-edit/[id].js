@@ -78,6 +78,7 @@ const PominkisEditScreen = () => {
             endTime: endTime,
             slug: slugify(title),
             profile: relatedProfile,
+            location: location,
           },
           {
             headers: {
@@ -117,6 +118,7 @@ const PominkisEditScreen = () => {
             startTime: startTime,
             endTime: endTime,
             profile: relatedProfile,
+            location: location,
             slug: slugify(title),
           },
           {
@@ -131,7 +133,7 @@ const PominkisEditScreen = () => {
             payload: { pominkis: [...appState.pominkis, data] },
           });
           setIsLoading(false);
-          router.push(`/account/pominkis`);
+          router.push(`/account/pominki`);
         })
         .catch((e) => {
           setIsLoading(false);

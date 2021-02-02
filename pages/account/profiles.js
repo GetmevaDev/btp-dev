@@ -5,7 +5,7 @@ import { useAppContext } from "../../context/state";
 import axios from "axios";
 import { parseCookies } from "nookies";
 import { DELETE_PROFILE } from "../../context/appReducer";
-import Pagination from '../../components/Pagination';
+import Pagination from "../../components/Pagination";
 
 const ProfileListScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,7 +40,7 @@ const ProfileListScreen = () => {
   const indexOfLastProfile = currentPage * profilesPerPage;
   const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
 
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <Container className="py-3">
@@ -61,39 +61,41 @@ const ProfileListScreen = () => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Birth date</th>
-              <th>Decease date</th>
+              <th>Date of Birth</th>
+              <th>Date of Passing</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {appState.profiles.slice(indexOfFirstProfile, indexOfLastProfile).map((profile) => (
-              <tr key={profile.id}>
-                <td>{profile.fullName}</td>
-                <td>{profile.birthDate}</td>
-                <td>{profile.deceaseDate}</td>
-                <td>
-                  <Link href={`/account/profile-edit/${profile.id}`}>
-                    <Button variant="light" className="btn-sm">
-                      <i className="fas fa-edit"></i>
+            {appState.profiles
+              .slice(indexOfFirstProfile, indexOfLastProfile)
+              .map((profile) => (
+                <tr key={profile.id}>
+                  <td>{profile.fullName}</td>
+                  <td>{profile.birthDate}</td>
+                  <td>{profile.deceaseDate}</td>
+                  <td>
+                    <Link href={`/account/profile-edit/${profile.id}`}>
+                      <Button variant="light" className="btn-sm">
+                        <i className="fas fa-edit"></i>
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="danger"
+                      className="btn-sm"
+                      onClick={() => handleDelete(profile)}
+                    >
+                      <i className="fas fa-trash"></i>
                     </Button>
-                  </Link>
-                  <Button
-                    variant="danger"
-                    className="btn-sm"
-                    onClick={() => handleDelete(profile)}
-                  >
-                    <i className="fas fa-trash"></i>
-                  </Button>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
         <Pagination
-         profilesPerPage={profilesPerPage}
-         totalProfiles={appState.profiles.length}
-         paginate={paginate}
+          profilesPerPage={profilesPerPage}
+          totalProfiles={appState.profiles.length}
+          paginate={paginate}
         />
       </>
     </Container>

@@ -71,7 +71,9 @@ export function AppWrapper({ children }) {
 
 export const fetchProfiles = (user, dispatch) => {
   axios
-    .get(`${process.env.BACKEND_URL}/profiles?createdByUser.id=${user.id}`)
+    .get(
+      `${process.env.BACKEND_URL}/profiles?createdByUser.id=${user.id}&_sort=createdAt:DESC&_limit=10000`
+    )
     .then(({ data }) =>
       dispatch({ type: SET_PROFILES, payload: { profiles: data } })
     );
@@ -79,7 +81,9 @@ export const fetchProfiles = (user, dispatch) => {
 
 export const fetchPominkis = (user, dispatch) => {
   axios
-    .get(`${process.env.BACKEND_URL}/pominkis?createdByUser.id=${user.id}`)
+    .get(
+      `${process.env.BACKEND_URL}/pominkis?createdByUser.id=${user.id}&_sort=createdAt:DESC&_limit=10000`
+    )
     .then(({ data }) =>
       dispatch({ type: SET_POMINKIS, payload: { pominkis: data } })
     );
