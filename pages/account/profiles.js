@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Container, Table, Button, Row, Col } from "react-bootstrap";
 import { useAppContext } from "../../context/state";
 import axios from "axios";
 import { parseCookies } from "nookies";
 import { DELETE_PROFILE } from "../../context/appReducer";
+import Pagination from '../../components/Pagination';
 
 const ProfileListScreen = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [profilesPerPage] = useState(10);
   const { appState, dispatch } = useAppContext();
   const { jwt } = parseCookies();
 
@@ -34,6 +37,11 @@ const ProfileListScreen = () => {
       });
   };
 
+  const indexOfLastProfile = currentPage * profilesPerPage;
+  const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+
   return (
     <Container className="py-3">
       <Row className="align-items-center">
@@ -59,7 +67,7 @@ const ProfileListScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {appState.profiles.map((profile) => (
+            {appState.profiles.slice(indexOfFirstProfile, indexOfLastProfile).map((profile) => (
               <tr key={profile.id}>
                 <td>{profile.fullName}</td>
                 <td>{profile.birthDate}</td>
@@ -82,6 +90,11 @@ const ProfileListScreen = () => {
             ))}
           </tbody>
         </Table>
+        <Pagination
+         profilesPerPage={profilesPerPage}
+         totalProfiles={appState.profiles.length}
+         paginate={paginate}
+        />
       </>
     </Container>
   );

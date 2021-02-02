@@ -8,8 +8,7 @@ import {
   Button,
   CardDeck,
   Image,
-  Carousel,
-  CardGroup,
+  Carousel
 } from "react-bootstrap";
 import styles from "../styles/Home.module.css";
 import { useState, useRef, useEffect } from "react";
