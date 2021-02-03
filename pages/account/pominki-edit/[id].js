@@ -5,8 +5,7 @@ import FormContainer from "../../../components/FormContainer";
 import { useRouter } from "next/router";
 import { useAppContext } from "../../../context/state";
 import moment from "moment";
-import { parseCookies } from "nookies";
-import slugify from "react-slugify";
+import { parseCookies, setCookie } from "nookies";
 import Select from "react-select";
 import { SET_POMINKIS, UPDATE_POMINKI } from "../../../context/appReducer";
 
@@ -21,6 +20,8 @@ const PominkisEditScreen = () => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [location, setLocation] = useState("");
+  const [memorialType, setMemorialType] = useState("sevenday");
+  const [contactInfo, setContactInfo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { appState, dispatch } = useAppContext();
@@ -39,6 +40,11 @@ const PominkisEditScreen = () => {
       })),
     [appState.profiles]
   );
+  const memorialTypeOptions = [
+    { label: "7 day", value: "sevenday" },
+    { label: "30 day", value: "thirtyday" },
+    { label: "1 year", value: "oneyear" },
+  ];
 
   useEffect(() => {
     if (pominki) {
@@ -49,6 +55,8 @@ const PominkisEditScreen = () => {
       setEndTime(pominki.endTime || "");
       setLocation(pominki.location || "");
       setRelatedProfile(pominki.profile || null);
+      setMemorialType(pominki.memorialType || "sevenday");
+      setContactInfo(pominki.contactInfo || "");
     }
   }, [pominki]);
 
@@ -76,9 +84,10 @@ const PominkisEditScreen = () => {
             date: date.length ? moment(date).format("MMM D, yyyy") : "",
             startTime: startTime,
             endTime: endTime,
-            slug: slugify(title),
             profile: relatedProfile,
             location: location,
+            memorialType: memorialType,
+            contactInfo: contactInfo,
           },
           {
             headers: {
@@ -119,7 +128,8 @@ const PominkisEditScreen = () => {
             endTime: endTime,
             profile: relatedProfile,
             location: location,
-            slug: slugify(title),
+            memorialType: memorialType,
+            contactInfo: contactInfo,
           },
           {
             headers: {
@@ -166,7 +176,24 @@ const PominkisEditScreen = () => {
             </Form.Group>
 
             <Form.Group>
-              <Form.Label>Related Profile Name</Form.Label>
+              <Form.Label>Memorial Type</Form.Label>
+              <Select
+                options={memorialTypeOptions}
+                placeholder="Select memorial type"
+                onChange={({ value }) => setMemorialType(value)}
+                defaultValue={null}
+                value={
+                  memorialType
+                    ? memorialTypeOptions.find(
+                        (option) => option.value == memorialType
+                      )
+                    : null
+                }
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Related Profile</Form.Label>
               <Select
                 options={profileOptions}
                 placeholder="Select profile"
@@ -220,6 +247,17 @@ const PominkisEditScreen = () => {
                 placeholder="Enter Location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Contact Info</Form.Label>
+              <Form.Control
+                type="title"
+                placeholder="Enter Contact Info"
+                value={contactInfo}
+                onChange={(e) => setContactInfo(e.target.value)}
+                required
               ></Form.Control>
             </Form.Group>
 
