@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import {
   Container,
@@ -15,10 +15,15 @@ import styles from "../../styles/Profile.module.css";
 import axios from "axios";
 import ErrorPage from "next/error";
 import parsePhoneNumber from "libphonenumber-js";
+import hebrewDate from "hebrew-date";
 
 export default function Profile({ profile }) {
   const [number, setNumber] = useState("");
   const [alert, setAlert] = useState(null);
+
+  useEffect(() => {
+    window.FB.XFBML.parse();
+  }, []);
 
   const handleSubscribe = () => {
     let phoneNumber = parsePhoneNumber(number, "US");
@@ -57,9 +62,12 @@ export default function Profile({ profile }) {
       </Head>
       <Container>
         <Row>
-          <Col mr={{ span: 7, offset: 3 }}>
+          <Col>
             <h5 className={styles.profile_h5}>In Loving Memory Of</h5>
             <h1 className={styles.profile_h1}>{profile.fullName}</h1>
+            <h4 className="d-flex justify-content-center">
+              {profile.fullNameNative}
+            </h4>
             <div className={styles.profile_image}>
               <Image
                 width="640px"
@@ -85,19 +93,28 @@ export default function Profile({ profile }) {
         </Row>
         <Row>
           <Col>
-            {profile.pominkis.map((pominki) => (
-              <div className={styles.funeral_date}>
-                <span>
-                  Pominki Date: {pominki.date} ({pominki.startTime} -{" "}
-                  {pominki.endTime})
-                </span>
-                <br />
-                <span>Location: {pominki.location}</span>
-              </div>
-            ))}
+            {profile.pominkis.map((pominki) => {
+              const date = hebrewDate(new Date(pominki.date));
+              return (
+                <div className={styles.funeral_date}>
+                  <span>
+                    Pominki Date: {pominki.date}
+                    {pominki.date
+                      ? `(${date.month_name} ${date.date}, ${date.year})`
+                      : null}
+                  </span>
+                  <br />
+                  <span>
+                    Time: {pominki.startTime} - {pominki.endTime}
+                  </span>
+                  <br />
+                  <span>Location: {pominki.location}</span>
+                </div>
+              );
+            })}
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-4">
           <Col md={12}>
             <Form>
               <Form.Row className="align-items-center">
@@ -133,6 +150,9 @@ export default function Profile({ profile }) {
               <Alert variant={alert.variant}>{alert.text}</Alert>
             </Col>
           )}
+        </Row>
+        <Row className="mt-4 d-flex justify-content-center">
+          <div className="fb-comments" data-numposts="15"></div>
         </Row>
       </Container>
     </section>

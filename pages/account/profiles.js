@@ -16,6 +16,7 @@ import axios from "axios";
 import { parseCookies } from "nookies";
 import { DELETE_PROFILE } from "../../context/appReducer";
 
+
 const ProfileListScreen = () => {
   const [search, setSearch] = useState("");
   const [filteredProfiles, setFilteredProfiles] = useState([]);
@@ -141,14 +142,15 @@ const ProfileListScreen = () => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Birth date</th>
-              <th>Decease date</th>
+              <th>Date of Birth</th>
+              <th>Date of Passing</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {filteredProfiles
               .slice(indexOfFirstItem, indexOfLastItem)
+
               .map((profile) => (
                 <tr key={profile.id}>
                   <td>{profile.fullName}</td>
@@ -183,6 +185,7 @@ const ProfileListScreen = () => {
             disabled={currentPage == pages[pages.length - 1] ? true : false}
           />
         </Pagination>
+
       </>
     </Container>
   );
