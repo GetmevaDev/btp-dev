@@ -9,13 +9,12 @@ import {
   Col,
   Pagination,
   Form,
-  FormControl
+  FormControl,
 } from "react-bootstrap";
 import { useAppContext } from "../../context/state";
 import axios from "axios";
 import { parseCookies } from "nookies";
 import { DELETE_PROFILE } from "../../context/appReducer";
-
 
 const ProfileListScreen = () => {
   const [search, setSearch] = useState("");
@@ -119,16 +118,16 @@ const ProfileListScreen = () => {
         <Col>
           <h2>Profiles</h2>
         </Col>
-          <Col className="text-right">
-            <Form>
-              <FormControl
-                type="text"
-                placeholder="Search"
-                className="mr-sm-2"
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </Form>
-          </Col>
+        <Col className="text-right">
+          <Form>
+            <FormControl
+              type="text"
+              placeholder="Search"
+              className="mr-sm-2"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Form>
+        </Col>
         <Col className="text-right">
           <Link href="/account/profile-edit/new">
             <Button className="my-3">
@@ -185,7 +184,6 @@ const ProfileListScreen = () => {
             disabled={currentPage == pages[pages.length - 1] ? true : false}
           />
         </Pagination>
-
       </>
     </Container>
   );

@@ -45,8 +45,9 @@ export const appReducer = (state, action) => {
   switch (action.type) {
     case SET_POMINKIS:
       return { ...state, pominkis: action.payload.pominkis };
-    case SET_PROFILES:
+    case SET_PROFILES: {
       return { ...state, profiles: action.payload.profiles };
+    }
     case SET_NAVIGATIONS:
       return { ...state, navigations: action.payload.navigations };
     case SET_USER:
