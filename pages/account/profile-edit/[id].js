@@ -19,6 +19,8 @@ const ProfileEditScreen = () => {
   const [birthDate, setBirthDate] = useState("");
   const [deceaseDate, setDeceaseDate] = useState("");
   const [description, setDescription] = useState("");
+  const [burialPlace, setBurialPlace] = useState("");
+  const [slug, setSlug] = useState("");
   const [image, setImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -39,6 +41,7 @@ const ProfileEditScreen = () => {
       setBirthDate(profile.birthDate || "");
       setDeceaseDate(profile.deceaseDate || "");
       setDescription(profile.description || "");
+      setBurialPlace(profile.burialPlace || "");
       setImage(profile.image || null);
     }
   }, [profile]);
@@ -94,6 +97,10 @@ const ProfileEditScreen = () => {
     }
   };
 
+  const isSlugUnique = (slug) => {
+    return !appState.profiles.find((profile) => profile.slug == slug);
+  };
+
   const createProfileWithImage = () => {
     const formData = new FormData();
     const data = {};
@@ -106,7 +113,8 @@ const ProfileEditScreen = () => {
       ? moment(deceaseDate).format("MMM D, yyyy")
       : "";
     data.description = description;
-    data.slug = slugify(fullName);
+    data.burialPlace = burialPlace;
+    data.slug = slug;
     formData.append("data", JSON.stringify(data));
 
     if (image) {
@@ -144,7 +152,7 @@ const ProfileEditScreen = () => {
               ? moment(deceaseDate).format("MMM D, yyyy")
               : "",
             description,
-            slug: slugify(fullName),
+            burialPlace,
           },
           config
         )
@@ -169,14 +177,29 @@ const ProfileEditScreen = () => {
           })
         );
     } else {
+      if (!isSlugUnique(slug)) {
+        setAlert({
+          show: true,
+          msg: "Slug already exists! Please, change it in the form below",
+          variant: "danger",
+        });
+
+        setIsLoading(false);
+
+        return;
+      }
+
       const formData = createProfileWithImage();
 
       axios
         .post(`${process.env.BACKEND_URL}/profiles`, formData, config)
         .then(({ data }) => {
+          const newProfilesState = appState.profiles;
+          newProfilesState.splice(0, 0, data);
+
           dispatch({
             type: SET_PROFILES,
-            payload: { profiles: [...appState.profiles, data] },
+            payload: { profiles: newProfilesState },
           });
           router.push(`/profiles/${data.slug}`);
         })
@@ -211,7 +234,10 @@ const ProfileEditScreen = () => {
                 type="text"
                 placeholder="Enter Full Name"
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={(e) => {
+                  setFullName(e.target.value);
+                  setSlug(slugify(e.target.value));
+                }}
                 required
               ></Form.Control>
             </Form.Group>
@@ -222,7 +248,6 @@ const ProfileEditScreen = () => {
                 placeholder="Enter Full Name in native"
                 value={fullNameNative}
                 onChange={(e) => setFullNameNative(e.target.value)}
-                required
               ></Form.Control>
             </Form.Group>
 
@@ -245,6 +270,29 @@ const ProfileEditScreen = () => {
                 onChange={(e) => setDeceaseDate(e.target.value)}
               ></Form.Control>
             </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Burial Place</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Burial Place"
+                value={burialPlace}
+                onChange={(e) => setBurialPlace(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            {alert.msg ==
+              "Slug already exists! Please, change it in the form below" && (
+              <Form.Group>
+                <Form.Label>Slug</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Slug"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+            )}
 
             <Form.Group>
               <Form.Label>Description</Form.Label>

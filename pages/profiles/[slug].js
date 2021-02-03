@@ -93,6 +93,13 @@ export default function Profile({ profile }) {
         </Row>
         <Row>
           <Col>
+            {profile.burialPlace &&
+              (profile.burialPlace.length !== 0) &
+              (
+                <div className={styles.funeral_date}>
+                  <span>Burial Place: {profile.burialPlace}</span>
+                </div>
+              )}
             {profile.pominkis.map((pominki) => {
               const date = hebrewDate(new Date(pominki.date));
               return (
