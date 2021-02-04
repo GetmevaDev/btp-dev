@@ -138,26 +138,26 @@ export default function Profile({ profile }) {
         <Row className="d-flex justify-content-center">
           <FacebookShareButton
             className="mr-1"
-            url={`${process.env.PUBLIC_URL}/${router.asPath}`}
+            url={`${process.env.PUBLIC_URL}${router.asPath}`}
           >
             <FacebookIcon size={32} round />
           </FacebookShareButton>
           <FacebookMessengerShareButton
             className="mr-1"
-            url={`${process.env.PUBLIC_URL}/${router.asPath}`}
+            url={`${process.env.PUBLIC_URL}${router.asPath}`}
             appId={process.env.FACEBOOK_APP_ID}
           >
             <FacebookMessengerIcon size={32} round />
           </FacebookMessengerShareButton>
           <WhatsappShareButton
             className="mr-1"
-            url={`${process.env.PUBLIC_URL}/${router.asPath}`}
+            url={`${process.env.PUBLIC_URL}${router.asPath}`}
           >
             <WhatsappIcon size={32} round />
           </WhatsappShareButton>
           <EmailShareButton
             className="mr-1"
-            url={`${process.env.PUBLIC_URL}/${router.asPath}`}
+            url={`${process.env.PUBLIC_URL}${router.asPath}`}
           >
             <EmailIcon size={32} round />
           </EmailShareButton>
