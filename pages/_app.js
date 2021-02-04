@@ -2,6 +2,7 @@ import Head from "next/head";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/globals.css";
+import "../styles/reactions.sass";
 import "react-quill/dist/quill.snow.css"; // ES6
 import { AppWrapper } from "../context/state";
 
@@ -13,7 +14,7 @@ function MyApp({ Component, pageProps }) {
         async
         defer
         crossorigin="anonymous"
-        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v9.0&appId=256804745887047&autoLogAppEvents=1"
+        src={`https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v9.0&appId=${process.env.FACEBOOK_APP_ID}&autoLogAppEvents=1`}
         nonce="SwLeqip0"
       ></script>
       <Head>

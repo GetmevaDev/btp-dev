@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert, Spinner } from "react-bootstrap";
 import styles from "../styles/Login.module.css";
 import { useRouter } from "next/router";
 import { login } from "../lib/user";
@@ -12,9 +12,12 @@ export default function Login() {
   const [password, setPassword] = useState();
   const router = useRouter();
   const [error, setError] = useState({ show: false, errorMsg: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true)
 
     login(identifier, password)
       .then((jwt) => {
@@ -24,7 +27,9 @@ export default function Login() {
         });
         router.push("/");
       })
-      .catch((e) => setError({ show: true, errorMsg: e.message }));
+      .catch((e) => {
+        setIsLoading(false)
+        setError({ show: true, errorMsg: e.message })});
   };
 
   return (
@@ -60,7 +65,15 @@ export default function Login() {
                 <Form.Check type="checkbox" label="Remember me" />
               </Form.Group>
               <Button variant="primary" type="submit">
-                Log in
+              {isLoading && (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) } Log in
               </Button>
             </Form>
           </Col>

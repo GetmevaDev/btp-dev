@@ -1,0 +1,247 @@
+
+%hidden
+  clip: rect(1px, 1px, 1px, 1px)
+  overflow: hidden
+  visibility: hidden
+
+%show
+  clip: auto
+  overflow: visible
+  visibility: visible
+  opacity: 1
+
+.main-title
+  background: #3a5795
+  padding: 10px
+  color: #fff
+  text-align: center
+  font-size: 16px
+  text-shadow: 1px 1px 3px rgba(0,0,0,.3)
+
+.text-desc
+  @extend %hidden
+  position: absolute
+  font-weight: normal
+  text-align: center
+  transform: translateY(-50px)
+  white-space: nowrap
+  font-size: 13px
+  width: 100%
+
+[class*="reaction-"]
+  @extend %hidden
+  border: none
+  background-color: transparent
+  display: block
+  cursor: pointer
+  height: 48px 
+  width: 48px
+  z-index: 11
+  transform-origin: 50% 100%
+  transform: scale(.1)
+  transition: all .3s
+  outline: none
+  will-change: transform
+  opacity: 0
+
+[class*="reaction-"]:focus 
+   outline: none  
+
+.box
+  position: relative
+  
+  
+
+.overlay
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  z-index: 9
+  visibility: hidden
+
+.field-reactions
+  @extend %hidden
+  position: absolute
+
+  &:focus
+    ~ .label-reactions
+      border-color: rgba(88,144,255,.3)
+
+    ~ .text-desc
+      @extend %show
+
+  &:checked:focus
+    ~ .label-reactions
+      border-color: transparent
+
+    ~ .text-desc
+      @extend %hidden
+
+
+.toolbox
+  background: #fff
+  height: 52px
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .08), 0 2px 2px rgba(0, 0, 0, .15)
+  width: 215px
+  border-radius: 40px
+  top: -60px
+  left: -70px
+  position: absolute
+  visibility: hidden
+  opacity: 0
+  transition: opacity .15s
+  display: flex
+  justify-content: space-around
+  align-items: center
+  @media screen and (max-width: 1300px)
+    left: 0
+
+
+.legend-reaction
+  transform: translateY(-70px)
+  background: rgba(0, 0, 0, .75)
+  border-radius: 10px
+  box-sizing: border-box
+  color: #fff
+  display: inline-block
+  font-size: 11px
+  font-weight: bold
+  line-height: 20px
+  opacity: 0
+  overflow: hidden
+  padding: 0 6px
+  width: auto
+  
+
+
+.box:hover
+
+  [class*="reaction-"]
+    transform: scale(.8) translateY(0)
+    @extend %show
+
+    &:hover,
+    &:focus
+      transition: all .2s ease-in
+      transform: scale(1) translateY(-5px)
+
+      .legend-reaction
+        opacity: 1
+
+  .toolbox
+    opacity: 1
+
+  .toolbox
+    visibility: visible
+
+  .reaction-love
+    transition-delay: .06s
+
+  .reaction-haha
+    transition-delay: .09s
+
+  .reaction-wow
+    transition-delay: .12s
+
+  .reaction-sad
+    transition-delay: .15s
+
+  .reaction-angry
+    transition-delay: .18s
+
+
+.field-reactions:checked
+
+  ~ [class*="reaction-"]
+    transform: scale(.8)     translateY(-40px)
+    @extend %show
+
+    &:hover,
+    &:focus
+      transition: all .2s ease-in
+      transform: scale(1) translateY(-35px)
+
+      .legend-reaction
+        opacity: 1
+
+  ~ .toolbox
+    opacity: 1
+
+  ~ .toolbox,
+  ~ .overlay
+    visibility: visible
+
+  ~ .reaction-love
+    transition-delay: .03s
+
+  ~ .reaction-haha
+    transition-delay: .09s
+
+  ~ .reaction-wow
+    transition-delay: .12s
+
+  ~ .reaction-sad
+    transition-delay: .15s
+
+  ~ .reaction-angry
+    transition-delay: .18s
+
+.reaction-like
+  left: 0
+  background-position: 0 -144px
+
+
+
+.reactions-wrapper 
+  display: flex
+  align-items: center
+  width: 100%
+  justify-content: space-between
+  margin-top: 30px
+  
+  .reactions
+    &-count 
+      display: flex
+      align-items: center
+
+      &-wrapper
+        display: flex
+        align-items: center
+        margin-left: 10px
+        cursor: pointer
+
+        div 
+          transition: .2s all
+
+        &:hover
+          div 
+            transform: scale(1.1) translateY(-2px)
+
+                
+      
+      &__amount
+        font-size: 16px
+        margin-left: 5px
+
+
+
+      img 
+        width: 25px
+        height: 25px
+
+.label-reactions
+  background-size: 50px 50px
+  border: 2px dotted transparent
+  display: block
+  height: 50px
+  margin: 0
+  width: 50px
+  color: transparent
+  cursor: pointer
+
+  div 
+    transition: .2s all
+    width: 35px
+    height: 35px

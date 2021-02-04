@@ -16,10 +16,24 @@ import axios from "axios";
 import ErrorPage from "next/error";
 import parsePhoneNumber from "libphonenumber-js";
 import hebrewDate from "hebrew-date";
+import Reactions from "../../components/Reactions";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  WhatsappShareButton,
+  FacebookMessengerShareButton,
+  FacebookIcon,
+  FacebookMessengerIcon,
+  WhatsappIcon,
+  EmailIcon
+} from "react-share";
+import { useRouter } from 'next/router'
 
 export default function Profile({ profile }) {
   const [number, setNumber] = useState("");
   const [alert, setAlert] = useState(null);
+  const router = useRouter()
+
 
   useEffect(() => {
     window.FB.XFBML.parse();
@@ -93,13 +107,11 @@ export default function Profile({ profile }) {
         </Row>
         <Row>
           <Col>
-            {profile.burialPlace &&
-              (profile.burialPlace.length !== 0) &
-              (
-                <div className={styles.funeral_date}>
-                  <span>Burial Place: {profile.burialPlace}</span>
-                </div>
-              )}
+            {profile.burialPlace && profile.burialPlace.length !== 0 ? (
+              <div className={styles.funeral_date}>
+                <span>Burial Place: {profile.burialPlace}</span>
+              </div>
+            ) : null}
             {profile.pominkis.map((pominki) => {
               const date = hebrewDate(new Date(pominki.date));
               return (
@@ -121,14 +133,38 @@ export default function Profile({ profile }) {
             })}
           </Col>
         </Row>
+        <Row>
+          <Reactions profile={profile}/>
+        </Row>
+        <Row className="d-flex justify-content-center">
+          <FacebookShareButton className="mr-1"
+          url={`${process.env.BACKEND_URL}/${router.asPath}`}
+            >
+              <FacebookIcon size={32} round />
+          </FacebookShareButton>
+          <FacebookMessengerShareButton className="mr-1"
+            url={`${process.env.BACKEND_URL}/${router.asPath}`}
+            appId={process.env.FACEBOOK_APP_ID}
+          >
+            <FacebookMessengerIcon size={32} round />
+          </FacebookMessengerShareButton>
+          <WhatsappShareButton className="mr-1"
+            url={`${process.env.BACKEND_URL}/${router.asPath}`}
+           
+          >
+            <WhatsappIcon size={32} round />
+          </WhatsappShareButton>
+          <EmailShareButton className="mr-1"
+           
+          >
+            <EmailIcon size={32} round />
+          </EmailShareButton>
+        </Row>
         <Row className="mt-4">
           <Col md={12}>
             <Form>
               <Form.Row className="align-items-center">
                 <Col xs="auto">
-                  <Form.Label htmlFor="inlineFormInputGroup" srOnly>
-                    Username
-                  </Form.Label>
                   <InputGroup className="mb-2">
                     <InputGroup.Prepend>
                       <InputGroup.Text>
@@ -158,7 +194,7 @@ export default function Profile({ profile }) {
             </Col>
           )}
         </Row>
-        <Row className="mt-4 d-flex justify-content-center">
+        <Row className="mt-4 ">
           <div className="fb-comments" data-numposts="15"></div>
         </Row>
       </Container>
