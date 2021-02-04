@@ -16,6 +16,7 @@ import axios from "axios";
 import ErrorPage from "next/error";
 import parsePhoneNumber from "libphonenumber-js";
 import hebrewDate from "hebrew-date";
+import Reactions from "../../components/Reactions";
 
 export default function Profile({ profile }) {
   const [number, setNumber] = useState("");
@@ -93,13 +94,11 @@ export default function Profile({ profile }) {
         </Row>
         <Row>
           <Col>
-            {profile.burialPlace &&
-              (profile.burialPlace.length !== 0) &
-              (
-                <div className={styles.funeral_date}>
-                  <span>Burial Place: {profile.burialPlace}</span>
-                </div>
-              )}
+            {profile.burialPlace && profile.burialPlace.length !== 0 ? (
+              <div className={styles.funeral_date}>
+                <span>Burial Place: {profile.burialPlace}</span>
+              </div>
+            ) : null}
             {profile.pominkis.map((pominki) => {
               const date = hebrewDate(new Date(pominki.date));
               return (
@@ -120,6 +119,9 @@ export default function Profile({ profile }) {
               );
             })}
           </Col>
+        </Row>
+        <Row>
+          <Reactions />
         </Row>
         <Row className="mt-4">
           <Col md={12}>
@@ -158,7 +160,7 @@ export default function Profile({ profile }) {
             </Col>
           )}
         </Row>
-        <Row className="mt-4 d-flex justify-content-center">
+        <Row className="mt-4 ">
           <div className="fb-comments" data-numposts="15"></div>
         </Row>
       </Container>
