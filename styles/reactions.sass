@@ -79,16 +79,6 @@
     ~ .text-desc
       @extend %hidden
 
-.label-reactions
-  background: url(https://cdn4.iconfinder.com/data/icons/facebook-likes/100/1.png) no-repeat 0 0
-  background-size: 50px 50px
-  border: 2px dotted transparent
-  display: block
-  height: 50px
-  margin: 0
-  width: 50px
-  color: transparent
-  cursor: pointer
 
 .toolbox
   background: #fff
@@ -96,7 +86,7 @@
   box-shadow: 0 0 0 1px rgba(0, 0, 0, .08), 0 2px 2px rgba(0, 0, 0, .15)
   width: 215px
   border-radius: 40px
-  top: -50px
+  top: -60px
   left: -70px
   position: absolute
   visibility: hidden
@@ -240,3 +230,18 @@
       img 
         width: 25px
         height: 25px
+
+.label-reactions
+  background-size: 50px 50px
+  border: 2px dotted transparent
+  display: block
+  height: 50px
+  margin: 0
+  width: 50px
+  color: transparent
+  cursor: pointer
+
+  div 
+    transition: .2s all
+    width: 35px
+    height: 35px
