@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert, Spinner } from "react-bootstrap";
 import styles from "../styles/Login.module.css";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,9 +13,12 @@ export default function Register() {
   const [password, setPassword] = useState();
   const [error, setError] = useState({ show: false, errorMsg: "" });
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true)
 
     register(email, username, password)
       .then((jwt) => {
@@ -25,7 +28,11 @@ export default function Register() {
         });
         router.push("/");
       })
-      .catch((e) => setError({ show: true, errorMsg: e.message }));
+      .catch((e) => {
+        setIsLoading(false);
+
+        setError({ show: true, errorMsg: e.message })}
+        );
   };
 
   return (
@@ -65,7 +72,15 @@ export default function Register() {
                 />
               </Form.Group>
               <Button variant="primary" type="submit">
-                Register
+              {isLoading && (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) } Register
               </Button>
             </Form>
           </Col>
