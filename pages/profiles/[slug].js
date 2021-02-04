@@ -28,14 +28,11 @@ import {
   EmailIcon,
 } from "react-share";
 import { useRouter } from "next/router";
-import absoluteUrl from "next-absolute-url";
 
 export default function Profile({ profile }) {
   const [number, setNumber] = useState("");
   const [alert, setAlert] = useState(null);
   const router = useRouter();
-
-  const { origin } = absoluteUrl(req);
 
   useEffect(() => {
     window.FB.XFBML.parse();
@@ -141,24 +138,27 @@ export default function Profile({ profile }) {
         <Row className="d-flex justify-content-center">
           <FacebookShareButton
             className="mr-1"
-            url={`${origin}/${router.asPath}`}
+            url={`${process.env.PUBLIC_URL}/${router.asPath}`}
           >
             <FacebookIcon size={32} round />
           </FacebookShareButton>
           <FacebookMessengerShareButton
             className="mr-1"
-            url={`${origin}/${router.asPath}`}
+            url={`${process.env.PUBLIC_URL}/${router.asPath}`}
             appId={process.env.FACEBOOK_APP_ID}
           >
             <FacebookMessengerIcon size={32} round />
           </FacebookMessengerShareButton>
           <WhatsappShareButton
             className="mr-1"
-            url={`${origin}/${router.asPath}`}
+            url={`${process.env.PUBLIC_URL}/${router.asPath}`}
           >
             <WhatsappIcon size={32} round />
           </WhatsappShareButton>
-          <EmailShareButton className="mr-1" url={`${origin}/${router.asPath}`}>
+          <EmailShareButton
+            className="mr-1"
+            url={`${process.env.PUBLIC_URL}/${router.asPath}`}
+          >
             <EmailIcon size={32} round />
           </EmailShareButton>
         </Row>
