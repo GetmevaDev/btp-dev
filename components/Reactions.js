@@ -24,7 +24,7 @@ const Reactions = ({profile}) => {
   }, [])
 
   useEffect(() => {
-    if (reactions.length) {
+    if (reactions.length && !appState.isGuest) {
       const reactionSel = reactions.find(reaction => reaction.user.id == appState.user.id);
       if (reactionSel) {
         setReactionSelected(reactionSel.type);
