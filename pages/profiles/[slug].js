@@ -28,15 +28,16 @@ import {
   EmailIcon,
 } from "react-share";
 import { useRouter } from "next/router";
+import { FacebookProvider, Comments } from "react-facebook";
 
 export default function Profile({ profile }) {
   const [number, setNumber] = useState("");
   const [alert, setAlert] = useState(null);
   const router = useRouter();
 
-  useEffect(() => {
-    window.FB.XFBML.parse();
-  }, []);
+  // useEffect(() => {
+  //   window.FB.XFBML.parse();
+  // }, []);
 
   const handleSubscribe = () => {
     let phoneNumber = parsePhoneNumber(number, "US");
@@ -94,7 +95,9 @@ export default function Profile({ profile }) {
                 alt="img"
               />
             </div>
-            <div className={styles.profile_dates}>- {profile.deceaseDate}</div>
+            <div className={styles.profile_dates}>
+              {profile.birthDate} - {profile.deceaseDate}
+            </div>
           </Col>
         </Row>
         <Row>
@@ -197,7 +200,9 @@ export default function Profile({ profile }) {
           )}
         </Row>
         <Row className="mt-4 ">
-          <div className="fb-comments" data-numposts="15"></div>
+          <FacebookProvider appId={process.env.FACEBOOK_APP_ID}>
+            <Comments href={`${process.env.PUBLIC_URL}${router.asPath}`} />
+          </FacebookProvider>{" "}
         </Row>
       </Container>
     </section>

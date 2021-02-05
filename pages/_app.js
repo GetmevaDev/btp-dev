@@ -10,13 +10,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <AppWrapper>
       <div id="fb-root"></div>
-      <script
-        async
-        defer
-        crossorigin="anonymous"
-        src={`https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v9.0&appId=${process.env.FACEBOOK_APP_ID}&autoLogAppEvents=1`}
-        nonce="SwLeqip0"
-      ></script>
+
       <Head>
         <link
           rel="stylesheet"
