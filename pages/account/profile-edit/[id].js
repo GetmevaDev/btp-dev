@@ -217,6 +217,9 @@ const ProfileEditScreen = () => {
 
   return (
     <>
+      <Head>
+        <title>{profile ? profile.fullName : "New Profile"}</title>
+      </Head>
       {
         <FormContainer>
           <Breadcrumb>

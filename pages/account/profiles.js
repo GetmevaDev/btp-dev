@@ -65,78 +65,83 @@ const ProfileListScreen = () => {
   };
 
   return (
-    <Container className="py-3">
-      <Row className="align-items-center">
-        <Col>
-          <h2>Profiles</h2>
-        </Col>
-        <Col className="text-right">
-          <Form>
-            <FormControl
-              type="text"
-              placeholder="Search"
-              className="mr-sm-2"
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </Form>
-        </Col>
-        <Col className="text-right">
-          <Link href="/account/profile-edit/new">
-            <Button className="my-3">
-              <i className="fas fa-plus"></i> Create Profile
-            </Button>
-          </Link>
-        </Col>
-      </Row>
-      <>
-        <Table striped bordered hover responsive className="table-sm">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Date of Birth</th>
-              <th>Date of Passing</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredProfiles
-              .slice(indexOfFirstProfile, indexOfLastProfile)
-              .map((profile) => (
-                <tr key={profile.id}>
-                  <td>{profile.fullName}</td>
-                  <td>{profile.birthDate}</td>
-                  <td>{profile.deceaseDate}</td>
-                  <td>
-                    <Link href={`/account/profile-edit/${profile.id}`}>
-                      <Button variant="light" className="btn-sm">
-                        <i className="fas fa-edit"></i>
+    <>
+      <Head>
+        <title>{`BTP Necrology | My Profiles`}</title>
+      </Head>
+      <Container className="py-3">
+        <Row className="align-items-center">
+          <Col>
+            <h2>Profiles</h2>
+          </Col>
+          <Col className="text-right">
+            <Form>
+              <FormControl
+                type="text"
+                placeholder="Search"
+                className="mr-sm-2"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </Form>
+          </Col>
+          <Col className="text-right">
+            <Link href="/account/profile-edit/new">
+              <Button className="my-3">
+                <i className="fas fa-plus"></i> Create Profile
+              </Button>
+            </Link>
+          </Col>
+        </Row>
+        <>
+          <Table striped bordered hover responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date of Birth</th>
+                <th>Date of Passing</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredProfiles
+                .slice(indexOfFirstProfile, indexOfLastProfile)
+                .map((profile) => (
+                  <tr key={profile.id}>
+                    <td>{profile.fullName}</td>
+                    <td>{profile.birthDate}</td>
+                    <td>{profile.deceaseDate}</td>
+                    <td>
+                      <Link href={`/account/profile-edit/${profile.id}`}>
+                        <Button variant="light" className="btn-sm">
+                          <i className="fas fa-edit"></i>
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="danger"
+                        className="btn-sm"
+                        onClick={() => handleDelete(profile)}
+                      >
+                        <i className="fas fa-trash"></i>
                       </Button>
-                    </Link>
-                    <Button
-                      variant="danger"
-                      className="btn-sm"
-                      onClick={() => handleDelete(profile)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-        <div className='pagination'>
-          <Pagination
-            itemClass="page-item"
-            linkClass="page-link"
-            activePage={activePage}
-            itemsCountPerPage={10}
-            totalItemsCount={appState.profiles.length}
-            pageRangeDisplayed={5}
-            onChange={handlePageChange}
-          />
-        </div>
-      </>
-    </Container>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+          <div className="pagination">
+            <Pagination
+              itemClass="page-item"
+              linkClass="page-link"
+              activePage={activePage}
+              itemsCountPerPage={10}
+              totalItemsCount={appState.profiles.length}
+              pageRangeDisplayed={5}
+              onChange={handlePageChange}
+            />
+          </div>
+        </>
+      </Container>
+    </>
   );
 };
 

@@ -159,6 +159,11 @@ const PominkisEditScreen = () => {
 
   return (
     <>
+      <Head>
+        <title>{`BTP Necrology | ${
+          pominki ? pominki.title : "New Pominki"
+        }`}</title>
+      </Head>
       {
         <FormContainer>
           <Breadcrumb>
