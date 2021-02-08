@@ -10,6 +10,7 @@ import slugify from "react-slugify";
 import { SET_PROFILES, UPDATE_PROFILE } from "../../../context/appReducer";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 
 const ReactQuill =
   typeof window === "object" ? require("react-quill") : () => false;

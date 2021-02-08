@@ -14,6 +14,7 @@ import { useAppContext } from "../../context/state";
 import axios from "axios";
 import { parseCookies } from "nookies";
 import { DELETE_PROFILE } from "../../context/appReducer";
+import Head from "next/head";
 
 const ProfileListScreen = () => {
   const [search, setSearch] = useState("");

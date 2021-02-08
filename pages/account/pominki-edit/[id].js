@@ -9,6 +9,7 @@ import { parseCookies, setCookie } from "nookies";
 import Select from "react-select";
 import { SET_POMINKIS, UPDATE_POMINKI } from "../../../context/appReducer";
 import Link from "next/link";
+import Head from "next/head";
 
 const ReactQuill =
   typeof window === "object" ? require("react-quill") : () => false;

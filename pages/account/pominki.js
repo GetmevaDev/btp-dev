@@ -5,6 +5,7 @@ import { useAppContext } from "../../context/state";
 import axios from "axios";
 import { parseCookies } from "nookies";
 import { DELETE_POMINKI } from "../../context/appReducer";
+import Head from "next/head";
 
 const PominkisListScreen = () => {
   const { appState, dispatch } = useAppContext();
