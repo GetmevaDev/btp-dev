@@ -8,6 +8,7 @@ import moment from "moment";
 import { parseCookies, setCookie } from "nookies";
 import Select from "react-select";
 import { SET_POMINKIS, UPDATE_POMINKI } from "../../../context/appReducer";
+import Link from "next/link";
 
 const ReactQuill =
   typeof window === "object" ? require("react-quill") : () => false;
@@ -162,11 +163,11 @@ const PominkisEditScreen = () => {
         <FormContainer>
           <Breadcrumb>
             <Breadcrumb.Item>
-                <Link href="/account/pominkis">
-                Pominkis
-                </Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item active>{pominki.title}</Breadcrumb.Item>
+              <Link href="/account/pominki">Pominkis</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active>
+              {pominki ? pominki.title : "New Pominki"}
+            </Breadcrumb.Item>
           </Breadcrumb>
           {alert.show && <Alert variant={alert.variant}>{alert.msg}</Alert>}
           <h2>{pominki ? `Edit Pominki: ${pominki.title}` : `New Pominki`}</h2>

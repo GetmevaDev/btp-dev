@@ -9,7 +9,7 @@ import { parseCookies } from "nookies";
 import slugify from "react-slugify";
 import { SET_PROFILES, UPDATE_PROFILE } from "../../../context/appReducer";
 import Image from "next/image";
-import Link from 'next/link'
+import Link from "next/link";
 
 const ReactQuill =
   typeof window === "object" ? require("react-quill") : () => false;
@@ -220,12 +220,12 @@ const ProfileEditScreen = () => {
       {
         <FormContainer>
           <Breadcrumb>
-              <Breadcrumb.Item>
-                <Link href="/account/profiles">
-                Profiles
-                </Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item active>{profile.fullName}</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link href="/account/profiles">Profiles</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active>
+              {profile ? profile.fullName : "New Profile"}
+            </Breadcrumb.Item>
           </Breadcrumb>
           {alert.show && <Alert variant={alert.variant}>{alert.msg}</Alert>}
           <h2>
