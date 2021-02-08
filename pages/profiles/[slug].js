@@ -6,8 +6,7 @@ import {
   Col,
   Image,
   Form,
-  InputGroup,
-  FormControl,
+  Card,
   Button,
   Alert,
 } from "react-bootstrap";
@@ -29,6 +28,7 @@ import {
 } from "react-share";
 import { useRouter } from "next/router";
 import { FacebookProvider, Comments } from "react-facebook";
+import { Collapse } from "@material-ui/core";
 
 export default function Profile({ profile }) {
   const [number, setNumber] = useState("");
@@ -42,7 +42,7 @@ export default function Profile({ profile }) {
   const handleSubscribe = () => {
     let phoneNumber = parsePhoneNumber(number, "US");
 
-    if (phoneNumber.isValid()) {
+    if (phoneNumber) {
       axios
         .post(`${process.env.BACKEND_URL}/reminder-subscribers`, {
           number: phoneNumber.number,
@@ -169,40 +169,41 @@ export default function Profile({ profile }) {
           <Col md={12}>
             <Form>
               <Form.Row className="align-items-center">
-                <Col xs="auto">
-                  <InputGroup className="mb-2">
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>
-                        Subscribe for Whatsapp reminders:
-                      </InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <FormControl
-                      id="inlineFormInputGroup"
-                      placeholder="Whatsapp number"
-                      value={number}
-                      onChange={(e) => setNumber(e.target.value)}
-                    />
-                  </InputGroup>
-                </Col>
-
-                <Col xs="auto">
-                  <Button className="mb-2" onClick={handleSubscribe}>
-                    Subscribe
-                  </Button>
+                <Col md={3} sm={12}>
+                  <Card>
+                    <Card.Body>
+                      <Form.Group controlId="formBasicEmail">
+                        <Form.Label>
+                          Subscribe for Whatsapp reminders
+                        </Form.Label>
+                        <Form.Control
+                          type="email"
+                          placeholder="Whatsapp number"
+                          value={number}
+                          onChange={(e) => setNumber(e.target.value)}
+                        />
+                      </Form.Group>
+                      <Button className="mb-2" onClick={handleSubscribe}>
+                        Subscribe
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                  {alert && (
+                    <Alert className="mt-2" variant={alert.variant}>
+                      {alert.text}
+                    </Alert>
+                  )}{" "}
                 </Col>
               </Form.Row>
             </Form>
           </Col>
-          {alert && (
-            <Col md={4} sm={12}>
-              <Alert variant={alert.variant}>{alert.text}</Alert>
-            </Col>
-          )}
         </Row>
-        <Row className="mt-4 ">
-          <FacebookProvider appId={process.env.FACEBOOK_APP_ID}>
-            <Comments href={`${process.env.PUBLIC_URL}${router.asPath}`} />
-          </FacebookProvider>{" "}
+        <Row className="mt-4">
+          <Col>
+            <FacebookProvider appId={process.env.FACEBOOK_APP_ID}>
+              <Comments href={`${process.env.PUBLIC_URL}${router.asPath}`} />
+            </FacebookProvider>{" "}
+          </Col>
         </Row>
       </Container>
     </section>
