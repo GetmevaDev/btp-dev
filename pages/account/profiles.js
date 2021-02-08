@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import styles from "../../styles/Account.module.css";
+import Pagination from "react-js-pagination";
 import {
   Container,
   Table,
   Button,
   Row,
   Col,
-  Pagination,
   Form,
   FormControl,
 } from "react-bootstrap";
@@ -19,11 +18,8 @@ import { DELETE_PROFILE } from "../../context/appReducer";
 const ProfileListScreen = () => {
   const [search, setSearch] = useState("");
   const [filteredProfiles, setFilteredProfiles] = useState([]);
-  const [currentPage, setcurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
-  const [pageNumberLimit] = useState(5);
-  const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
-  const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
+  const profilesPerPage = 10;
+  const [activePage, setCurrentPage] = useState(1);
 
   const { appState, dispatch } = useAppContext();
   const { jwt } = parseCookies();
@@ -37,55 +33,11 @@ const ProfileListScreen = () => {
       );
   }, [search, appState.profiles]);
 
-  const handleClick = (event) => {
-    setcurrentPage(Number(event.target.id));
-  };
+  const indexOfLastProfile = activePage * profilesPerPage;
+  const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
 
-  const pages = [];
-  for (
-    let i = 1;
-    i <= Math.ceil(appState.profiles.length / itemsPerPage);
-    i++
-  ) {
-    pages.push(i);
-  }
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-  const renderPageNumbers = pages.map((number) => {
-    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-      return (
-        <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={currentPage == number ? "active" : null}
-        >
-          {number}
-        </li>
-      );
-    } else {
-      return null;
-    }
-  });
-
-  const handleNextbtn = () => {
-    setcurrentPage(currentPage + 1);
-
-    if (currentPage + 1 > maxPageNumberLimit) {
-      setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-      setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
-    }
-  };
-
-  const handlePrevbtn = () => {
-    setcurrentPage(currentPage - 1);
-
-    if ((currentPage - 1) % pageNumberLimit == 0) {
-      setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-      setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
-    }
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   const handleDelete = (profile) => {
@@ -148,8 +100,7 @@ const ProfileListScreen = () => {
           </thead>
           <tbody>
             {filteredProfiles
-              .slice(indexOfFirstItem, indexOfLastItem)
-
+              .slice(indexOfFirstProfile, indexOfLastProfile)
               .map((profile) => (
                 <tr key={profile.id}>
                   <td>{profile.fullName}</td>
@@ -173,17 +124,17 @@ const ProfileListScreen = () => {
               ))}
           </tbody>
         </Table>
-        <Pagination size="lg" className={styles.pagination}>
-          <Pagination.Prev
-            onClick={handlePrevbtn}
-            disabled={currentPage == pages[0] ? true : false}
+        <div className='pagination'>
+          <Pagination
+            itemClass="page-item"
+            linkClass="page-link"
+            activePage={activePage}
+            itemsCountPerPage={10}
+            totalItemsCount={appState.profiles.length}
+            pageRangeDisplayed={5}
+            onChange={handlePageChange}
           />
-          <Pagination.Item>{renderPageNumbers}</Pagination.Item>
-          <Pagination.Next
-            onClick={handleNextbtn}
-            disabled={currentPage == pages[pages.length - 1] ? true : false}
-          />
-        </Pagination>
+        </div>
       </>
     </Container>
   );

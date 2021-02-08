@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
-import { Form, Button, Alert, Spinner } from "react-bootstrap";
+import { Form, Button, Alert, Spinner, Breadcrumb } from "react-bootstrap";
 import FormContainer from "../../../components/FormContainer";
 import { useRouter } from "next/router";
 import { useAppContext } from "../../../context/state";
@@ -160,6 +160,14 @@ const PominkisEditScreen = () => {
     <>
       {
         <FormContainer>
+          <Breadcrumb>
+            <Breadcrumb.Item>
+                <Link href="/account/pominkis">
+                Pominkis
+                </Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item active>{pominki.title}</Breadcrumb.Item>
+          </Breadcrumb>
           {alert.show && <Alert variant={alert.variant}>{alert.msg}</Alert>}
           <h2>{pominki ? `Edit Pominki: ${pominki.title}` : `New Pominki`}</h2>
 
