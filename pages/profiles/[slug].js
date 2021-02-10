@@ -174,11 +174,11 @@ export default function Profile({ profile }) {
                     <Card.Body>
                       <Form.Group controlId="formBasicEmail">
                         <Form.Label>
-                          Subscribe for Whatsapp reminders
+                          Subscribe for WhatsApp reminders
                         </Form.Label>
                         <Form.Control
                           type="email"
-                          placeholder="Whatsapp number"
+                          placeholder="WhatsApp number"
                           value={number}
                           onChange={(e) => setNumber(e.target.value)}
                         />
