@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
+import Link from "next/link";
+import Message from "../../components/Message";
 import {
   Container,
   Row,
@@ -9,6 +11,8 @@ import {
   Card,
   Button,
   Alert,
+  ListGroup,
+  Spinner,
 } from "react-bootstrap";
 import styles from "../../styles/Profile.module.css";
 import axios from "axios";
@@ -16,6 +20,8 @@ import ErrorPage from "next/error";
 import parsePhoneNumber from "libphonenumber-js";
 import hebrewDate from "hebrew-date";
 import Reactions from "../../components/Reactions";
+import { useAppContext } from "../../context/state";
+import { parseCookies } from "nookies";
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -27,17 +33,66 @@ import {
   EmailIcon,
 } from "react-share";
 import { useRouter } from "next/router";
-import { FacebookProvider, Comments } from "react-facebook";
-import { Collapse } from "@material-ui/core";
+import Comment from "../../components/Comment";
 
-export default function Profile({ profile }) {
+export default function Profile({ profile, commentsInitial }) {
   const [number, setNumber] = useState("");
+  const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const { appState } = useAppContext();
+  const { jwt } = parseCookies();
+  const [comment, setComment] = useState("");
   const router = useRouter();
+  const [currentComment, setCurrentComment] = useState(null);
+  const [comments, setComments] = useState([]);
 
-  // useEffect(() => {
-  //   window.FB.XFBML.parse();
-  // }, []);
+  useEffect(() => {
+    if (commentsInitial) {
+      setComments(commentsInitial);
+      console.log(commentsInitial);
+    }
+  }, []);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    axios
+      .post(
+        `https://btpnecrology.herokuapp.com/comments/profile:${profile.id}`,
+        {
+          authorUser: appState.user,
+          content: comment,
+          threadOf: currentComment,
+          related: [
+            {
+              refId: profile.id,
+              ref: "profile",
+              field: "comments",
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+      .then(() => {
+        setComment("");
+        setLoading(false);
+        setSuccess({
+          show: true,
+        });
+      })
+      .catch((e) => {
+        setAlert({
+          show: true,
+          msg: e.message,
+          variant: "danger",
+        });
+      });
+  };
 
   const handleSubscribe = () => {
     let phoneNumber = parsePhoneNumber(number, "US");
@@ -198,11 +253,80 @@ export default function Profile({ profile }) {
             </Form>
           </Col>
         </Row>
-        <Row className="mt-4">
-          <Col>
-            <FacebookProvider appId={process.env.FACEBOOK_APP_ID}>
-              <Comments href={`${process.env.PUBLIC_URL}${router.asPath}`} />
-            </FacebookProvider>{" "}
+        <Row className="mt-5">
+          <Col md={6}>
+            <h2>Comments</h2>
+            {comments.length === 0 && <Message>No Comments</Message>}
+            <ListGroup variant="flush">
+              {comments.map((comment) => {
+                return (
+                  <ListGroup.Item key={comment._id}>
+                    <Comment comment={comment} />
+                    <Button
+                      variant="info"
+                      onClick={() => setCurrentComment(comment._id)}
+                      href="#comment_form"
+                    >
+                      Reply
+                    </Button>
+                  </ListGroup.Item>
+                );
+              })}
+              <ListGroup.Item>
+                <h2>Write a Comment</h2>
+                {success && (
+                  <Alert variant="success">Comment added successfully</Alert>
+                )}
+                {!appState.isGuest ? (
+                  <Form onSubmit={submitHandler} id="comment_form">
+                    <Form.Group controlId="comment">
+                      {currentComment ? (
+                        <>
+                          {comments.slice(0, 1).map((comment) => (
+                            <div key={comment._id}>
+                              <Form.Label>
+                                Replying to {comment.authorUser.fullName}:{" "}
+                              </Form.Label>
+                              <button
+                                className={styles.reply_button}
+                                onClick={() => setCurrentComment(null)}
+                              >
+                                x
+                              </button>
+                            </div>
+                          ))}
+                        </>
+                      ) : (
+                        <Form.Label>Comment</Form.Label>
+                      )}
+                      <Form.Control
+                        as="textarea"
+                        row="3"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                    <Button type="submit" variant="primary">
+                      {loading ? (
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                          className="mr-1"
+                        />
+                      ) : null}
+                      Submit
+                    </Button>
+                  </Form>
+                ) : (
+                  <Message>
+                    Please <Link href="/login">sign in</Link> to write a comment{" "}
+                  </Message>
+                )}
+              </ListGroup.Item>
+            </ListGroup>
           </Col>
         </Row>
       </Container>
@@ -226,9 +350,15 @@ export async function getStaticProps({ params }) {
     .then(({ data }) => data)
     .catch((e) => null);
 
+  const comments = await axios
+    .get(`${process.env.BACKEND_URL}/comments/profile:${profiles[0].id}`)
+    .then(({ data }) => data)
+    .catch((e) => null);
+
   return {
     props: {
       profile: profiles ? profiles[0] : profiles,
+      commentsInitial: comments,
     },
     revalidate: 60, // In seconds
   };

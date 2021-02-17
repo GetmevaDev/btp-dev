@@ -39,15 +39,20 @@
     margin-bottom: 15px;
 }
 
-.comment_reply_title h1{
-    font-weight: bold;
-    font-size: 45px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+.accordion{
+    margin-top: -20px;
+    margin-bottom: 5px;
 }
 
-.comment_reply_title a{
-    text-decoration: none;
+.accordion a{
+    text-decoration: none !important;
+}
+
+.reply_button {
+    margin-left: 5px;
+    background-color: #DC3545;
+    color: #fff;
+    border: none;
 }
 
 @media only screen and (max-width : 768px) {
