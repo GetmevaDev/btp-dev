@@ -34,8 +34,9 @@ import {
 } from "react-share";
 import { useRouter } from "next/router";
 import Comment from "../../components/Comment";
+import { listToTree } from "../../lib/helpers";
 
-export default function Profile({ profile, commentsInitial }) {
+export default function Profile({ profile }) {
   const [number, setNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
@@ -46,20 +47,25 @@ export default function Profile({ profile, commentsInitial }) {
   const router = useRouter();
   const [currentComment, setCurrentComment] = useState(null);
   const [comments, setComments] = useState([]);
+  const [commentsProcessed, setCommentsProcessed] = useState([]);
 
   useEffect(() => {
-    if (commentsInitial) {
-      setComments(commentsInitial);
-      console.log(commentsInitial);
-    }
+    axios
+      .get(`${process.env.BACKEND_URL}/comments/profile:${profile.id}/flat`)
+      .then(({ data }) => setComments(data))
+      .catch((e) => console.log(e));
   }, []);
+
+  useEffect(() => {
+    setCommentsProcessed(listToTree(comments));
+  }, [comments]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     setLoading(true);
     axios
       .post(
-        `https://btpnecrology.herokuapp.com/comments/profile:${profile.id}`,
+        `${process.env.BACKEND_URL}/comments/profile:${profile.id}`,
         {
           authorUser: appState.user,
           content: comment,
@@ -78,8 +84,10 @@ export default function Profile({ profile, commentsInitial }) {
           },
         }
       )
-      .then(() => {
+      .then(({ data }) => {
+        setComments([...comments, { ...data, threadOf: data.threadOf.id }]);
         setComment("");
+        setCurrentComment(null);
         setLoading(false);
         setSuccess({
           show: true,
@@ -256,19 +264,15 @@ export default function Profile({ profile, commentsInitial }) {
         <Row className="mt-5">
           <Col md={6}>
             <h2>Comments</h2>
-            {comments.length === 0 && <Message>No Comments</Message>}
+            {commentsProcessed.length === 0 && <Message>No Comments</Message>}
             <ListGroup variant="flush">
-              {comments.map((comment) => {
+              {commentsProcessed.map((comment) => {
                 return (
                   <ListGroup.Item key={comment._id}>
-                    <Comment comment={comment} />
-                    <Button
-                      variant="info"
-                      onClick={() => setCurrentComment(comment._id)}
-                      href="#comment_form"
-                    >
-                      Reply
-                    </Button>
+                    <Comment
+                      comment={comment}
+                      setCurrentComment={setCurrentComment}
+                    />
                   </ListGroup.Item>
                 );
               })}
@@ -282,19 +286,23 @@ export default function Profile({ profile, commentsInitial }) {
                     <Form.Group controlId="comment">
                       {currentComment ? (
                         <>
-                          {comments.slice(0, 1).map((comment) => (
-                            <div key={comment._id}>
-                              <Form.Label>
-                                Replying to {comment.authorUser.fullName}:{" "}
-                              </Form.Label>
-                              <button
+                          <div>
+                            <Form.Label>
+                              Replying to{" "}
+                              {
+                                comments.find(
+                                  (comment) => comment.id == currentComment
+                                ).authorUser.username
+                              }
+                              <span
                                 className={styles.reply_button}
                                 onClick={() => setCurrentComment(null)}
                               >
                                 x
-                              </button>
-                            </div>
-                          ))}
+                              </span>{" "}
+                              :
+                            </Form.Label>
+                          </div>
                         </>
                       ) : (
                         <Form.Label>Comment</Form.Label>
@@ -350,15 +358,9 @@ export async function getStaticProps({ params }) {
     .then(({ data }) => data)
     .catch((e) => null);
 
-  const comments = await axios
-    .get(`${process.env.BACKEND_URL}/comments/profile:${profiles[0].id}`)
-    .then(({ data }) => data)
-    .catch((e) => null);
-
   return {
     props: {
       profile: profiles ? profiles[0] : profiles,
-      commentsInitial: comments,
     },
     revalidate: 60, // In seconds
   };
