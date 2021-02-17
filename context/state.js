@@ -7,7 +7,7 @@ import {
   SET_PROFILES,
   SET_NAVIGATIONS,
   SET_USER,
-  LOGOUT,
+  LOGOUT
 } from "./appReducer";
 
 const AppContext = createContext();
@@ -47,7 +47,8 @@ export function AppWrapper({ children }) {
   }, [jwt]);
 
   useEffect(() => {
-    axios.get(`${process.env.BACKEND_URL}/navigations`).then(({ data }) => {
+    axios.get(`${process.env.BACKEND_URL}/navigations`)
+    .then(({ data }) => {
       dispatch({
         type: SET_NAVIGATIONS,
         payload: { navigations: data },
