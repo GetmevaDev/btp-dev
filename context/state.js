@@ -7,7 +7,8 @@ import {
   SET_PROFILES,
   SET_NAVIGATIONS,
   SET_USER,
-  LOGOUT
+  LOGOUT,
+  SET_LOADING,
 } from "./appReducer";
 
 const AppContext = createContext();
@@ -17,6 +18,7 @@ const initialState = {
   navigations: [],
   pominkis: [],
   profiles: [],
+  isLoading: false,
 };
 
 export function AppWrapper({ children }) {
@@ -47,13 +49,28 @@ export function AppWrapper({ children }) {
   }, [jwt]);
 
   useEffect(() => {
-    axios.get(`${process.env.BACKEND_URL}/navigations`)
-    .then(({ data }) => {
-      dispatch({
-        type: SET_NAVIGATIONS,
-        payload: { navigations: data },
-      });
+    dispatch({
+      type: SET_LOADING,
+      payload: { isLoading: true },
     });
+    axios
+      .get(`${process.env.BACKEND_URL}/navigations`)
+      .then(({ data }) => {
+        dispatch({
+          type: SET_NAVIGATIONS,
+          payload: { navigations: data },
+        });
+        dispatch({
+          type: SET_LOADING,
+          payload: { isLoading: false },
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: SET_LOADING,
+          payload: { isLoading: false },
+        });
+      });
   }, []);
 
   useEffect(() => {
