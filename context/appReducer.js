@@ -1,3 +1,5 @@
+import { destroyCookie } from "nookies";
+
 export const SET_POMINKIS = "SET_POMINKIS";
 export const SET_PROFILES = "SET_PROFILES";
 export const SET_NAVIGATIONS = "SET_NAVIGATIONS";
@@ -7,7 +9,7 @@ export const UPDATE_PROFILE = "UPDATE_PROFILE";
 export const DELETE_POMINKI = "DELETE_POMINKI";
 export const DELETE_PROFILE = "DELETE_PROFILE";
 export const LOGOUT = "LOGOUT";
-import { destroyCookie } from "nookies";
+export const SET_LOADING = "SET_LOADING";
 
 const updatePominki = (pominki, pominkis) => {
   const updatedPominkis = pominkis.map((el) => {
@@ -80,6 +82,8 @@ export const appReducer = (state, action) => {
     case LOGOUT:
       destroyCookie(null, "jwt");
       return { ...state, user: null, isGuest: true };
+    case SET_LOADING:
+      return { ...state, isLoading: action.payload.isLoading };
     default:
       return;
   }
