@@ -35,6 +35,7 @@ import {
 import { useRouter } from "next/router";
 import Comment from "../../components/Comment";
 import { listToTree } from "../../lib/helpers";
+import download from "downloadjs";
 
 export default function Profile({ profile }) {
   const [number, setNumber] = useState("");
@@ -126,6 +127,24 @@ export default function Profile({ profile }) {
     } else {
       setAlert({ variant: "danger", text: "Invalid number" });
     }
+  };
+
+  const downloadQr = () => {
+    axios
+      .get(`${process.env.PUBLIC_URL}/api/qrcode`, {
+        params: {
+          url: `${process.env.PUBLIC_URL}${router.asPath}`,
+        },
+        responseType: "blob",
+      })
+      .then(({ data }) => {
+        const blob = new Blob([data], { type: "image/png" });
+        const imageFile = new File([blob], `${profile.fullName}-qr.png`, {
+          type: "image/png",
+        });
+        download(imageFile);
+      })
+      .catch((e) => console.log(e.message));
   };
 
   if (!profile) {
@@ -227,6 +246,9 @@ export default function Profile({ profile }) {
           >
             <EmailIcon size={32} round />
           </EmailShareButton>
+          <div onClick={downloadQr} className={styles.qr_code}>
+            <Image src="/icons/qr-code.png" alt="" width={28} height={28} />
+          </div>
         </Row>
         <Row className="mt-4">
           <Col md={12}>
@@ -340,6 +362,13 @@ export default function Profile({ profile }) {
       </Container>
     </section>
   );
+}
+
+function blobToFile(theBlob, fileName) {
+  //A Blob() is almost a File() - it's just missing the two properties below which we will add
+  theBlob.lastModifiedDate = new Date();
+  theBlob.name = fileName;
+  return theBlob;
 }
 
 export async function getStaticPaths() {

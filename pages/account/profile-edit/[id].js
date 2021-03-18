@@ -99,8 +99,12 @@ const ProfileEditScreen = () => {
     }
   };
 
-  const isSlugUnique = (slug) => {
-    return !appState.profiles.find((profile) => profile.slug == slug);
+  const checkSlugUnique = async (slug) => {
+    const profileWithSlug = await axios.get(
+      `${process.env.BACKEND_URL}/profiles?slug=${slug}`
+    );
+
+    return !profileWithSlug.data.length;
   };
 
   const createProfileWithImage = () => {
@@ -179,7 +183,8 @@ const ProfileEditScreen = () => {
           })
         );
     } else {
-      if (!isSlugUnique(slug)) {
+      const isSlugUnique = await checkSlugUnique(slug);
+      if (!isSlugUnique) {
         setAlert({
           show: true,
           msg: "Slug already exists! Please, change it in the form below",
