@@ -18,12 +18,14 @@ app.use(bodyParser.json());
 app.use(pino);
 
 app.get('/api/greeting', (req, res) => {
+
     const name = req.query.name || 'World';
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
     res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+    res.end(`<h2>Server working !!!</h2>`);
 });
 
 

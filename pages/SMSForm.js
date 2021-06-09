@@ -51,13 +51,13 @@ function SMSForm ({ profileId }) {
                             <Card.Body>
                                 <Form.Group controlId="formBasicEmail">
                                     <Form.Label>
-                                        Subscribe for WhatsApp reminders
+                                        Subscribe for Text message reminders
                                     </Form.Label>
                                     <Form.Control
                                         type="tel"
                                         name="Number_Phone"
                                         id="Number_Phone"
-                                        placeholder="WhatsApp number"
+                                        placeholder="Phone number"
                                         value={phoneNumber}
                                         onChange={e => {setPhoneNumber(e.target.value)}}
                                     />
