@@ -36,9 +36,14 @@ import { useRouter } from "next/router";
 import Comment from "../../components/Comment";
 import { listToTree } from "../../lib/helpers";
 import download from "downloadjs";
+import SMSForm from "../SMSForm";
 
 export default function Profile({ profile }) {
   const [number, setNumber] = useState("");
+  const [error, setError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -103,31 +108,60 @@ export default function Profile({ profile }) {
       });
   };
 
-  const handleSubscribe = () => {
-    let phoneNumber = parsePhoneNumber(number, "US");
 
-    if (phoneNumber) {
-      axios
-        .post(`${process.env.BACKEND_URL}/reminder-subscribers`, {
-          number: phoneNumber.number,
-          profile,
-        })
-        .then(() => {
-          setAlert({
-            text: "Successfully subscribed!",
-            variant: "success",
-          });
-        })
-        .catch((e) => {
-          setAlert({
-            text: e.message,
-            variant: "danger",
-          });
-        });
-    } else {
-      setAlert({ variant: "danger", text: "Invalid number" });
-    }
-  };
+  // const handleSubscribe = (event) => {
+  //   event.preventDefault();
+  //   this.setState({ submitting: true });
+  //   fetch('/api/messages', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(this.state.message)
+  //   })
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         if (data.success) {
+  //           setSubmitting(false);
+  //           setError(false);
+  //           setNumber('');
+  //           // this.setState({
+  //           //   error: false,
+  //           //   submitting: false,
+  //           //   message: {
+  //           //     to: '',
+  //           //     body: ''
+  //           //   }
+  //           // });
+  //         } else {
+  //           setError(true);
+  //           setSubmitting(false)
+  //         }
+  //       });
+  //   // let phoneNumber = parsePhoneNumber(number, "US");
+  //   //
+  //   // if (phoneNumber) {
+  //   //   axios
+  //   //     .post(`${process.env.BACKEND_URL}/reminder-subscribers`, {
+  //   //       number: phoneNumber.number,
+  //   //       profile,
+  //   //     })
+  //   //     .then(() => {
+  //   //       setAlert({
+  //   //         text: "Successfully subscribed!",
+  //   //         variant: "success",
+  //   //       });
+  //   //     })
+  //   //     .catch((e) => {
+  //   //       setAlert({
+  //   //         text: e.message,
+  //   //         variant: "danger",
+  //   //       });
+  //   //     });
+  //   // } else {
+  //   //   setAlert({ variant: "danger", text: "Invalid number" });
+  //   // }
+  // };
 
   const downloadQr = () => {
     axios
@@ -252,35 +286,42 @@ export default function Profile({ profile }) {
         </Row>
         <Row className="mt-4">
           <Col md={12}>
-            <Form>
-              <Form.Row className="align-items-center">
-                <Col md={3} sm={12}>
-                  <Card>
-                    <Card.Body>
-                      <Form.Group controlId="formBasicEmail">
-                        <Form.Label>
-                          Subscribe for WhatsApp reminders
-                        </Form.Label>
-                        <Form.Control
-                          type="email"
-                          placeholder="WhatsApp number"
-                          value={number}
-                          onChange={(e) => setNumber(e.target.value)}
-                        />
-                      </Form.Group>
-                      <Button className="mb-2" onClick={handleSubscribe}>
-                        Subscribe
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                  {alert && (
-                    <Alert className="mt-2" variant={alert.variant}>
-                      {alert.text}
-                    </Alert>
-                  )}{" "}
-                </Col>
-              </Form.Row>
-            </Form>
+            <SMSForm
+                profileId={profile.id}
+            />
+
+            {/*<Form>*/}
+            {/*  <Form.Row className="align-items-center">*/}
+            {/*    <Col md={3} sm={12}>*/}
+            {/*      <Card>*/}
+            {/*        <Card.Body>*/}
+            {/*          <Form.Group controlId="formBasicEmail">*/}
+            {/*            <Form.Label>*/}
+            {/*              Subscribe for WhatsApp reminders*/}
+            {/*            </Form.Label>*/}
+            {/*            <Form.Control*/}
+            {/*              type="tel"*/}
+            {/*              name="to"*/}
+            {/*              id="to"*/}
+            {/*              placeholder="WhatsApp number"*/}
+            {/*              value={number}*/}
+            {/*              onChange={(e) => setNumber(e.target.value)}*/}
+            {/*            />*/}
+            {/*          </Form.Group>*/}
+            {/*          <Button className="mb-2" >*/}
+            {/*            Subscribe*/}
+            {/*          </Button>*/}
+            {/*        </Card.Body>*/}
+
+            {/*      </Card>*/}
+            {/*      {alert && (*/}
+            {/*        <Alert className="mt-2" variant={alert.variant}>*/}
+            {/*          {alert.text}*/}
+            {/*        </Alert>*/}
+            {/*      )}{" "}*/}
+            {/*    </Col>*/}
+            {/*  </Form.Row>*/}
+            {/*</Form>*/}
           </Col>
         </Row>
         <Row className="mt-5">

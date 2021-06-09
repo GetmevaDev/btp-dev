@@ -44,7 +44,7 @@ export default function Home({ profiles }) {
   }, []);
 
   useEffect(() => {
-    console.log("her");
+
     const currentElement = element;
     const currentObserver = observer.current;
 
