@@ -90,7 +90,7 @@ export default function Header() {
               <Link href="/">
                 <Navbar.Brand className={styles.logo}>
                   <img
-                    src="https://btpnecrology.com/wp-content/uploads/2020/07/btp_logo-1.svg"
+                    src="/Vechna_logo_approve.svg"
                     width="50"
                     className="d-inline-block align-top"
                     alt="BTP"
