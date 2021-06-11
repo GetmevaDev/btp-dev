@@ -90,8 +90,8 @@ export default function Header() {
               <Link href="/">
                 <Navbar.Brand className={styles.logo}>
                   <img
-                    src="/Vechna_logo_approve.svg"
-                    width="50"
+                    src="/Vechna_logo_web.svg"
+                    width="70"
                     className="d-inline-block align-top"
                     alt="BTP"
                   />
