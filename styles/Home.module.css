@@ -33,6 +33,15 @@
 .carddeck {
 	margin-bottom: 30px;
 }
+.blockText a{
+	display: inline-block;
+	color: #fff;
+	font-size: 20px;
+	text-decoration: none;
+	padding: 10px;
+	background: #8b9dc3;
+	margin-top: 20px;
+}
 
 @media only screen and (max-width: 1024px) and (min-width: 992px) {
 	.carousel_info {

@@ -11,7 +11,7 @@ import {
   Carousel
 } from "react-bootstrap";
 import styles from "../styles/Home.module.css";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import usePagination from "../lib/usePagination";
 import axios from "axios";
 
@@ -128,11 +128,24 @@ export default function Home({ profiles }) {
                   </Col>
                 ))}
             </CardDeck>
-            {currentPage !== maxPage ? (
+            {(currentPage - 1) !== maxPage ? (
               <h2 ref={setElement}>Loading...</h2>
             ) : (
-              <h2>No more profiles available...</h2>
+                <div className={styles.blockText} style={{
+                  position: 'absolute',
+                  right: '0',
+                  left: '0',
+                  margin: '0 auto',
+                  bottom: '50%',
+                  transform: 'translate(0, 160%)',
+                  textAlign: 'center'
+                }}>
+                  <h2>There is nothing here yet. Log in and be the first!</h2>
+                  <Link href="/login">Login</Link>
+                </div>
+
             )}
+            {console.log(currentPage + ',' + maxPage)}
           </Col>
         </Row>
       </Container>
