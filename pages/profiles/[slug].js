@@ -69,6 +69,7 @@ export default function Profile({ profile }) {
   const submitHandler = (e) => {
     e.preventDefault();
     setLoading(true);
+    window.location.reload(false);
     axios
       .post(
         `${process.env.BACKEND_URL}/comments/profile:${profile.id}`,

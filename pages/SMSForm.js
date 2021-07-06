@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-
+import { parseCookies } from "nookies";
 import {Button, Card, Col, Form, Alert} from "react-bootstrap";
 import  getConfig from "next/config"
 
 function SMSForm ({ profileId }) {
-
+    const { jwt } = parseCookies();
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [alert,setAlert] = useState(null);
@@ -19,7 +19,7 @@ function SMSForm ({ profileId }) {
         const add = await fetch(`${process.env.BACKEND_URL}/profiles/${profileId}`, {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYmI2YTRhM2E0NDNmMWExNDVjZjRkZCIsImlhdCI6MTYyMzA1ODI3NSwiZXhwIjoxNzQ5MjAyMjc1fQ.3r98ZU_0ImdYh1faPmHCEpMC4if8B1i7_U2npP7rzG8`,
+                'Authorization': `Bearer ${jwt}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },

@@ -39,6 +39,7 @@ const Reactions = ({profile}) => {
         Authorization: `Bearer ${jwt}`,
       },
     };
+    console.log(config)
 
     if (!reactionSelected) {
       setIsLoading(true)

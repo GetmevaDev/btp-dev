@@ -128,9 +128,7 @@ export default function Home({ profiles }) {
                   </Col>
                 ))}
             </CardDeck>
-            {(currentPage - 1) !== maxPage ? (
-              <h2 ref={setElement}>Loading...</h2>
-            ) : (
+            {(currentPage - 1) !== maxPage ? null : (
                 <div className={styles.blockText} style={{
                   position: 'absolute',
                   right: '0',
