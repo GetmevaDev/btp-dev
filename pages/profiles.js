@@ -11,6 +11,8 @@ import {
   FormControl,
   Image,
 } from "react-bootstrap";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import styles from "../styles/Profiles.module.css";
 
 export default function Profiles({ profiles }) {
@@ -85,18 +87,28 @@ export default function Profiles({ profiles }) {
                   <ListGroup.Item key={profile.id}>
                     <Row>
                       <Col md={2} className={styles.img}>
-                        <Image
-                          src={
-                            profile.image
-                              ? profile.image.url
-                              : "https://via.placeholder.com/150.png"
-                          }
-                          alt="Image"
-                          style={{ objectFit: "cover" }}
-                          roundedCircle
-                          width="100px"
-                          height="100px"
+                        <LazyLoadImage
+                        src={profile.image
+                            ? profile.image.url
+                            : "https://via.placeholder.com/150.png"}
+                        alt="Image"
+                        style={{ objectFit: "cover" }}
+                        effect="blur"
+                        width="100px"
+                        height="100px"
                         />
+                        {/*<Image*/}
+                        {/*  src={*/}
+                        {/*    profile.image*/}
+                        {/*      ? profile.image.url*/}
+                        {/*      : "https://via.placeholder.com/150.png"*/}
+                        {/*  }*/}
+                        {/*  alt="Image"*/}
+                        {/*  style={{ objectFit: "cover" }}*/}
+                        {/*  roundedCircle*/}
+                        {/*  width="100px"*/}
+                        {/*  height="100px"*/}
+                        {/*/>*/}
                       </Col>
                       <Col md={6} className={styles.name}>
                         <br />

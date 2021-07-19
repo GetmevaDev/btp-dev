@@ -14,7 +14,8 @@ import styles from "../styles/Home.module.css";
 import React, { useState, useRef, useEffect } from "react";
 import usePagination from "../lib/usePagination";
 import axios from "axios";
-
+import {LazyLoadImage} from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/blur.css';
 export default function Home({ profiles }) {
   const { next, currentPage, currentData, maxPage } = usePagination(
     profiles,
@@ -69,18 +70,28 @@ export default function Home({ profiles }) {
           {profiles &&
             profiles.slice(0, 7).map((profile) => (
               <Carousel.Item className={styles.carousel_item} key={profile._id}>
-                <Image
-                  className={styles.carousel_img}
-                  width="500"
-                  height="400"
-                  style={{ objectFit: "cover" }}
-                  src={
-                    profile.image
-                      ? profile.image.url
-                      : "https://via.placeholder.com/500x400.png"
-                  }
-                  alt="First slide"
+                <LazyLoadImage
+                    width="500"
+                    height="400"
+                    src={profile.image
+                        ? profile.image.url
+                        : "https://via.placeholder.com/500x400.png"}
+                    alt="Image"
+                    style={{ objectFit: "cover" }}
+                    effect="blur"
                 />
+                {/*<Image*/}
+                {/*  className={styles.carousel_img}*/}
+                {/*  width="500"*/}
+                {/*  height="400"*/}
+                {/*  style={{ objectFit: "cover" }}*/}
+                {/*  src={*/}
+                {/*    profile.image*/}
+                {/*      ? profile.image.url*/}
+                {/*      : "https://via.placeholder.com/500x400.png"*/}
+                {/*  }*/}
+                {/*  alt="First slide"*/}
+                {/*/>*/}
                 <Carousel.Caption className={styles.carousel_info}>
                   <h3>{profile.fullName}</h3>
                   <p>{profile.deceaseDate}</p>
@@ -107,16 +118,26 @@ export default function Home({ profiles }) {
                     className={styles.carddeck}
                   >
                     <Card style={{ width: "16rem", height: "100%" }}>
-                      <Card.Img
-                        variant="top"
-                        height="275px"
-                        style={{ objectFit: "cover" }}
-                        src={
-                          profile.image
-                            ? profile.image.url
-                            : "https://via.placeholder.com/150.png"
-                        }
+                      <LazyLoadImage
+                          src={
+                            profile.image
+                                ? profile.image.url
+                                : "https://via.placeholder.com/150.png"
+                          }
+                          variant="top"
+                          height="275px"
+                          style={{ objectFit: "cover" }}
                       />
+                      {/*<Card.Img*/}
+                      {/*  variant="top"*/}
+                      {/*  height="275px"*/}
+                      {/*  style={{ objectFit: "cover" }}*/}
+                      {/*  src={*/}
+                      {/*    profile.image*/}
+                      {/*      ? profile.image.url*/}
+                      {/*      : "https://via.placeholder.com/150.png"*/}
+                      {/*  }*/}
+                      {/*/>*/}
                       <Card.Body>
                         <Card.Title>{profile.fullName}</Card.Title>
                         <Card.Text>{profile.deceaseDate}</Card.Text>
@@ -128,7 +149,7 @@ export default function Home({ profiles }) {
                   </Col>
                 ))}
             </CardDeck>
-            {(currentPage - 1) !== maxPage ? null : (
+            {currentPage !== maxPage ? null : (
                 <div className={styles.blockText} style={{
                   position: 'absolute',
                   right: '0',
