@@ -24,6 +24,7 @@ export default function Header() {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [profiles, setProfiles] = useState([]);
+  const [toggleMenu, setToggleMenu] = useState(false)
 
   useEffect(() => {
     axios
@@ -74,6 +75,14 @@ export default function Header() {
     [mainNavigation]
   );
 
+  const switchMenu = () => {
+    setToggleMenu(!toggleMenu)
+  }
+
+  const closeMenu = () => {
+    setToggleMenu(false)
+  }
+
   return (
     <>
       {appState.isLoading ? (
@@ -85,6 +94,7 @@ export default function Header() {
             expand="lg"
             variant="dark"
             className={styles.navbar}
+            expanded={toggleMenu}
           >
             <Container>
               <Link href="/">
@@ -97,7 +107,7 @@ export default function Header() {
                   />
                 </Navbar.Brand>
               </Link>
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Toggle onClick={switchMenu} aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
                 <Form inline>
                   <FormControl
@@ -113,9 +123,16 @@ export default function Header() {
                     navItems.map((navItem) => {
                       if (!navItem.parent && !navItem.children.length) {
                         return (
-                          <Link href={navItem.path} key={navItem.id}>
-                            {navItem.name}
-                          </Link>
+                            <div
+                                onClick={closeMenu}
+                                style={{
+                              display: 'inline',
+                            }}>
+                              <Link  href={navItem.path} key={navItem.id}>
+                                {navItem.name}
+                              </Link>
+                            </div>
+
                         );
                       } else if (!navItem.parent && navItem.children.length) {
                         if (navItem.path == "/account" && appState.isGuest) {

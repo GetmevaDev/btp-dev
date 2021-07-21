@@ -6,11 +6,12 @@
   background: #3b5998;
 }
 
-.navbar a {
+.navbar div a {
   color: #fff;
   font-size: 20px;
   text-decoration: none;
   padding: 10px;
+  display: inline-block;
 }
 
 
