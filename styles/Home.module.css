@@ -30,6 +30,10 @@
 	margin-bottom: 30px;
 }
 
+.blockCard{
+	padding: 0 5px;
+}
+
 .blockCard img{
 	max-width: 100%;
 }
