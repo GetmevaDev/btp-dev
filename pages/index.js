@@ -16,49 +16,70 @@ import usePagination from "../lib/usePagination";
 import axios from "axios";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
+
 export default function Home({ profiles }) {
-  const { next, currentPage, currentData, maxPage } = usePagination(
-    profiles,
-    4
-  );
 
-  const currentProfiles = currentData();
+    // ========================OLD CODE=====================
 
-  const [element, setElement] = useState(null);
+//   const { next, currentPage, currentData, maxPage } = usePagination(
+//     profiles,
+//       4
+//   );
+//
+//
+//
+//   const currentProfiles = currentData();
+//
+//   const [element, setElement] = useState(null);
+//
+//   const observer = useRef();
+//   const prevY = useRef(0);
+//
+//   useEffect(() => {
+//     observer.current = new IntersectionObserver(
+//       (entries) => {
+//
+//         const firstEntry = entries[0];
+//         const y = firstEntry.boundingClientRect.y;
+//
+//         if (prevY.current > y) {
+//           next();
+//         }
+//         prevY.current = y;
+//       },
+//       { threshold: 0.5 }
+//     );
+//
+//
+//   }, []);
+//
+//   useEffect(() => {
+//
+//     const currentElement = element;
+//     const currentObserver = observer.current;
+//
+//
+//     if (currentElement) {
+//       currentObserver.observe(currentElement);
+//     }
+//
+//     return () => {
+//       if (currentElement) {
+//         currentObserver.unobserve(currentElement);
+//       }
+//     };
+//   }, [element]);
 
-  const observer = useRef();
-  const prevY = useRef(0);
+    const [profile, setProfile] = useState(profiles)
 
-  useEffect(() => {
-    observer.current = new IntersectionObserver(
-      (entries) => {
-        const firstEntry = entries[0];
-        const y = firstEntry.boundingClientRect.y;
 
-        if (prevY.current > y) {
-          next();
-        }
-        prevY.current = y;
-      },
-      { threshold: 0.5 }
-    );
-  }, []);
-
-  useEffect(() => {
-
-    const currentElement = element;
-    const currentObserver = observer.current;
-
-    if (currentElement) {
-      currentObserver.observe(currentElement);
+    const getMoreProfiles = async () => {
+        const res = await fetch(`${process.env.BACKEND_URL}/profiles?_start=${profile.length}&_sort=createdAt:DESC&_limit=4`);
+        const newProfiles = await res.json();
+        setProfile(profile => [...profile, ...newProfiles])
     }
-
-    return () => {
-      if (currentElement) {
-        currentObserver.unobserve(currentElement);
-      }
-    };
-  }, [element]);
 
   return (
     <section className="py-4">
@@ -80,18 +101,6 @@ export default function Home({ profiles }) {
                     style={{ objectFit: "cover" }}
                     effect="blur"
                 />
-                {/*<Image*/}
-                {/*  className={styles.carousel_img}*/}
-                {/*  width="500"*/}
-                {/*  height="400"*/}
-                {/*  style={{ objectFit: "cover" }}*/}
-                {/*  src={*/}
-                {/*    profile.image*/}
-                {/*      ? profile.image.url*/}
-                {/*      : "https://via.placeholder.com/500x400.png"*/}
-                {/*  }*/}
-                {/*  alt="First slide"*/}
-                {/*/>*/}
                 <Carousel.Caption className={styles.carousel_info}>
                   <h3>{profile.fullName}</h3>
                   <p>{profile.deceaseDate}</p>
@@ -107,49 +116,89 @@ export default function Home({ profiles }) {
         <Row>
           <Col>
             <CardDeck>
-              {currentProfiles &&
-                currentProfiles.map((profile) => (
-                  <Col
-                    sm={12}
-                    md={6}
-                    lg={4}
-                    xl={3}
-                    key={profile._id}
-                    className={styles.carddeck}
-                  >
-                    <Card style={{ width: "16rem", height: "100%" }}>
-                      <LazyLoadImage
-                          src={
-                            profile.image
-                                ? profile.image.url
-                                : "https://via.placeholder.com/150.png"
-                          }
-                          variant="top"
-                          height="275px"
-                          style={{ objectFit: "cover" }}
-                      />
-                      {/*<Card.Img*/}
-                      {/*  variant="top"*/}
-                      {/*  height="275px"*/}
-                      {/*  style={{ objectFit: "cover" }}*/}
-                      {/*  src={*/}
-                      {/*    profile.image*/}
-                      {/*      ? profile.image.url*/}
-                      {/*      : "https://via.placeholder.com/150.png"*/}
-                      {/*  }*/}
-                      {/*/>*/}
-                      <Card.Body>
-                        <Card.Title>{profile.fullName}</Card.Title>
-                        <Card.Text>{profile.deceaseDate}</Card.Text>
-                        <Link href={`/profiles/${profile.slug}`}>
-                          <Button variant="primary">View Profile</Button>
-                        </Link>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
+              <InfiniteScroll
+                  dataLength={profile.length}
+                  next={getMoreProfiles}
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    overflow: 'hidden' }} //To put endMessage and loader to the top.
+                  hasMore={true}
+                  // loader={<h4>Loading...</h4>}
+                  scrollableTarget="scrollableDiv"
+
+                  className={styles.blockCard}
+                  pullDownToRefreshThreshold={50}
+              >
+                {profile &&
+                profile.map((profile) => (
+                    <Col
+                      sm={12}
+                      md={6}
+                      lg={4}
+                      xl={3}
+                      key={profile._id}
+                      className={styles.carddeck}
+                    >
+
+                      <Card style={{ width: "16rem", height: "100%" }}>
+                        <LazyLoadImage
+                            src={
+                              profile.image
+                                  ? profile.image.url
+                                  : "https://via.placeholder.com/150.png"
+                            }
+                            variant="top"
+                            height="275px"
+                            style={{ objectFit: "cover" }}
+                            effect="blur"
+                        />
+                        <Card.Body>
+                          <Card.Title>{profile.fullName}</Card.Title>
+                          <Card.Text>{profile.deceaseDate}</Card.Text>
+                          <Link href={`/profiles/${profile.slug}`}>
+                            <Button variant="primary">View Profile</Button>
+                          </Link>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+              </InfiniteScroll>
+
+              {/*{profiles &&*/}
+              {/*profiles.map((profile) => (*/}
+              {/*    <Col*/}
+              {/*      sm={12}*/}
+              {/*      md={6}*/}
+              {/*      lg={4}*/}
+              {/*      xl={3}*/}
+              {/*      key={profile._id}*/}
+              {/*      className={styles.carddeck}*/}
+              {/*    >*/}
+
+              {/*      <Card style={{ width: "16rem", height: "100%" }}>*/}
+              {/*        <LazyLoadImage*/}
+              {/*            src={*/}
+              {/*              profile.image*/}
+              {/*                  ? profile.image.url*/}
+              {/*                  : "https://via.placeholder.com/150.png"*/}
+              {/*            }*/}
+              {/*            variant="top"*/}
+              {/*            height="275px"*/}
+              {/*            style={{ objectFit: "cover" }}*/}
+              {/*        />*/}
+              {/*        <Card.Body>*/}
+              {/*          <Card.Title>{profile.fullName}</Card.Title>*/}
+              {/*          <Card.Text>{profile.deceaseDate}</Card.Text>*/}
+              {/*          <Link href={`/profiles/${profile.slug}`}>*/}
+              {/*            <Button variant="primary">View Profile</Button>*/}
+              {/*          </Link>*/}
+              {/*        </Card.Body>*/}
+              {/*      </Card>*/}
+              {/*    </Col>*/}
+              {/*  ))}*/}
             </CardDeck>
-            {currentPage !== maxPage ? null : (
+            {profile.length !== 0 ? null : (
                 <div className={styles.blockText} style={{
                   position: 'absolute',
                   right: '0',
@@ -164,7 +213,7 @@ export default function Home({ profiles }) {
                 </div>
 
             )}
-            {console.log(currentPage + ',' + maxPage)}
+
           </Col>
         </Row>
       </Container>
@@ -174,7 +223,7 @@ export default function Home({ profiles }) {
 
 export async function getStaticProps() {
   const { data } = await axios.get(
-    `${process.env.BACKEND_URL}/profiles?_sort=createdAt:DESC&_limit=10000`
+    `${process.env.BACKEND_URL}/profiles?_sort=createdAt:DESC&_limit=4`
   );
 
   return {

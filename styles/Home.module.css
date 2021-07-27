@@ -30,6 +30,10 @@
 	margin-bottom: 30px;
 }
 
+.blockCard img{
+	max-width: 100%;
+}
+
 .carddeck {
 	margin-bottom: 30px;
 }
