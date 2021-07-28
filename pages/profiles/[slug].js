@@ -167,6 +167,7 @@ export default function Profile({ profile }) {
   const downloadQr = () => {
     axios
       .get(`${process.env.PUBLIC_URL}/api/qrcode`, {
+        headers: {"Access-Control-Allow-Origin": "*"},
         params: {
           url: `${process.env.PUBLIC_URL}${router.asPath}`,
         },
