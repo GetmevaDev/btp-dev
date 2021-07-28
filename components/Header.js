@@ -88,7 +88,15 @@ export default function Header() {
       {appState.isLoading ? (
         <Loader />
       ) : (
-        <header>
+        <>
+        <header
+        style = {
+          {
+            position: 'sticky',
+            top: 0,
+            zIndex: 20,
+          }
+        } >
           <Navbar
             collapseOnSelect
             expand="lg"
@@ -201,15 +209,17 @@ export default function Header() {
               ) : null}
             </Container>
           </ClickAwayListener>
-          <div className={styles.marquee}>
-            <p>
-              <Link href="/callDavidov">
-                Call Sam Davidov for mortgages (917) 578-6009
-              </Link>
-              <Link href="/inMemory">In Memory We Live Forever</Link>
-            </p>
-          </div>
+          
         </header>
+          <div  >
+            <div className = {styles.marquee} >
+            <p>
+              <Link href = "/callDavidov">Call Sam Davidov for mortgages(917) 578 - 6009 </Link>
+              <Link href = "/inMemory" > In Memory We Live Forever </Link>
+            </p>
+         </div>
+           </div>
+        </>
       )}
     </>
   );
