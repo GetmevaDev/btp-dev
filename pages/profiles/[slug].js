@@ -40,7 +40,7 @@ import SMSForm from "../SMSForm";
 
 export default function Profile({ profile }) {
 
-  console.log(profile)
+
   const [number, setNumber] = useState("");
   const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -59,11 +59,11 @@ export default function Profile({ profile }) {
 
   useEffect(() => {
     axios
-        .get(`${process.env.BACKEND_URL}/comments`)
+        .get(`${process.env.BACKEND_URL}/comments?_limit=10000`)
         .then(({ data }) => {
-          console.log(data)
+
           const commentProfile = data.filter(comment => comment.profile.id === profile.id);
-          console.log(commentProfile)
+
           setComments(commentProfile)
         })
 
@@ -124,59 +124,6 @@ export default function Profile({ profile }) {
   };
 
 
-  // const handleSubscribe = (event) => {
-  //   event.preventDefault();
-  //   this.setState({ submitting: true });
-  //   fetch('/api/messages', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(this.state.message)
-  //   })
-  //       .then(res => res.json())
-  //       .then(data => {
-  //         if (data.success) {
-  //           setSubmitting(false);
-  //           setError(false);
-  //           setNumber('');
-  //           // this.setState({
-  //           //   error: false,
-  //           //   submitting: false,
-  //           //   message: {
-  //           //     to: '',
-  //           //     body: ''
-  //           //   }
-  //           // });
-  //         } else {
-  //           setError(true);
-  //           setSubmitting(false)
-  //         }
-  //       });
-  //   // let phoneNumber = parsePhoneNumber(number, "US");
-  //   //
-  //   // if (phoneNumber) {
-  //   //   axios
-  //   //     .post(`${process.env.BACKEND_URL}/reminder-subscribers`, {
-  //   //       number: phoneNumber.number,
-  //   //       profile,
-  //   //     })
-  //   //     .then(() => {
-  //   //       setAlert({
-  //   //         text: "Successfully subscribed!",
-  //   //         variant: "success",
-  //   //       });
-  //   //     })
-  //   //     .catch((e) => {
-  //   //       setAlert({
-  //   //         text: e.message,
-  //   //         variant: "danger",
-  //   //       });
-  //   //     });
-  //   // } else {
-  //   //   setAlert({ variant: "danger", text: "Invalid number" });
-  //   // }
-  // };
 
   const downloadQr = () => {
     axios

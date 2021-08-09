@@ -1,5 +1,9 @@
 import { Col, Button } from "react-bootstrap";
 
+import React from "react";
+import ReactionForComment from "./ReactionForComment";
+
+
 export default function Comment({ comment, setCurrentComment }) {
 
     const nestedComments = (comment.children || []).map((comment) => {
@@ -10,8 +14,12 @@ export default function Comment({ comment, setCurrentComment }) {
         <>
             <div key={comment.id}>
                 <strong>{comment.authorUser.username} :</strong>
-                <p>{comment.content}</p>
+                <div>
+                    <p>{comment.content}</p>
+                </div>
+
             </div>
+            <ReactionForComment comment={comment}/>
             <Button
                 variant="info"
                 size="sm"
@@ -21,6 +29,8 @@ export default function Comment({ comment, setCurrentComment }) {
             >
                 Reply
             </Button>
+
+
             <Col>{nestedComments}</Col>
         </>
     );
