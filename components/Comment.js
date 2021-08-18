@@ -2,7 +2,9 @@ import { Col, Button } from "react-bootstrap";
 
 import React from "react";
 import ReactionForComment from "./ReactionForComment";
-
+import {LazyLoadImage} from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import styles from "../styles/Profile.module.css";
 
 export default function Comment({ comment, setCurrentComment }) {
 
@@ -14,6 +16,16 @@ export default function Comment({ comment, setCurrentComment }) {
         <>
             <div key={comment.id}>
                 <strong>{comment.authorUser.username} :</strong>
+                {comment.file ?
+                <div className={styles.container_image}>
+                    <LazyLoadImage
+
+                        src={comment.file.url}
+                        alt="Image"
+                        style={{ objectFit: "cover" }}
+                        effect="blur"
+                    />
+                </div> : null}
                 <div>
                     <p>{comment.content}</p>
                 </div>

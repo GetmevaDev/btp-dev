@@ -19,12 +19,12 @@ const ForgotPassword = () => {
     show: false,
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit =  (e) => {
     e.preventDefault();
 
     axios
       .post(`${process.env.BACKEND_URL}/auth/forgot-password`, {
-        email,
+        email: email,
       })
       .then((res) => {
         setAlert({
@@ -74,7 +74,7 @@ const ForgotPassword = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
-
+              {console.log(email)}
               <Button variant="primary" type="submit">
                 Submit
               </Button>

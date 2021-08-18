@@ -69,3 +69,12 @@
     height: 50%;
   }
 }
+.container_image{
+  margin-bottom: 15px;
+}
+
+.container_image img{
+  display: inline-block;
+  max-height: 270px;
+  max-width: 100%;
+}

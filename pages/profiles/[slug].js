@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Message from "../../components/Message";
@@ -38,6 +38,11 @@ import { listToTree } from "../../lib/helpers";
 import download from "downloadjs";
 import SMSForm from "../SMSForm";
 
+
+
+const calculatePercent = (value, total) => Math.round(value / total * 100);
+
+
 export default function Profile({ profile }) {
 
 
@@ -57,55 +62,83 @@ export default function Profile({ profile }) {
   const [comments, setComments] = useState([]);
   const [commentsProcessed, setCommentsProcessed] = useState([]);
 
+  const [file, setFile] = useState(null);
+  const fileState = useRef();
+  const [percent, setPercent] = useState(0);
+
+  const [status, setStatus] = useState(null);
+
+  console.log(fileState)
+
   useEffect(() => {
+
     axios
         .get(`${process.env.BACKEND_URL}/comments?_limit=10000`)
         .then(({ data }) => {
-
           const commentProfile = data.filter(comment => comment.profile.id === profile.id);
-
           setComments(commentProfile)
+
         })
 
         .catch((e) => {
           console.log(e)
         });
-  }, []);
+    if (status === 200){
+      setLoading(false);
+      setComment("");
+      fileState.current.value = "";
+    }
+  }, [status]);
 
 
+  const createProfileWithImage = () => {
+        const formData = new FormData();
+        const data = {};
+        data.threadOf = currentComment;
+        data.content = comment;
+        data.authorUser = appState.user;
+        data.profile = profile;
+        data.related = [
+          {
+            _id: profile.id,
+            ref: "profile",
+            field: "comments",
+          },
+        ];
 
-  useEffect(() => {
-    setCommentsProcessed(listToTree(comments));
-  }, [comments]);
+        formData.append("data", JSON.stringify(data))
+        if (file) {
+          formData.append("files.file", file, file.name);
+        }
+
+
+        return formData;
+      }
 
   const submitHandler = (e) => {
     e.preventDefault();
     setLoading(true);
 
-    axios
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+      onUploadProgress: progressEvent => setPercent(calculatePercent(progressEvent.loaded, progressEvent.total))
+    };
+
+    const formData = createProfileWithImage();
+
+   axios
         .post(
             `${process.env.BACKEND_URL}/comments`,
-            {
-              authorUser: appState.user,
-              threadOf: currentComment,
-              content: comment,
-              profile: profile,
-              related: [
-                {
-                  _id: profile.id,
-                  ref: "profile",
-                  field: "comments",
-                },
-              ],
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${jwt}`,
-              },
-            }
+            formData,
+            config,
         )
-        .then(({ data }) => {
-          setComments([...comments, { ...data, threadOf: data.threadOf.id }]);
+        .then((res) => {
+          console.log(res)
+          setStatus(res.status)
+          setComments([...comments, { ...res.data, threadOf: res.data.threadOf.id }]);
           setComment("");
           setCurrentComment(null);
           setLoading(false);
@@ -120,10 +153,17 @@ export default function Profile({ profile }) {
             variant: "danger",
           });
         });
-    window.location.reload(false);
+    setStatus(null)
+
   };
 
 
+
+  useEffect(() => {
+    setCommentsProcessed(listToTree(comments));
+  }, [comments]);
+
+  console.log(file)
 
   const downloadQr = () => {
     axios
@@ -339,10 +379,16 @@ export default function Profile({ profile }) {
                               value={comment}
                               onChange={(e) => setComment(e.target.value)}
                           ></Form.Control>
+                          {console.log(comment)}
                         </Form.Group>
-                        {/*<Form.Group controlId="formFile" >*/}
-                        {/*  <Form.Control type="file" />*/}
-                        {/*</Form.Group>*/}
+                        <Form.Group controlId="formFile" >
+                          <Form.File
+                              ref={fileState}
+                              id="image-file"
+                              onChange={(e) => setFile(e.target.files[0])}
+                              //onChange={uploadFileHandler}
+                          ></Form.File>
+                        </Form.Group>
                         <Button type="submit" variant="primary">
                           {loading ? (
                               <Spinner
