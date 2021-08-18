@@ -68,7 +68,7 @@ export default function Profile({ profile }) {
 
   const [status, setStatus] = useState(null);
 
-  console.log(fileState)
+
 
   useEffect(() => {
 
@@ -136,7 +136,7 @@ export default function Profile({ profile }) {
             config,
         )
         .then((res) => {
-          console.log(res)
+
           setStatus(res.status)
           setComments([...comments, { ...res.data, threadOf: res.data.threadOf.id }]);
           setComment("");
@@ -163,7 +163,7 @@ export default function Profile({ profile }) {
     setCommentsProcessed(listToTree(comments));
   }, [comments]);
 
-  console.log(file)
+
 
   const downloadQr = () => {
     axios
@@ -379,10 +379,10 @@ export default function Profile({ profile }) {
                               value={comment}
                               onChange={(e) => setComment(e.target.value)}
                           ></Form.Control>
-                          {console.log(comment)}
                         </Form.Group>
                         <Form.Group controlId="formFile" >
                           <Form.File
+                              lang={'us'}
                               ref={fileState}
                               id="image-file"
                               onChange={(e) => setFile(e.target.files[0])}
