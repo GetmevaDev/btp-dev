@@ -81,7 +81,10 @@ const ReactionForComment = ({comment}) => {
 
 
     return (
-        <div className="reactions-wrapper col">
+        <div className="reactions-wrapper" style={{
+            marginTop: 10,
+            marginBottom: 5,
+        }}>
             <div className="box">
                 {!appState.isGuest && (
                     <>
