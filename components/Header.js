@@ -211,8 +211,9 @@ export default function Header() {
           </ClickAwayListener>
           <div className = {styles.marquee} >
             <p>
-              <Link href = "/callDavidov">Call Sam Davidov for mortgages(917) 578 - 6009 </Link>
-              <Link href = "/inMemory" > In Memory We Live Forever </Link>
+              <a target="_blank"  href="https://www.facebook.com/BTP-Reklamnaya-Pauza-393177177776231">Add message to news reel:
+                Private message Michael Vostok for advertising opportunity.</a>
+              {/*<Link href = "/inMemory" > In Memory We Live Forever </Link>*/}
             </p>
           </div>
         </header>
