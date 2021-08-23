@@ -260,10 +260,10 @@ const ProfileEditScreen = () => {
               ></Form.Control>
             </Form.Group>
             <Form.Group>
-              <Form.Label>Full Name in native</Form.Label>
+              <Form.Label>Full Name in Native Language</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Full Name in native"
+                placeholder="Enter Full Name in Native Language"
                 value={fullNameNative}
                 onChange={(e) => setFullNameNative(e.target.value)}
               ></Form.Control>

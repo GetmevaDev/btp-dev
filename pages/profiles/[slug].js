@@ -188,6 +188,11 @@ export default function Profile({ profile }) {
     return <ErrorPage statusCode={404} />;
   }
 
+
+  const birthDateHebrew = hebrewDate(new Date(profile.birthDate));
+  const deceaseDateHebrew = hebrewDate(new Date(profile.deceaseDate));
+
+
   return (
       <section className="py-5">
         <Head>
@@ -214,8 +219,23 @@ export default function Profile({ profile }) {
                     alt="img"
                 />
               </div>
+
+
+
               <div className={styles.profile_dates}>
                 {profile.birthDate} - {profile.deceaseDate}
+                <div className={styles.profile_dates}>
+                  {
+                    profile.birthDate ? <span>
+                      {`${birthDateHebrew.month_name} ${birthDateHebrew.date},  ${birthDateHebrew.year}`}
+
+                    </span>  : ""
+                  } - {
+                  profile.deceaseDate ? <span>
+                      {`${deceaseDateHebrew.month_name} ${deceaseDateHebrew.date},  ${deceaseDateHebrew.year}`}
+                    </span> : ""
+                }
+                </div>
               </div>
             </Col>
           </Row>
