@@ -13,29 +13,32 @@ import { useRouter } from "next/router";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import styles from "../../styles/categories.module.css"
+import ErrorPage from "next/error";
 
 
 
-export default function ListUseful({ partners }){
+export default function ListUseful({ partner }){
 
-
+    if (!partner) {
+        return <ErrorPage statusCode={404} />;
+    }
 
 
     return(
       <section className="py-5">
           <Head>
-              <title>{`BTP Necrology | ${partners.Category}`}</title>
+              <title>{`BTP Necrology | Resource categories${partner.Category}`}</title>
           </Head>
           <Container>
               <div className={styles.blockImage}>
-                  <h1>{partners.Category}</h1>
+                  <h1>{partner.Category}</h1>
               </div>
               <ul style={{
                   marginTop: 20
               }}>
 
                   {
-                      partners.partners.map(item => (
+                      partner.partners.map(item => (
                           <li key={item.id} className={'row col-12'} style={{
                               padding: 15,
                               borderBottom: '1px solid #ddd',
@@ -63,7 +66,7 @@ export default function ListUseful({ partners }){
                                       <p style={{
                                           marginBottom: 0
                                       }}>
-                                          {partners.Category}
+                                          {partner.Category}
                                       </p>
                                   </div>
 
@@ -84,12 +87,19 @@ export default function ListUseful({ partners }){
 }
 
 
+function blobToFile(theBlob, fileName) {
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    theBlob.lastModifiedDate = new Date();
+    theBlob.name = fileName;
+    return theBlob;
+}
+
 export async function getStaticPaths() {
     const { data } = await axios.get(
         `${process.env.BACKEND_URL}/resource-categories?_limit=10000`
     );
 
-    const paths = data.map((categories) => `/categories/${categories.slug}`);
+    const paths = data.map((category) => `/categories/${category.slug}`);
 
     return { paths, fallback: true };
 }
@@ -102,7 +112,7 @@ export async function getStaticProps({ params }) {
 
     return {
         props: {
-            partners: partners ? partners[0] : partners,
+            partner: partners ? partners[0] : partners,
         },
         revalidate: 60, // In seconds
     };

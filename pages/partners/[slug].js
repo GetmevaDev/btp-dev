@@ -13,14 +13,23 @@ import { useRouter } from "next/router";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import styles from "../../styles/categories.module.css"
+import ErrorPage from "next/error";
 
 
 export default function Partner({ data }){
+
+    if (!data) {
+        return <ErrorPage statusCode={404} />;
+    }
 
     return (
         <section style={{
             padding: "20px 0",
         }}>
+
+            <Head>
+                <title>{`BTP Necrology | ${data.Name}`}</title>
+            </Head>
             <Container>
                 <Row>
                     <Col md={4} lg={3} >
@@ -57,6 +66,13 @@ export default function Partner({ data }){
 
 }
 
+
+function blobToFile(theBlob, fileName) {
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    theBlob.lastModifiedDate = new Date();
+    theBlob.name = fileName;
+    return theBlob;
+}
 
 
 export async function getStaticPaths() {
