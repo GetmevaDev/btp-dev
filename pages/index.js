@@ -25,7 +25,7 @@ export default function Home({ profiles }) {
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
-        axios.get(`${process.env.BACKEND_URL}/resource-categories`)
+        axios.get(`${process.env.BACKEND_URL}/resource-categories?_limit=10000`)
             .then(({data}) => {
                 setCategories(data);
             }).catch((e) => {

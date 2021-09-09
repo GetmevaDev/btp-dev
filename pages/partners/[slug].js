@@ -50,7 +50,6 @@ export default function Partner({ data }){
                             <li><span>Website</span>{data.Website ? <a href={`${data.Website}`}>{data.Website}</a> : ""}</li>
                         </ul>
                     </Col>
-                    {console.log(data)}
                 </Row>
             </Container>
         </section>
