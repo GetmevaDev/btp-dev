@@ -25,7 +25,6 @@ export default function ListUseful({ partners }){
           <Container>
               <div className={styles.blockImage}>
                   <h1>{partners.Category}</h1>
-                  {console.log(partners)}
               </div>
               <ul style={{
                   marginTop: 20
