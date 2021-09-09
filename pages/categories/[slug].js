@@ -29,6 +29,7 @@ export default function ListUseful({ partners }){
               <ul style={{
                   marginTop: 20
               }}>
+
                   {
                       partners.partners.map(item => (
                           <li key={item.id} className={'row col-12'} style={{
@@ -62,6 +63,7 @@ export default function ListUseful({ partners }){
                                       </p>
                                   </div>
 
+                              {console.log(partners)}
 
                           </li>
                       ))
