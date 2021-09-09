@@ -51,6 +51,33 @@
 	margin-top: 20px;
 }
 
+
+.containerCategory{
+	margin-bottom: 15px;
+}
+
+.linkCategory a{
+	line-height: 40px;
+	display: block;
+	padding: 0 10px;
+	border-bottom: 1px solid #ddd;
+	color: initial;
+	font-size: 18px;
+
+}
+
+.linkCategory a:hover{
+	text-decoration: none;
+}
+
+.linkCategory:first-child a{
+	border-top: 1px solid #ddd;
+}
+
+.linkCategory:nth-child(2) a{
+	border-top: 1px solid #ddd;
+}
+
 @media only screen and (max-width: 1024px) and (min-width: 992px) {
 	.carousel_info {
 		position: absolute;

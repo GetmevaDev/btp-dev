@@ -16,7 +16,7 @@ const Redirect = () => {
   useEffect(() => {
     if (access_token) {
       axios(
-        `${process.env.BACKEND_URL}/auth/facebook/callback?access_token=${access_token}`
+        `${process.env.BACKEND_URL}/auth/google/callback?access_token=${access_token}`
       )
         .then(({ data }) => {
           setCookie(null, "jwt", data.jwt, {

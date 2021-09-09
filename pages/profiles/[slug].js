@@ -77,7 +77,7 @@ export default function Profile({ profile }) {
         .then(({ data }) => {
           const commentProfile = data.filter(comment => comment.profile.id === profile.id);
           setComments(commentProfile)
-
+          console.log(comment.profile)
         })
 
         .catch((e) => {
@@ -309,9 +309,7 @@ export default function Profile({ profile }) {
           </Row>
           <Row className="mt-4">
             <Col md={12}>
-              <SMSForm
-                  profileId={profile.id}
-              />
+              <SMSForm profile={profile}  />
 
               {/*<Form>*/}
               {/*  <Form.Row className="align-items-center">*/}

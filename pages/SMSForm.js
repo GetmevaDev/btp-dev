@@ -3,7 +3,7 @@ import { parseCookies } from "nookies";
 import {Button, Card, Col, Form, Alert} from "react-bootstrap";
 import  getConfig from "next/config"
 
-function SMSForm ({ profileId }) {
+function SMSForm ({ profile }) {
     const { jwt } = parseCookies();
 
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -12,18 +12,19 @@ function SMSForm ({ profileId }) {
 
     async function addNumber(){
 
-        const profileInfo = {
-            phoneNumber: phoneNumber
+        const number = {
+            number: phoneNumber,
+            profile: profile
         }
 
-        const add = await fetch(`${process.env.BACKEND_URL}/profiles/${profileId}`, {
-            method: 'PUT',
+        const add = await fetch(`${process.env.BACKEND_URL}/reminder-subscribers`, {
+            method: 'POST',
             headers: {
                 'Authorization': `Bearer ${jwt}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(profileInfo)
+            body: JSON.stringify(number)
         }).then(res => {
             setPhoneNumber('')
             setAlert({

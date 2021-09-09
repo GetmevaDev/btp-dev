@@ -21,58 +21,19 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function Home({ profiles }) {
 
-    // ========================OLD CODE=====================
-
-//   const { next, currentPage, currentData, maxPage } = usePagination(
-//     profiles,
-//       4
-//   );
-//
-//
-//
-//   const currentProfiles = currentData();
-//
-//   const [element, setElement] = useState(null);
-//
-//   const observer = useRef();
-//   const prevY = useRef(0);
-//
-//   useEffect(() => {
-//     observer.current = new IntersectionObserver(
-//       (entries) => {
-//
-//         const firstEntry = entries[0];
-//         const y = firstEntry.boundingClientRect.y;
-//
-//         if (prevY.current > y) {
-//           next();
-//         }
-//         prevY.current = y;
-//       },
-//       { threshold: 0.5 }
-//     );
-//
-//
-//   }, []);
-//
-//   useEffect(() => {
-//
-//     const currentElement = element;
-//     const currentObserver = observer.current;
-//
-//
-//     if (currentElement) {
-//       currentObserver.observe(currentElement);
-//     }
-//
-//     return () => {
-//       if (currentElement) {
-//         currentObserver.unobserve(currentElement);
-//       }
-//     };
-//   }, [element]);
-
     const [profile, setProfile] = useState(profiles)
+    const [categories, setCategories] = useState([])
+
+    useEffect(() => {
+        axios.get(`${process.env.BACKEND_URL}/resource-categories`)
+            .then(({data}) => {
+                setCategories(data);
+            }).catch((e) => {
+            console.log(e.message)
+        })
+    },[])
+
+    console.log(categories)
 
 
     const getMoreProfiles = async () => {
@@ -96,7 +57,7 @@ export default function Home({ profiles }) {
                     height="400"
                     src={profile.image
                         ? profile.image.url
-                        : "https://via.placeholder.com/500x400.png"}
+                        : "https://via.placeholder.com/500x500.png"}
                     alt="Image"
                     style={{ objectFit: "cover" }}
                     effect="blur"
@@ -113,6 +74,25 @@ export default function Home({ profiles }) {
         </Carousel>
       </Container>
       <Container className="mt-5">
+
+          {categories ?
+              <Col className={styles.containerCategory}>
+                  <h1 className="text-center font-weight-bold">USEFUL LINKS</h1>
+                  <Row>
+
+                      {
+                          categories.map(item => (
+                              <Col key={item.id} className={styles.linkCategory} lg={6} md={6}>
+                                  <Link href={`/categories/${item.slug}`}>{item.Category}</Link>
+                              </Col>
+                          ))
+                      }
+
+                  </Row>
+              </Col> :
+              null
+          }
+
         <Row>
           <Col>
             <CardDeck>
@@ -164,39 +144,6 @@ export default function Home({ profiles }) {
                     </Col>
                   ))}
               </InfiniteScroll>
-
-              {/*{profiles &&*/}
-              {/*profiles.map((profile) => (*/}
-              {/*    <Col*/}
-              {/*      sm={12}*/}
-              {/*      md={6}*/}
-              {/*      lg={4}*/}
-              {/*      xl={3}*/}
-              {/*      key={profile._id}*/}
-              {/*      className={styles.carddeck}*/}
-              {/*    >*/}
-
-              {/*      <Card style={{ width: "16rem", height: "100%" }}>*/}
-              {/*        <LazyLoadImage*/}
-              {/*            src={*/}
-              {/*              profile.image*/}
-              {/*                  ? profile.image.url*/}
-              {/*                  : "https://via.placeholder.com/150.png"*/}
-              {/*            }*/}
-              {/*            variant="top"*/}
-              {/*            height="275px"*/}
-              {/*            style={{ objectFit: "cover" }}*/}
-              {/*        />*/}
-              {/*        <Card.Body>*/}
-              {/*          <Card.Title>{profile.fullName}</Card.Title>*/}
-              {/*          <Card.Text>{profile.deceaseDate}</Card.Text>*/}
-              {/*          <Link href={`/profiles/${profile.slug}`}>*/}
-              {/*            <Button variant="primary">View Profile</Button>*/}
-              {/*          </Link>*/}
-              {/*        </Card.Body>*/}
-              {/*      </Card>*/}
-              {/*    </Col>*/}
-              {/*  ))}*/}
             </CardDeck>
             {profile.length !== 0 ? null : (
                 <div className={styles.blockText} style={{

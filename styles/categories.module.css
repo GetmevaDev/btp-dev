@@ -1,0 +1,52 @@
+
+
+.blockImage{
+    padding-top: 150px;
+}
+
+.blockImage h1 {
+    background: linear-gradient(
+            0deg, rgba(0,0,0,0.8), transparent);
+    color: #fff;
+    display: block;
+    padding: 16px;
+    width: 100%;
+    margin: 0;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.namePartners{
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: .2rem;
+}
+
+.namePartners a{
+    color: #000 !important;
+}
+
+.namePartners a:hover{
+    text-decoration: none;
+}
+
+.listData{
+    padding-left: 0;
+}
+
+.listData li{
+    list-style-type: none;
+
+}
+
+.listData li span{
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 21px;
+}
+
+.listData li a{
+    text-decoration: none;
+    color: initial;
+    font-size: 18px;
+}
