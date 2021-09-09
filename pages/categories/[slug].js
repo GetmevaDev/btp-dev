@@ -17,14 +17,18 @@ import styles from "../../styles/categories.module.css"
 
 
 export default function ListUseful({ partners }){
+
+    const [category, setCategory] = useState(null);
+    setCategory(partners.Category);
+
     return(
       <section className="py-5">
           <Head>
-              <title>{`BTP Necrology | ${partners.Category}`}</title>
+              <title>{`BTP Necrology | ${category}`}</title>
           </Head>
           <Container>
               <div className={styles.blockImage}>
-                  <h1>{partners.Category}</h1>
+                  <h1>{category}</h1>
               </div>
               <ul style={{
                   marginTop: 20
@@ -59,11 +63,11 @@ export default function ListUseful({ partners }){
                                       <p style={{
                                           marginBottom: 0
                                       }}>
-                                          {partners.Category}
+                                          {category}
                                       </p>
                                   </div>
 
-                              {console.log(partners)}
+
 
                           </li>
                       ))
