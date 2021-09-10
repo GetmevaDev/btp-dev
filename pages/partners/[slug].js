@@ -17,7 +17,7 @@ import ErrorPage from "next/error";
 
 
 export default function Partner({ data }){
-    
+
 
     if (!data) {
         return <ErrorPage statusCode={404} />;
@@ -56,7 +56,7 @@ export default function Partner({ data }){
                         <ul className={styles.listData}>
                             <li><span>Phone</span>{data.Phone ? <a href={`tel:${data.Phone}`}>{data.Phone}</a> : ""}</li>
                             <li><span>Email</span>{data.Email ? <a href={`mailto:${data.Email}`}>{data.Email}</a> : ""}</li>
-                            <li><span>Address</span>{data.Address ? <a target="_blank" href={`${data.LinkAddress ? data.LinkAddress : "#"}`}>{data.Address}</a> : ""}</li>
+                            <li><span>Address</span>{data.Address ? <a  href={`${data.LinkAddress ? data.LinkAddress : "#"}`}>{data.Address}</a> : ""}</li>
                             <li><span>Website</span>{data.Website ? <a style={{cursor: 'pointer'}} onClick={() => window.open(`https://${data.Website}`, '_blank')} >{data.Website}</a> : ""}</li>
                         </ul>
                     </Col>
