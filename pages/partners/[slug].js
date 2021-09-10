@@ -58,6 +58,7 @@ export default function Partner({ data }){
                             <li><span>Email</span>{data.Email ? <a href={`mailto:${data.Email}`}>{data.Email}</a> : ""}</li>
                             <li><span>Address</span>{data.Address ? <a  href={`${data.LinkAddress ? data.LinkAddress : "#"}`}>{data.Address}</a> : ""}</li>
                             <li><span>Website</span>{data.Website ? <a style={{cursor: 'pointer'}} onClick={() => window.open(`https://${data.Website}`, '_blank')} >{data.Website}</a> : ""}</li>
+                            <li><span>Description</span>{data.Description ? <p>{data.Description}</p> : ""}</li>
                         </ul>
                     </Col>
                 </Row>
