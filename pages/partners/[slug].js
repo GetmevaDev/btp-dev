@@ -17,8 +17,7 @@ import ErrorPage from "next/error";
 
 
 export default function Partner({ data }){
-
-  const rerouteToGoogle = () => window.open('www.google.com', "_blank");
+    
 
     if (!data) {
         return <ErrorPage statusCode={404} />;
