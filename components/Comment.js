@@ -19,16 +19,25 @@ export default function Comment({ comment, setCurrentComment }) {
 
                 <strong>{comment.authorUser.username} :</strong>
 
-                {console.log(moment(comment.createdAt).format('DD MMM YYYY'))}
+                {console.log(comment.file?.url.lastIndexOf(".mp4") !== -1 && comment.file?.url.lastIndexOf(".mp4") !== undefined)}
                 {comment.file ?
                 <div className={styles.container_image}>
-                    <LazyLoadImage
+                    {
+                        comment.file.url.lastIndexOf(".mp4") !== -1 && comment.file.url.lastIndexOf(".mp4") !== undefined ?
+                            <video style={{
+                                height: 390,
+                                maxWidth: 500,
+                            }} controls playsinline>
+                                <source src={comment.file.url}
+                                         type="video/mp4"/>
+                            </video> : <LazyLoadImage
+                                src={comment.file.url}
+                                alt="Image"
+                                style={{ objectFit: "cover" }}
+                                effect="blur"
+                            />
+                    }
 
-                        src={comment.file.url}
-                        alt="Image"
-                        style={{ objectFit: "cover" }}
-                        effect="blur"
-                    />
                 </div> : null}
                 <div>
                     <p>{comment.content}</p>
