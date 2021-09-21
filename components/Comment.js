@@ -23,13 +23,23 @@ export default function Comment({ comment, setCurrentComment }) {
                 {comment.file ?
                 <div className={styles.container_image}>
                     {
-                        comment.file.url.lastIndexOf(".mp4") !== -1 && comment.file.url.lastIndexOf(".mp4") !== undefined ?
+                        (comment.file.url.lastIndexOf(".mp4") !== -1 || comment.file.url.lastIndexOf(".ogg") !== -1 || comment.file.url.lastIndexOf(".webm") !== -1) &&
+                        (comment.file.url.lastIndexOf(".mp4") !== undefined || comment.file.url.lastIndexOf(".ogg") !== undefined || comment.file.url.lastIndexOf(".webm") !== undefined) ?
                             <video style={{
                                 height: 390,
                                 maxWidth: 500,
                             }} controls playsinline>
-                                <source src={comment.file.url}
-                                         type="video/mp4"/>
+                                {
+                                    comment.file.url.lastIndexOf(".mp4") !== -1 ?
+                                        <source src={comment.file.url}
+                                                type="video/mp4"/> :
+                                        comment.file.url.lastIndexOf(".ogg") !== -1 ?
+                                            <source src={comment.file.url}
+                                                    type="video/ogg"/> :
+                                            comment.file.url.lastIndexOf(".webm") !== -1 ?
+                                                <source src={comment.file.url}
+                                                        type="video/webm"/> : null
+                                }
                             </video> : <LazyLoadImage
                                 src={comment.file.url}
                                 alt="Image"
