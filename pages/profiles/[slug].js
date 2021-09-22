@@ -268,6 +268,10 @@ export default function Profile({ profile }) {
                     Time: {pominki.startTime} - {pominki.endTime}
                   </span>
                       <br />
+
+
+
+                      
                       <span>Location: {pominki.location}</span>
                     </div>
                 );
