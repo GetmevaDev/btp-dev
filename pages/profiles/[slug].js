@@ -271,7 +271,7 @@ export default function Profile({ profile }) {
 
 
 
-                      
+
                       <span>Location: {pominki.location}</span>
                     </div>
                 );
