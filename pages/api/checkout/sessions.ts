@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             price: process.env.PRICE_ID,
             quantity: 1,
         }],
-        mode: 'subscription',
+        mode: 'payment',
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/checkout`,
     })
