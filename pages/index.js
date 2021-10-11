@@ -17,12 +17,14 @@ import axios from "axios";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import {useAppContext} from "../context/state";
 
 
 export default function Home({ profiles }) {
 
     const [profile, setProfile] = useState(profiles)
     const [categories, setCategories] = useState([])
+    const { appState } = useAppContext();
 
     useEffect(() => {
         axios.get(`${process.env.BACKEND_URL}/resource-categories?_limit=10000`)
@@ -42,10 +44,22 @@ export default function Home({ profiles }) {
         setProfile(profile => [...profile, ...newProfiles])
     }
 
+
+    // useEffect(()=>{
+    //     if (appState.isGuest) {
+    //         window.location.href = 'http://localhost:3000/login';
+    //     }
+    // },[])
+
+
   return (
     <section className="py-4">
       <Head>
         <title>BTP Necrology | Некролог האבל Nachruf</title>
+          {/*{*/}
+          {/*    appState.isGuest ?  <meta http-equiv="Refresh" content="0; URL=http://localhost:3000/login"/> :*/}
+          {/*        null*/}
+          {/*}*/}
       </Head>
       <Container>
         <Carousel>

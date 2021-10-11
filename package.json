@@ -11,6 +11,7 @@
   "proxy": "http://localhost:3001",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
+    "@stripe/stripe-js": "^1.19.1",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.3",
@@ -48,9 +49,12 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "sass": "^1.32.6",
-    "stream": "0.0.2"
+    "stream": "0.0.2",
+    "stripe": "^8.178.0",
+    "swr": "^1.0.1"
   },
   "devDependencies": {
-    "twilio": "^3.62.0"
+    "twilio": "^3.62.0",
+    "typescript": "^4.4.3"
   }
 }

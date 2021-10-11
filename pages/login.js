@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Container, Row, Col, Form, Button, Alert, Spinner } from "react-bootstrap";
@@ -6,6 +6,9 @@ import styles from "../styles/Login.module.css";
 import { useRouter } from "next/router";
 import { login } from "../lib/user";
 import { setCookie } from "nookies";
+import {useAppContext} from "../context/state";
+
+
 
 export default function Login() {
   const [identifier, setIdentifier] = useState();
@@ -13,6 +16,7 @@ export default function Login() {
   const router = useRouter();
   const [error, setError] = useState({ show: false, errorMsg: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const { appState } = useAppContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -32,10 +36,22 @@ export default function Login() {
         setError({ show: true, errorMsg: e.message })});
   };
 
+  // useEffect(()=>{
+  //   if (!appState.isGuest) {
+  //   window.location.href = '/';
+  // }
+  // }, [])
+
+
+
   return (
     <section className="py-5">
       <Head>
         <title>BTP Necrology | Login</title>
+        {/*{*/}
+        {/*  !appState.isGuest ?  <meta http-equiv="Refresh" content="0; URL=/"/> :*/}
+        {/*      null*/}
+        {/*}*/}
       </Head>
 
       <Container className={styles.login_container}>
