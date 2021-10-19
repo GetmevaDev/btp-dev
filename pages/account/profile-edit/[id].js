@@ -46,10 +46,11 @@ const ProfileEditScreen = () => {
   const formRef = React.useRef();
 
   const handleClick = async (event) => {
-    const { sessionId } = await fetch('https://btp-dev-j1lydcp48-getmevadev.vercel.app/api/checkout/sessions',{
+    const { sessionId } = await fetch('https://btp-dev-psi.vercel.app/api/checkout/sessions',{
       method: 'POST',
       headers: {
         "content-type": "application/json",
+        "Access-Control-Allow-Origin": "*",
         Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
       },
       body: JSON.stringify({quantity: 1})
