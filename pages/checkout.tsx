@@ -33,7 +33,7 @@ export default function Checkout(){
     return(
         <div>
             <Head>
-                <meta http-equiv="Refresh" content={`4; URL=https://btp-dev-psi.vercel.app/account/profile-edit/new`}/>
+                <meta http-equiv="Refresh" content={`3; URL=https://btp-dev-psi.vercel.app/account/profile-edit/new`}/>
             </Head>
             <h1>Payment failed</h1>
         </div>

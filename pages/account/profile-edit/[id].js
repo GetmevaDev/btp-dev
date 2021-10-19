@@ -176,6 +176,9 @@ const ProfileEditScreen = () => {
     if (profile) {
       await updateImage(config);
 
+      // @ts-ignore
+      // @ts-ignore
+      // @ts-ignore
       axios
         .put(
           `${process.env.BACKEND_URL}/profiles/${profile.id}`,
@@ -200,6 +203,7 @@ const ProfileEditScreen = () => {
           });
 
           setIsLoading(false);
+          // @ts-ignore
           setAlert({
             show: true,
             msg: "Profile updated",
@@ -246,6 +250,7 @@ const ProfileEditScreen = () => {
             })
             .catch((e) => {
               setIsLoading(false);
+              // @ts-ignore
               setAlert({
                 show: true,
                 msg: e.message,
@@ -257,9 +262,7 @@ const ProfileEditScreen = () => {
 
 
 
-  const returnSlug = () => {
-    return requeryData;
-  }
+
 
   return (
     <>
