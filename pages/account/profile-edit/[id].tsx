@@ -42,6 +42,8 @@ const ProfileEditScreen = () => {
   const { jwt } = parseCookies();
   const [alert, setAlert] = useState({
     show: false,
+    msg: "",
+    variant: "",
   });
   const formRef = React.useRef();
 
@@ -142,7 +144,15 @@ const ProfileEditScreen = () => {
 
   const createProfileWithImage = () => {
     const formData = new FormData();
-    const data = {};
+    const data = {
+      fullName,
+      fullNameNative,
+      birthDate,
+      deceaseDate,
+      description,
+      burialPlace,
+      slug,
+    };
     data.fullName = fullName;
     data.fullNameNative = fullNameNative;
     data.birthDate = birthDate.length
