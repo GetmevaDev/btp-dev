@@ -11,6 +11,11 @@ import { SET_PROFILES, UPDATE_PROFILE } from "../../../context/appReducer";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
+import {loadStripe} from "@stripe/stripe-js/pure";
+import useSWR from "swr";
+import useLocalStorage from "use-local-storage";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const ReactQuill =
   typeof window === "object" ? require("react-quill") : () => false;
@@ -25,6 +30,10 @@ const ProfileEditScreen = () => {
   const [slug, setSlug] = useState("");
   const [image, setImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [slugLocalStorage, setSlugLocalStorage] = useLocalStorage("slug", "");
+  const [idLocalStorage, setIdLocalStorage] = useLocalStorage("id", "");
+
   const router = useRouter();
   const { appState, dispatch } = useAppContext();
   const profile = appState.profiles.find(
@@ -35,6 +44,29 @@ const ProfileEditScreen = () => {
     show: false,
   });
   const formRef = React.useRef();
+
+  const handleClick = async (event) => {
+    const { sessionId } = await fetch('http://localhost:3000/api/checkout/sessions',{
+      method: 'POST',
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+      },
+      body: JSON.stringify({quantity: 1})
+    }).then(res => res.json())
+
+    const stripe = await stripePromise;
+    const { error } = await stripe.redirectToCheckout({
+      sessionId,
+    })
+  };
+
+  const { data, error } = useSWR(
+      router.query.session_id
+          ? `/api/checkout/${router.query.session_id}`
+          : null,
+      (url) => fetch(url).then(res => res.json())
+  )
 
   useEffect(() => {
     if (profile) {
@@ -127,7 +159,6 @@ const ProfileEditScreen = () => {
       valiadateImage();
       formData.append("files.image", image, image.name);
     }
-
     return formData;
   };
 
@@ -198,28 +229,37 @@ const ProfileEditScreen = () => {
 
       const formData = createProfileWithImage();
 
-      axios
-        .post(`${process.env.BACKEND_URL}/profiles`, formData, config)
-        .then(({ data }) => {
-          const newProfilesState = appState.profiles;
-          newProfilesState.splice(0, 0, data);
 
-          dispatch({
-            type: SET_PROFILES,
-            payload: { profiles: newProfilesState },
-          });
-          router.push(`/profiles/${data.slug}`);
-        })
-        .catch((e) => {
-          setIsLoading(false);
-          setAlert({
-            show: true,
-            msg: e.message,
-            variant: "danger",
-          });
-        });
+        axios
+            .post(`${process.env.BACKEND_URL}/profiles`, formData, config)
+            .then(({ data }) => {
+              const newProfilesState = appState.profiles;
+              newProfilesState.splice(0, 0, data);
+
+              dispatch({
+                type: SET_PROFILES,
+                payload: { profiles: newProfilesState },
+              });
+              setSlugLocalStorage(data.slug);
+              setIdLocalStorage(data.id)
+              // router.push(`/profiles/${data.slug}`);
+            })
+            .catch((e) => {
+              setIsLoading(false);
+              setAlert({
+                show: true,
+                msg: e.message,
+                variant: "danger",
+              });
+            });
     }
   };
+
+
+
+  const returnSlug = () => {
+    return requeryData;
+  }
 
   return (
     <>
@@ -349,7 +389,7 @@ const ProfileEditScreen = () => {
                 ></Form.File>
               )}
             </Form.Group>
-            <Button type="submit" variant="primary">
+            <Button onClick={handleClick} type="submit" variant="primary">
               {isLoading ? (
                 <Spinner
                   as="span"
@@ -361,6 +401,9 @@ const ProfileEditScreen = () => {
               ) : null}
               {profile ? " Update" : " Create"}
             </Button>
+            {/*<pre>{data ? JSON.stringify(data.session.payment_status, null, 2 ) : 'Loading...'}</pre>*/}
+            {console.log(slugLocalStorage,
+              idLocalStorage)}
           </Form>
         </FormContainer>
       }

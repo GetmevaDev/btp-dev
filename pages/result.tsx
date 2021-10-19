@@ -1,20 +1,36 @@
-import {useRouter} from "next/router";
+import React, {useEffect, useState} from "react";
+import { useRouter } from "next/router";
 import useSWR from 'swr'
+import Head from "next/head";
+
 
 export default function Result(){
-    const router = useRouter();
+    const [slug, setSlug] = useState(null)
 
-    const { data, error } = useSWR(
-        router.query.session_id
-          ? `/api/checkout/${router.query.session_id}`
-            : null,
-        (url) => fetch(url).then(res => res.json())
-    )
+    // const router = useRouter();
+    //
+    // const { data, error } = useSWR(
+    //     router.query.session_id
+    //       ? `/api/checkout/${router.query.session_id}`
+    //         : null,
+    //     (url) => fetch(url).then(res => res.json())
+    // )
+    useEffect(()=>{
+
+        const slug = JSON.parse(localStorage.getItem('slug'));
+        setSlug(slug)
+
+    },[])
+
+    console.log(slug)
 
     return(
         <div>
-            <h1>Payment Result</h1>
-            <pre>{data ? JSON.stringify(data, null, 2) : 'Loading...'}</pre>
+            <Head>
+                <meta http-equiv="Refresh" content={`0; URL=https://btp-dev-psi.vercel.app/profiles/${slug}`}/>
+            </Head>
+            <h1>Payment success</h1>
+
         </div>
     )
 
