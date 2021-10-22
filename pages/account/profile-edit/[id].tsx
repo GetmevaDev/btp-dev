@@ -48,7 +48,7 @@ const ProfileEditScreen = () => {
   const formRef = React.useRef();
 
   const handleClick = async (event) => {
-    const { sessionId } = await fetch('https://btp-dev-psi.vercel.app/api/checkout/sessions',{
+    const { sessionId } = await fetch('/api/checkout/sessions',{
       method: 'POST',
       headers: {
         "content-type": "application/json",
