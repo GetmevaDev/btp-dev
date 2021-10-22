@@ -15,8 +15,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             quantity: 1,
         }],
         mode: 'payment',
-        success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${req.headers.origin}/checkout`,
+        success_url: `https://btp-dev-psi.vercel.app/result?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `https://btp-dev-psi.vercel.app/checkout`,
     })
     res.status(200).json({ sessionId: session.id  })
 }
