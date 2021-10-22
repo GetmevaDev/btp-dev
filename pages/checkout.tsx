@@ -10,8 +10,23 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 export default function Checkout(){
 
     const { jwt } = parseCookies();
-    
 
+    // const handleClick = async (event) => {
+    //     const { sessionId } = await fetch('/api/z',{
+    //         method: 'POST',
+    //         headers: {
+    //             "content-type": "application/json",
+    //             Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+    //         },
+    //         body: JSON.stringify({quantity: 1})
+    //     }).then(res => res.json())
+    //
+    //     const stripe = await stripePromise;
+    //     const { error } = await stripe.redirectToCheckout({
+    //         sessionId,
+    //     })
+    //     console.log(error)
+    // };
 
     useEffect(() => {
         const config = {

@@ -42,8 +42,8 @@ const ProfileEditScreen = () => {
   const { jwt } = parseCookies();
   const [alert, setAlert] = useState({
     show: false,
-    msg: "",
-    variant: "",
+    msg: '',
+    variant: '',
   });
   const formRef = React.useRef();
 
@@ -52,7 +52,6 @@ const ProfileEditScreen = () => {
       method: 'POST',
       headers: {
         "content-type": "application/json",
-        "Access-Control-Allow-Origin": "*",
         Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
       },
       body: JSON.stringify({quantity: 1})
@@ -63,6 +62,14 @@ const ProfileEditScreen = () => {
       sessionId,
     })
   };
+
+
+
+
+
+
+
+
 
   const { data, error } = useSWR(
       router.query.session_id
@@ -187,9 +194,6 @@ const ProfileEditScreen = () => {
     if (profile) {
       await updateImage(config);
 
-      // @ts-ignore
-      // @ts-ignore
-      // @ts-ignore
       axios
         .put(
           `${process.env.BACKEND_URL}/profiles/${profile.id}`,
@@ -214,7 +218,6 @@ const ProfileEditScreen = () => {
           });
 
           setIsLoading(false);
-          // @ts-ignore
           setAlert({
             show: true,
             msg: "Profile updated",
@@ -261,7 +264,6 @@ const ProfileEditScreen = () => {
             })
             .catch((e) => {
               setIsLoading(false);
-              // @ts-ignore
               setAlert({
                 show: true,
                 msg: e.message,
@@ -270,9 +272,6 @@ const ProfileEditScreen = () => {
             });
     }
   };
-
-
-
 
 
   return (
@@ -416,8 +415,7 @@ const ProfileEditScreen = () => {
               {profile ? " Update" : " Create"}
             </Button>
             {/*<pre>{data ? JSON.stringify(data.session.payment_status, null, 2 ) : 'Loading...'}</pre>*/}
-            {console.log(slugLocalStorage,
-              idLocalStorage)}
+            {}
           </Form>
         </FormContainer>
       }
